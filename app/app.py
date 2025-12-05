@@ -269,19 +269,46 @@ st.markdown('''
             border-radius: 8px !important;
         }
         
-        /* Ensure all inputs have solid white background with green text */
+        /* Force all inputs to have solid white background with dark green text */
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea,
+        .stTextInput input,
+        .stNumberInput input,
+        .stSelectbox select,
         .stTextInput>div>div>input,
         .stNumberInput>div>div>input,
-        .stSelectbox>div>div>select {
+        .stSelectbox>div>div>select,
+        [data-baseweb="select"] > div,
+        [data-baseweb="input"] > div > input {
             background: #ffffff !important;
+            background-color: #ffffff !important;
             color: #156b2f !important;
             border: 2px solid #1f8f3f !important;
-            font-weight: 600 !important;
+            font-weight: 700 !important;
+            -webkit-text-fill-color: #156b2f !important;
         }
         
-        /* Green text for labels on mobile */
-        label {
+        /* Force dropdown/select text to be visible */
+        [data-baseweb="select"] [role="button"],
+        [data-baseweb="select"] > div > div {
+            background: #ffffff !important;
+            background-color: #ffffff !important;
             color: #156b2f !important;
+            -webkit-text-fill-color: #156b2f !important;
+        }
+        
+        /* Green text for ALL labels on mobile */
+        label,
+        .stTextInput label,
+        .stNumberInput label,
+        .stSelectbox label,
+        [data-testid="stWidgetLabel"],
+        [data-testid="stWidgetLabel"] p {
+            color: #156b2f !important;
+            font-weight: 700 !important;
+            -webkit-text-fill-color: #156b2f !important;
         }
         
         /* Section titles visible on mobile */
@@ -574,21 +601,47 @@ elif page == 'Prediction':
                 border-radius: 8px !important;
             }
             
-            /* All inputs solid white with green border and green text */
+            /* Force ALL inputs to have white background and dark green text */
+            input[type="text"],
+            input[type="number"],
+            select,
+            textarea,
+            .stTextInput input,
+            .stNumberInput input,
+            .stSelectbox select,
             .stTextInput>div>div>input,
             .stNumberInput>div>div>input,
             .stSelectbox>div>div>select,
-            input, select, textarea {
+            input, select, textarea,
+            [data-baseweb="select"] > div,
+            [data-baseweb="input"] > div > input {
                 background: #ffffff !important;
+                background-color: #ffffff !important;
                 color: #156b2f !important;
                 border: 2px solid #1f8f3f !important;
-                font-weight: 600 !important;
+                font-weight: 700 !important;
+                -webkit-text-fill-color: #156b2f !important;
+            }
+            
+            /* Force dropdown/select text to be visible */
+            [data-baseweb="select"] [role="button"],
+            [data-baseweb="select"] > div > div {
+                background: #ffffff !important;
+                background-color: #ffffff !important;
+                color: #156b2f !important;
+                -webkit-text-fill-color: #156b2f !important;
             }
             
             /* Labels green and bold */
-            label {
+            label,
+            .stTextInput label,
+            .stNumberInput label,
+            .stSelectbox label,
+            [data-testid="stWidgetLabel"],
+            [data-testid="stWidgetLabel"] p {
                 color: #156b2f !important;
                 font-weight: 700 !important;
+                -webkit-text-fill-color: #156b2f !important;
             }
             
             /* Section titles green and bold */

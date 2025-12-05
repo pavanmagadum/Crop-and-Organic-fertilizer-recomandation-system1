@@ -458,9 +458,9 @@ if 'page' in st.session_state:
     try:
         default_index = ['Home', 'Prediction', 'Preparation', 'Community'].index(default_page)
     except ValueError:
-        default_index = 1
+        default_index = 0
 else:
-    default_index = 1
+    default_index = 0
 
 page = st.sidebar.radio('Navigate', ['Home', 'Prediction', 'Preparation', 'Community'], index=default_index)
 

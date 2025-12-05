@@ -259,6 +259,46 @@ st.markdown('''
         color: #ffffff !important;
     }
     
+    /* Mobile responsive fixes for light theme */
+    @media (max-width: 768px) {
+        /* Make input containers solid white on mobile in light theme */
+        .st-emotion-cache-zuyloh {
+            background: #ffffff !important;
+            border: 2px solid #1f8f3f !important;
+            padding: 1rem !important;
+            border-radius: 8px !important;
+        }
+        
+        /* Ensure all inputs have solid white background */
+        .stTextInput>div>div>input,
+        .stNumberInput>div>div>input,
+        .stSelectbox>div>div>select {
+            background: #ffffff !important;
+            color: #1a1a1a !important;
+            border: 2px solid #1f8f3f !important;
+            font-weight: 600 !important;
+        }
+        
+        /* Dark text for labels on mobile */
+        label {
+            color: #1a1a1a !important;
+        }
+        
+        /* Section titles visible on mobile */
+        .section-title {
+            color: #1f8f3f !important;
+            font-weight: 700 !important;
+        }
+        
+        /* Form containers */
+        [data-testid="stForm"] {
+            background: #ffffff !important;
+            border: 2px solid #1f8f3f !important;
+            padding: 1.5rem !important;
+            border-radius: 12px !important;
+        }
+    }
+    
     /* Back button styling - same size and padding */
     button[key="prep_back_pred"],
     button[key="prep_back_home"] {
@@ -517,6 +557,45 @@ elif page == 'Prediction':
         .main .block-container textarea {
             color: #1a1a1a !important;
             background: #ffffff !important;
+        }
+        
+        /* Mobile responsive - solid backgrounds for inputs in light theme */
+        @media (max-width: 768px) {
+            .main .block-container {
+                padding: 1rem !important;
+            }
+            
+            /* Solid white background for input containers on mobile */
+            [data-testid="stForm"],
+            .st-emotion-cache-zuyloh {
+                background: #ffffff !important;
+                border: 2px solid #1f8f3f !important;
+                padding: 1rem !important;
+                border-radius: 8px !important;
+            }
+            
+            /* All inputs solid white with green border */
+            .stTextInput>div>div>input,
+            .stNumberInput>div>div>input,
+            .stSelectbox>div>div>select,
+            input, select, textarea {
+                background: #ffffff !important;
+                color: #1a1a1a !important;
+                border: 2px solid #1f8f3f !important;
+                font-weight: 600 !important;
+            }
+            
+            /* Labels dark and bold */
+            label {
+                color: #1a1a1a !important;
+                font-weight: 700 !important;
+            }
+            
+            /* Section titles green and bold */
+            .section-title {
+                color: #1f8f3f !important;
+                font-weight: 700 !important;
+            }
         }
         
         /* Dark Mode */

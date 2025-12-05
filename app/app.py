@@ -133,8 +133,23 @@ st.markdown('''
         border-left: 6px solid var(--primary-green);
         padding: 20px;
         border-radius: 8px;
-        background: var(--card-bg);
-        color: var(--text-primary);
+        background: #ffffff;
+        color: #156b2f;
+    }
+    
+    .result-card * {
+        color: #156b2f !important;
+    }
+    
+    .result-card h1,
+    .result-card h2,
+    .result-card h3,
+    .result-card h4,
+    .result-card p,
+    .result-card span,
+    .result-card div,
+    .result-card li {
+        color: #156b2f !important;
     }
     
     .section-title {

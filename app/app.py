@@ -466,10 +466,41 @@ elif page == 'Prediction':
             color: #156b2f !important;
             font-weight: 600 !important;
         }
-        .main .block-container .section-title {
+        /* Streamlit default elements - force green text */
+        .main [data-testid="stMarkdownContainer"] {
+            color: #156b2f !important;
+        }
+        .main [data-testid="stMarkdownContainer"] * {
+            color: #156b2f !important;
+        }
+        .main .stMarkdown {
+            color: #156b2f !important;
+        }
+        .main .stMarkdown * {
+            color: #156b2f !important;
+        }
+        /* Result card and all content inside */
+        .main .result-card,
+        .main .result-card *,
+        .main .result-card h1,
+        .main .result-card h2,
+        .main .result-card h3,
+        .main .result-card h4,
+        .main .result-card p,
+        .main .result-card div,
+        .main .result-card span,
+        .main .result-card li {
+            color: #156b2f !important;
+        }
+        /* Section titles and small-muted class */
+        .main .section-title {
             color: #1f8f3f !important;
             font-weight: 800 !important;
             text-shadow: 0 2px 4px rgba(31,143,63,0.2);
+        }
+        .main .small-muted {
+            color: #156b2f !important;
+            font-weight: 600 !important;
         }
         .main .block-container input,
         .main .block-container select,

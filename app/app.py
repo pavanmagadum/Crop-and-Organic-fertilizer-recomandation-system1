@@ -479,18 +479,33 @@ elif page == 'Prediction':
         .main .stMarkdown * {
             color: #156b2f !important;
         }
-        /* Result card and all content inside */
-        .main .result-card,
-        .main .result-card *,
-        .main .result-card h1,
-        .main .result-card h2,
-        .main .result-card h3,
-        .main .result-card h4,
-        .main .result-card p,
-        .main .result-card div,
-        .main .result-card span,
-        .main .result-card li {
+        /* Result card and all content inside - FORCE GREEN */
+        .result-card,
+        .result-card *,
+        .result-card h1,
+        .result-card h2,
+        .result-card h3,
+        .result-card h4,
+        .result-card p,
+        .result-card div,
+        .result-card span,
+        .result-card li,
+        .result-card strong,
+        .result-card b {
             color: #156b2f !important;
+        }
+        /* Override any Streamlit column styling */
+        [data-testid="column"] {
+            color: #156b2f !important;
+        }
+        [data-testid="column"] * {
+            color: #156b2f !important;
+        }
+        [data-testid="column"] h1,
+        [data-testid="column"] h2,
+        [data-testid="column"] h3,
+        [data-testid="column"] h4 {
+            color: #1f8f3f !important;
         }
         /* Section titles and small-muted class */
         .main .section-title {
@@ -635,17 +650,17 @@ elif page == 'Prediction':
                     'input': {'region': region, 'soil': soil, 'N': N, 'P': P, 'K': K, 'pH': pH, 'temperature': temp, 'humidity': humidity, 'rainfall': rainfall}
                     , 'used_fert_model': used_fert_model
                 }
-                st.success('Prediction saved. See results on the right.')
+                st.success('Prediction saved. See results.')
 
     # RIGHT: Result card
     with right:
         st.markdown('<div class="result-card">', unsafe_allow_html=True)
-        st.markdown('<h4 style="margin-top:0">Result</h4>', unsafe_allow_html=True)
+        st.markdown('<h4 style="margin-top:0;color:#1f8f3f !important;font-weight:700">Result</h4>', unsafe_allow_html=True)
         if 'last_result' in st.session_state:
             lr = st.session_state['last_result']
             # Big crop title
-            st.markdown(f"<h2 style='margin:6px 0 4px 0'>{lr.get('crop_pred')}</h2>", unsafe_allow_html=True)
-            st.markdown(f"<div style='font-weight:600;color:#2d6b2f;margin-bottom:8px'>Suggested fertilizer: {lr.get('nf')}</div>", unsafe_allow_html=True)
+            st.markdown(f"<h2 style='margin:6px 0 4px 0;color:#1f8f3f !important;font-weight:700'>{lr.get('crop_pred')}</h2>", unsafe_allow_html=True)
+            st.markdown(f"<div style='font-weight:600;color:#156b2f !important;margin-bottom:8px'>Suggested fertilizer: {lr.get('nf')}</div>", unsafe_allow_html=True)
             # show source of recommendation
             src = 'Model' if lr.get('used_fert_model') else 'Heuristic'
             st.markdown(f"**Source:** {src}")

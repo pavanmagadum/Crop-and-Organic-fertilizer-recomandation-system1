@@ -754,7 +754,7 @@ elif page == 'Prediction':
                     'input': {'region': region, 'soil': soil, 'N': N, 'P': P, 'K': K, 'pH': pH, 'temperature': temp, 'humidity': humidity, 'rainfall': rainfall}
                     , 'used_fert_model': used_fert_model
                 }
-                st.toast('✅ Prediction complete! Check results on the right.', icon='✅')
+                st.toast('✅ Prediction completed successfully!', icon='🌾')
 
     # RIGHT: Result card
     with right:

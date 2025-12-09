@@ -132,7 +132,7 @@ st.markdown('''
     .result-card {
         padding: 20px;
         border-radius: 8px;
-        background: #ffffff;
+        background: transparent;
         color: #156b2f;
     }
     

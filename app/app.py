@@ -62,34 +62,18 @@ st.set_page_config(page_title='Climate Aware Crop & Organic Fertilizer', layout=
 # Enhanced theme + CSS with larger fonts and better color contrast
 st.markdown('''
 <style>
-    /* Light Mode Variables */
+    /* Professional Green Theme - Consistent for all modes */
     :root {
         --primary-green: #1f8f3f;
         --primary-green-dark: #156b2f;
-        --card-bg: #fbfbf6;
-        --card-border: rgba(31, 143, 63, 0.1);
-        --text-primary: #1a1a1a;
+        --card-bg: #ffffff;
+        --card-border: rgba(31, 143, 63, 0.2);
+        --text-primary: #156b2f;
         --text-secondary: #2d5f2d;
         --text-muted: #4a7c4a;
-        --bg-overlay: rgba(255, 255, 255, 0.90);
-        --shadow-color: rgba(15, 15, 15, 0.08);
+        --bg-overlay: rgba(255, 255, 255, 0.95);
+        --shadow-color: rgba(15, 15, 15, 0.1);
         --button-text: #ffffff;
-    }
-    
-    /* Dark Mode Variables */
-    @media (prefers-color-scheme: dark) {
-        :root {
-            --primary-green: #4ade80;
-            --primary-green-dark: #22c55e;
-            --card-bg: #1e2a1e;
-            --card-border: rgba(74, 222, 128, 0.2);
-            --text-primary: #e8f5e9;
-            --text-secondary: #c8e6c9;
-            --text-muted: #a5d6a7;
-            --bg-overlay: rgba(30, 42, 30, 0.92);
-            --shadow-color: rgba(0, 0, 0, 0.3);
-            --button-text: #1a1a1a;
-        }
     }
     
     /* Global Styles - EVEN LARGER FONTS */
@@ -228,17 +212,6 @@ st.markdown('''
         font-size: 27px;
         line-height: 1.7;
         color: var(--text-primary);
-    }
-    
-    /* Dark mode specific text adjustments */
-    @media (prefers-color-scheme: dark) {
-        .stMarkdown, .stText, p, span, div {
-            color: var(--text-primary);
-        }
-        
-        [data-testid="stMarkdownContainer"] p {
-            color: var(--text-secondary);
-        }
     }
     
     /* Streamlit emotion cache containers - light transparent white background */
@@ -427,27 +400,6 @@ st.markdown('''
         border-radius: 6px;
         padding: 6px 10px;
     }
-    
-    /* Dark Mode Sidebar - WHITE TEXT ON DARK GREEN */
-    @media (prefers-color-scheme: dark) {
-        [data-testid="stSidebar"] {
-            background: linear-gradient(180deg, rgba(20,80,40,0.92), rgba(15,60,30,0.92)),
-                        url('https://images.unsplash.com/photo-1523348837708-15d4a09cfac2?w=800&q=80') center/cover;
-        }
-        
-        [data-testid="stSidebar"] > div:first-child {
-            background: rgba(20,60,30,0.3);
-        }
-        
-        [data-testid="stSidebar"] .stRadio > label {
-            color: #a5d6a7 !important;
-            text-shadow: 0 1px 3px rgba(0,0,0,0.6);
-        }
-        
-        [data-testid="stSidebar"] label {
-            color: #c8e6c9 !important;
-        }
-    }
 </style>
 ''', unsafe_allow_html=True)
 
@@ -530,19 +482,6 @@ if page == 'Home':
             padding: 2rem;
             box-shadow: 0 8px 32px rgba(31,143,63,0.2);
             border: 2px solid #1f8f3f;
-        }
-        
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            .stApp {
-                background: linear-gradient(135deg, rgba(20,50,20,0.75), rgba(15,40,15,0.75)),
-                            url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1920&q=80') center/cover fixed;
-            }
-            .main .block-container {
-                background: #ffffff !important;
-                box-shadow: 0 8px 32px rgba(31,143,63,0.3);
-                border: 2px solid #1f8f3f;
-            }
         }
     </style>
     ''', unsafe_allow_html=True)
@@ -710,32 +649,6 @@ elif page == 'Prediction':
                 font-weight: 700 !important;
             }
         }
-        
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            .stApp {
-                background: linear-gradient(135deg, rgba(25,55,25,0.6), rgba(18,45,18,0.6)),
-                            url('https://images.unsplash.com/photo-1560493676-04071c5f467b?w=1920&q=80') center/cover fixed;
-            }
-            .main .block-container {
-                background: #ffffff !important;
-                box-shadow: 0 8px 32px rgba(31,143,63,0.3);
-                border: 2px solid #1f8f3f;
-            }
-            
-            .main .block-container h1,
-            .main .block-container h2,
-            .main .block-container h3,
-            .main .block-container h4,
-            .main .block-container p,
-            .main .block-container span,
-            .main .block-container div:not(.stButton),
-            .main .block-container label,
-            .main .block-container [data-testid="stMarkdownContainer"],
-            .main .block-container [data-testid="stMarkdownContainer"] * {
-                color: #156b2f !important;
-            }
-        }
     </style>
     ''', unsafe_allow_html=True)
     
@@ -900,19 +813,6 @@ elif page == 'Preparation':
             box-shadow: 0 8px 32px rgba(31,143,63,0.2);
             border: 2px solid #1f8f3f;
         }
-        
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            .stApp {
-                background: linear-gradient(135deg, rgba(22,52,22,0.72), rgba(16,42,16,0.72)),
-                            url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80') center/cover fixed;
-            }
-            .main .block-container {
-                background: #ffffff !important;
-                box-shadow: 0 8px 32px rgba(31,143,63,0.3);
-                border: 2px solid #1f8f3f;
-            }
-        }
     </style>
     ''', unsafe_allow_html=True)
     
@@ -1022,19 +922,6 @@ elif page == 'Community':
             padding: 2rem;
             box-shadow: 0 8px 32px rgba(31,143,63,0.2);
             border: 2px solid #1f8f3f;
-        }
-        
-        /* Dark Mode */
-        @media (prefers-color-scheme: dark) {
-            .stApp {
-                background: linear-gradient(135deg, rgba(24,54,24,0.73), rgba(17,44,17,0.73)),
-                            url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80') center/cover fixed;
-            }
-            .main .block-container {
-                background: #ffffff !important;
-                box-shadow: 0 8px 32px rgba(31,143,63,0.3);
-                border: 2px solid #1f8f3f;
-            }
         }
     </style>
     ''', unsafe_allow_html=True)

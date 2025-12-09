@@ -130,7 +130,6 @@ st.markdown('''
     }
     
     .result-card {
-        border-left: 6px solid var(--primary-green);
         padding: 20px;
         border-radius: 8px;
         background: #ffffff;

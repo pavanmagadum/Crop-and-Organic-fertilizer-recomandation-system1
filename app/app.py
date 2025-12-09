@@ -790,18 +790,18 @@ elif page == 'Prediction':
 
         # Keep prediction logic intact; only change UI presentation
         if submitted:
-            st.info('Running predictions...')
-            try:
-                crop_bundle = joblib.load('crop_model.joblib'); artifacts = joblib.load('artifacts.joblib')
-            except Exception as e:
-                st.error('Model files missing.'); st.stop()
-            enc = artifacts['encoders']; scaler = artifacts['scaler']; crop_model = crop_bundle['model']
-            df = pd.DataFrame([{'region':region,'soil_type':soil,'N':N,'P':P,'K':K,'pH':pH,'temperature':temp,'humidity':humidity,'rainfall':rainfall}])
-            for c,le in enc.items():
-                df[c] = le.transform(df[c].astype(str))
-            X = df[['region','soil_type','N','P','K','pH','temperature','humidity','rainfall']].values
-            Xs = scaler.transform(X)
-            crop_pred = crop_model.predict(Xs)[0]
+            with st.spinner('Running predictions...'):
+                try:
+                    crop_bundle = joblib.load('crop_model.joblib'); artifacts = joblib.load('artifacts.joblib')
+                except Exception as e:
+                    st.error('Model files missing.'); st.stop()
+                enc = artifacts['encoders']; scaler = artifacts['scaler']; crop_model = crop_bundle['model']
+                df = pd.DataFrame([{'region':region,'soil_type':soil,'N':N,'P':P,'K':K,'pH':pH,'temperature':temp,'humidity':humidity,'rainfall':rainfall}])
+                for c,le in enc.items():
+                    df[c] = le.transform(df[c].astype(str))
+                X = df[['region','soil_type','N','P','K','pH','temperature','humidity','rainfall']].values
+                Xs = scaler.transform(X)
+                crop_pred = crop_model.predict(Xs)[0]
 
             nf = None
             used_fert_model = False
@@ -845,7 +845,7 @@ elif page == 'Prediction':
                     'input': {'region': region, 'soil': soil, 'N': N, 'P': P, 'K': K, 'pH': pH, 'temperature': temp, 'humidity': humidity, 'rainfall': rainfall}
                     , 'used_fert_model': used_fert_model
                 }
-                st.success('Prediction saved. See results on the right.')
+                st.toast('✅ Prediction complete! Check results on the right.', icon='✅')
 
     # RIGHT: Result card
     with right:

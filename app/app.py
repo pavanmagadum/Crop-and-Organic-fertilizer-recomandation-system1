@@ -7,7 +7,7 @@ st.set_page_config(
     page_title="Climate-Aware Farming",
     page_icon="🌾",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="auto",  # Changed to auto so sidebar can be toggled
     menu_items={
         'Get Help': None,
         'Report a bug': None,
@@ -197,10 +197,24 @@ st.markdown('''
         box-shadow: 0 8px 24px var(--shadow-hover) !important;
     }
     
-    /* Sidebar - Modern Dark Green */
+    /* Sidebar - Modern Dark Green with toggle visibility */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, var(--forest-green) 0%, #1a3a0f 100%);
         padding: 1.5rem 1rem;
+        box-shadow: 2px 0 10px var(--shadow-soft);
+    }
+    
+    /* Sidebar toggle button - always visible */
+    [data-testid="collapsedControl"] {
+        background: var(--forest-green) !important;
+        color: white !important;
+        border-radius: 0 8px 8px 0 !important;
+        padding: 8px !important;
+    }
+    
+    [data-testid="collapsedControl"]:hover {
+        background: var(--olive-green) !important;
+        box-shadow: 0 4px 12px var(--shadow-hover) !important;
     }
     
     [data-testid="stSidebar"] * {
@@ -211,6 +225,7 @@ st.markdown('''
         font-size: 18px !important;
         font-weight: 600 !important;
         margin-bottom: 12px !important;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
     }
     
     [data-testid="stSidebar"] label {
@@ -218,10 +233,17 @@ st.markdown('''
         padding: 12px !important;
         border-radius: 10px !important;
         transition: background 0.3s ease !important;
+        cursor: pointer !important;
     }
     
     [data-testid="stSidebar"] label:hover {
         background: rgba(255, 255, 255, 0.15) !important;
+        transform: translateX(4px);
+    }
+    
+    /* Radio button selected state */
+    [data-testid="stSidebar"] [data-baseweb="radio"] > div:first-child {
+        background-color: white !important;
     }
     
     /* Result Card - Modern Design */
@@ -313,6 +335,11 @@ st.markdown('''
 st.title('🌾 Climate‑Aware Crop & Organic Fertilizer Recommendation System', anchor=False)
 st.markdown('<p style="font-size:18px; color: var(--text-medium); margin-bottom:24px;">Sustainable agriculture powered by climate-aware technology</p>', unsafe_allow_html=True)
 
+# Sidebar with title and navigation
+with st.sidebar:
+    st.markdown("# 🌾 Navigation")
+    st.markdown("---")
+
 # Check if page is set via session_state (from button clicks), otherwise use sidebar
 if 'page' in st.session_state:
     default_page = st.session_state['page']
@@ -323,7 +350,18 @@ if 'page' in st.session_state:
 else:
     default_index = 0
 
-page = st.sidebar.radio('Navigate', ['Home', 'Prediction', 'Preparation', 'Community'], index=default_index)
+# Navigation in sidebar with clear labels
+with st.sidebar:
+    page = st.radio(
+        'Choose a page:',
+        ['Home', 'Prediction', 'Preparation', 'Community'],
+        index=default_index,
+        label_visibility="visible"
+    )
+    
+    st.markdown("---")
+    st.markdown("#### 💡 Quick Tip")
+    st.markdown("Click the **>** button at the top left to hide/show this menu anytime!")
 
 # Update session state with current page
 st.session_state['page'] = page

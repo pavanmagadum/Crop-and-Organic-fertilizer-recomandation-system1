@@ -1,0 +1,13 @@
+[client]
+showErrorDetails = false
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+headless = true
+
+[ui]
+hideTopBar = true
+hideSidebarNav = false

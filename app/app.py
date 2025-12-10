@@ -2,14 +2,16 @@ import streamlit as st, joblib, pandas as pd, os, json
 import sys
 from pathlib import Path
 
-# Hide Streamlit menu with GitHub link
+# Complete configuration to hide all Streamlit branding
 st.set_page_config(
     page_title="Climate-Aware Farming",
     page_icon="🌾",
+    layout="wide",
+    initial_sidebar_state="expanded",
     menu_items={
         'Get Help': None,
         'Report a bug': None,
-        'About': "Climate-Aware Crop & Organic Fertilizer Recommendation System"
+        'About': None
     }
 )
 
@@ -70,7 +72,6 @@ def set_query_params_safe(**kwargs):
     for k, v in kwargs.items():
         st.session_state[k] = v
 
-st.set_page_config(page_title='Climate Aware Crop & Organic Fertilizer', layout='wide')
 # Enhanced theme + CSS with larger fonts and better color contrast
 st.markdown('''
 <style>

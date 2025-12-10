@@ -332,12 +332,42 @@ st.markdown('''
 ''', unsafe_allow_html=True)
 
 # Initialize session state if not already done
+# Add a floating menu button for easy navigation access
+st.markdown('''
+<style>
+    /* Floating Menu Button - Always visible */
+    .floating-menu-btn {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 999999;
+        background: linear-gradient(135deg, var(--forest-green), var(--olive-green));
+        color: white;
+        padding: 12px 18px;
+        border-radius: 12px;
+        font-size: 16px;
+        font-weight: 600;
+        box-shadow: 0 4px 16px var(--shadow-hover);
+        cursor: pointer;
+        border: none;
+        transition: all 0.3s ease;
+    }
+    
+    .floating-menu-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 24px var(--shadow-hover);
+    }
+</style>
+''', unsafe_allow_html=True)
+
 st.title('🌾 Climate‑Aware Crop & Organic Fertilizer Recommendation System', anchor=False)
 st.markdown('<p style="font-size:18px; color: var(--text-medium); margin-bottom:24px;">Sustainable agriculture powered by climate-aware technology</p>', unsafe_allow_html=True)
+st.markdown('<p style="font-size:14px; color: var(--text-medium); font-style: italic;">💡 Tip: Click the <strong>[&gt;]</strong> button at the top-left to show/hide the navigation menu</p>', unsafe_allow_html=True)
 
 # Sidebar with title and navigation
 with st.sidebar:
     st.markdown("# 🌾 Navigation")
+    st.markdown("*Select a page below*")
     st.markdown("---")
 
 # Check if page is set via session_state (from button clicks), otherwise use sidebar
@@ -360,8 +390,16 @@ with st.sidebar:
     )
     
     st.markdown("---")
-    st.markdown("#### 💡 Quick Tip")
-    st.markdown("Click the **>** button at the top left to hide/show this menu anytime!")
+    st.markdown("#### 💡 Navigation Help")
+    st.markdown("""
+    **To hide this menu:**  
+    Click the **[×]** or **[>]** button at the top
+    
+    **To show menu again:**  
+    Click the **[<]** button that appears
+    """)
+    st.markdown("---")
+    st.markdown("*🌾 Climate-Aware Farming*")
 
 # Update session state with current page
 st.session_state['page'] = page

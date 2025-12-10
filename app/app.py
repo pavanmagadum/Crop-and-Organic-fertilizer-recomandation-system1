@@ -74,24 +74,17 @@ st.set_page_config(page_title='Climate Aware Crop & Organic Fertilizer', layout=
 # Enhanced theme + CSS with larger fonts and better color contrast
 st.markdown('''
 <style>
-    /* Hide GitHub icon and deploy button */
-    header[data-testid="stHeader"] {
-        background-color: transparent;
-    }
+    /* Hide ALL Streamlit branding and GitHub links */
+    #MainMenu {visibility: hidden !important;}
+    footer {visibility: hidden !important;}
+    header {visibility: hidden !important;}
     
-    /* Hide the GitHub icon in toolbar */
     [data-testid="stToolbar"] {
         display: none !important;
     }
     
-    /* Hide deployment button */
-    button[kind="header"] {
+    .viewerBadge_container__1QSob {
         display: none !important;
-    }
-    
-    /* Hide main menu hamburger if needed */
-    #MainMenu {
-        visibility: hidden;
     }
     
     /* Professional Green Theme - Consistent for all modes */

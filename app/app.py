@@ -317,7 +317,13 @@ st.markdown('''
     
     /* Column spacing */
     [data-testid="column"] {
-        padding: 12px;
+        padding: 0 12px;
+    }
+    
+    /* Align columns to top */
+    [data-testid="column"] > div {
+        padding-top: 0 !important;
+        margin-top: 0 !important;
     }
     
     /* Metric cards */
@@ -461,10 +467,10 @@ elif page == 'Prediction':
         st.rerun()
     
     st.header('🌾 Crop & Fertilizer Prediction', anchor=False)
-    st.markdown('<p style="font-size:16px; color: var(--text-medium);">Get personalized recommendations based on your soil and climate conditions</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size:16px; color: var(--text-medium); margin-bottom:10px;">Get personalized recommendations based on your soil and climate conditions</p>', unsafe_allow_html=True)
     
     # Two-column layout: left for inputs, right for results
-    left, right = st.columns([2, 1], gap='large')
+    left, right = st.columns([2, 1], gap='medium')
 
     with left:
         with st.form('input_form'):

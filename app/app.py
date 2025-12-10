@@ -246,14 +246,14 @@ st.markdown('''
         background-color: white !important;
     }
     
-    /* Result Card - Modern Design */
+    /* Result Card - Modern Design with no top gap */
     .result-card {
         background: linear-gradient(135deg, var(--warm-cream) 0%, white 100%);
         border-left: 5px solid var(--olive-green);
         border-radius: 15px;
-        padding: 24px;
+        padding: 20px;
         box-shadow: 0 6px 20px var(--shadow-soft);
-        margin: 20px 0;
+        margin: 0 !important;
     }
     
     .result-card * {
@@ -265,11 +265,14 @@ st.markdown('''
         color: var(--forest-green) !important;
         font-size: 28px !important;
         margin-bottom: 12px !important;
+        margin-top: 0 !important;
     }
     
     .result-card h4 {
         color: var(--olive-green) !important;
         font-size: 18px !important;
+        margin-top: 0 !important;
+        padding-top: 0 !important;
     }
     
     /* Feature Cards */
@@ -358,7 +361,7 @@ with st.sidebar:
         index=default_index,
         label_visibility="visible"
     )
-    )
+    
 
 # Update session state with current page
 st.session_state['page'] = page
@@ -575,8 +578,11 @@ elif page == 'Prediction':
 
     # RIGHT: Result card
     with right:
-        st.markdown('<div class="result-card">', unsafe_allow_html=True)
-        st.markdown('#### 📊 Results', unsafe_allow_html=True)
+        st.markdown('''
+        <div class="result-card" style="margin-top: 0; padding-top: 16px;">
+            <h4 style="margin-top: 0; padding-top: 0; color: var(--forest-green);">📊 Results</h4>
+        </div>
+        ''', unsafe_allow_html=True)
         
         if 'last_result' in st.session_state:
             lr = st.session_state['last_result']
@@ -592,7 +598,6 @@ elif page == 'Prediction':
             if org:
                 st.markdown(f"**Organic alternative:** {org}")
             
-            st.markdown('---')
             st.markdown('**Analysis Summary:**')
             inp = lr.get('input', {})
             st.markdown(f"- **Soil:** {inp.get('soil')}")

@@ -189,7 +189,7 @@ st.markdown('''
         line-height: 1.7;
     }
     
-    /* Ultra Simple Clean Input Fields - Single Box Only */
+    /* Ultra Simple Plain Input Fields - Just Basic Boxes */
     input, select, textarea,
     .stTextInput input,
     .stNumberInput input,
@@ -198,28 +198,34 @@ st.markdown('''
         font-size: 16px !important;
         padding: 10px 12px !important;
         border: 1px solid #d1d5db !important;
-        border-radius: 6px !important;
+        border-radius: 4px !important;
         background: white !important;
-        color: var(--text-dark) !important;
+        color: #333 !important;
         transition: border-color 0.2s ease !important;
         box-shadow: none !important;
     }
     
     input:focus, select:focus, textarea:focus {
-        border-color: var(--olive-green) !important;
+        border-color: #999 !important;
         outline: none !important;
         box-shadow: none !important;
+        background: white !important;
     }
     
-    /* Remove inner background decorations */
+    /* Remove ALL inner containers and decorations */
+    .stTextInput > div,
+    .stNumberInput > div,
     .stTextInput > div > div,
-    .stNumberInput > div > div {
+    .stNumberInput > div > div,
+    .stTextInput > div > div > div,
+    .stNumberInput > div > div > div {
         background: transparent !important;
         border: none !important;
         box-shadow: none !important;
+        padding: 0 !important;
     }
     
-    /* Simple Professional Selectbox - Single Box */
+    /* Plain Simple Selectbox - No Colors */
     [data-baseweb="select"] {
         font-size: 16px !important;
     }
@@ -227,17 +233,23 @@ st.markdown('''
     [data-baseweb="select"] > div {
         background: white !important;
         border: 1px solid #d1d5db !important;
-        border-radius: 6px !important;
+        border-radius: 4px !important;
         font-size: 16px !important;
-        min-height: 44px !important;
+        min-height: 42px !important;
         transition: border-color 0.2s ease !important;
         box-shadow: none !important;
     }
     
     [data-baseweb="select"]:hover > div,
     [data-baseweb="select"]:focus-within > div {
-        border-color: var(--olive-green) !important;
+        border-color: #999 !important;
         box-shadow: none !important;
+        background: white !important;
+    }
+    
+    /* Remove all inner colored elements */
+    [data-baseweb="select"] > div > div {
+        background: transparent !important;
     }
     
     [data-baseweb="popover"] {
@@ -246,20 +258,21 @@ st.markdown('''
     
     [data-baseweb="popover"] ul {
         background: white !important;
-        border: 1px solid #e5e7eb !important;
-        border-radius: 6px !important;
+        border: 1px solid #ddd !important;
+        border-radius: 4px !important;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
     }
     
     [data-baseweb="popover"] li {
         font-size: 16px !important;
         padding: 10px 14px !important;
-        color: var(--text-dark) !important;
+        color: #333 !important;
+        background: white !important;
     }
     
     [data-baseweb="popover"] li:hover {
-        background: #f9fafb !important;
-        color: var(--forest-green) !important;
+        background: #f5f5f5 !important;
+        color: #000 !important;
     }
     
     /* Hide "Press Enter" helper text */
@@ -786,6 +799,45 @@ elif page == 'Prediction':
             st.markdown('<div style="height: 25px"></div>', unsafe_allow_html=True)
             submitted = st.form_submit_button('🚀 Get Recommendations', use_container_width=True, type='primary')
         st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Analysis Summary Card - Attractive card below input form
+        if 'last_result' in st.session_state:
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
+            lr = st.session_state['last_result']
+            inp = lr.get('input', {})
+            st.markdown(f'''
+            <div class="analysis-card">
+                <div class="result-header">📊 Analysis Summary</div>
+                <div class="analysis-item">
+                    <span class="analysis-label">Region:</span>
+                    <span class="analysis-value">{inp.get('region')}</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">Soil Type:</span>
+                    <span class="analysis-value">{inp.get('soil')}</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">pH Level:</span>
+                    <span class="analysis-value">{inp.get('pH')}</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">NPK Ratio:</span>
+                    <span class="analysis-value">{inp.get('N')}-{inp.get('P')}-{inp.get('K')}</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">Temperature:</span>
+                    <span class="analysis-value">{inp.get('temperature')}°C</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">Humidity:</span>
+                    <span class="analysis-value">{inp.get('humidity')}%</span>
+                </div>
+                <div class="analysis-item">
+                    <span class="analysis-label">Rainfall:</span>
+                    <span class="analysis-value">{inp.get('rainfall')} mm</span>
+                </div>
+            </div>
+            ''', unsafe_allow_html=True)
 
         # Prediction logic (backend unchanged)
         if submitted:

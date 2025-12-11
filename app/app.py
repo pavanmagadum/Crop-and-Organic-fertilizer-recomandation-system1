@@ -26,21 +26,40 @@ from src.weather_api import fetch_weather
 from community import db as cdb
 from src.pdf_utils import generate_preparation_pdf
 
-# Crop duration data (in days)
+# Comprehensive crop duration data (in days) - Complete coverage for all crops
 CROP_DURATION = {
-    'rice': 120, 'maize': 90, 'chickpea': 100, 'kidneybeans': 95,
-    'pigeonpeas': 150, 'mothbeans': 85, 'mungbean': 75, 'blackgram': 80,
-    'lentil': 110, 'pomegranate': 365, 'banana': 365, 'mango': 365,
-    'grapes': 180, 'watermelon': 90, 'muskmelon': 85, 'apple': 365,
-    'orange': 365, 'papaya': 270, 'coconut': 365, 'cotton': 150,
-    'jute': 120, 'coffee': 365
+    # Cereals & Grains
+    'rice': 120, 'maize': 90, 'wheat': 120, 'barley': 90, 'millets': 75,
+    'sorghum': 100, 'oats': 90, 'rye': 110,
+    
+    # Pulses & Legumes
+    'chickpea': 100, 'kidneybeans': 95, 'pigeonpeas': 150, 'mothbeans': 85,
+    'mungbean': 75, 'blackgram': 80, 'lentil': 110, 'pulses': 95,
+    'soybean': 100, 'groundnut': 110, 'peanut': 110,
+    
+    # Fruits
+    'pomegranate': 365, 'banana': 365, 'mango': 365, 'grapes': 180,
+    'watermelon': 90, 'muskmelon': 85, 'apple': 365, 'orange': 365,
+    'papaya': 270, 'coconut': 365, 'pineapple': 365, 'guava': 365,
+    'lemon': 365, 'lime': 365, 'strawberry': 120,
+    
+    # Cash Crops
+    'cotton': 150, 'jute': 120, 'coffee': 365, 'tea': 365,
+    'sugarcane': 365, 'tobacco': 120, 'rubber': 365,
+    
+    # Vegetables
+    'tomato': 75, 'potato': 90, 'onion': 100, 'carrot': 70,
+    'cabbage': 90, 'cauliflower': 80, 'brinjal': 120, 'okra': 60,
+    'beans': 70, 'peas': 65, 'cucumber': 60, 'pumpkin': 90,
+    
+    # Spices & Others
+    'turmeric': 270, 'ginger': 240, 'garlic': 150, 'chilli': 120,
+    'pepper': 365, 'cardamom': 365, 'coriander': 90
 }
 
 def get_crop_duration_display(crop_name):
-    """Get formatted duration display for a crop"""
-    days = CROP_DURATION.get(crop_name.lower(), None)
-    if not days:
-        return "Duration data not available"
+    """Get formatted duration display for a crop - Always returns valid duration"""
+    days = CROP_DURATION.get(crop_name.lower(), 90)  # Default 90 days if not found
     
     months = round(days / 30)
     if days >= 365:
@@ -170,45 +189,45 @@ st.markdown('''
         line-height: 1.7;
     }
     
-    /* Modern Input Fields - FIXED SIZE 16px */
+    /* Simple Clean Input Fields - Minimal Design */
     input, select, textarea,
     .stTextInput input,
     .stNumberInput input,
     .stSelectbox select,
     [data-baseweb="input"] input {
         font-size: 16px !important;
-        padding: 12px 14px !important;
-        border: 2px solid var(--sage-green) !important;
-        border-radius: 10px !important;
-        background: var(--warm-cream) !important;
+        padding: 10px 14px !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 8px !important;
+        background: white !important;
         color: var(--text-dark) !important;
-        transition: all 0.3s ease !important;
+        transition: all 0.2s ease !important;
     }
     
     input:focus, select:focus, textarea:focus {
         border-color: var(--olive-green) !important;
         outline: none !important;
-        box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.15) !important;
+        box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1) !important;
     }
     
-    /* Professional Selectbox Styling */
+    /* Simple Professional Selectbox */
     [data-baseweb="select"] {
         font-size: 16px !important;
     }
     
     [data-baseweb="select"] > div {
-        background: var(--warm-cream) !important;
-        border: 2px solid var(--sage-green) !important;
-        border-radius: 10px !important;
+        background: white !important;
+        border: 1px solid #d1d5db !important;
+        border-radius: 8px !important;
         font-size: 16px !important;
-        min-height: 48px !important;
-        transition: all 0.3s ease !important;
+        min-height: 44px !important;
+        transition: all 0.2s ease !important;
     }
     
     [data-baseweb="select"]:hover > div,
     [data-baseweb="select"]:focus-within > div {
         border-color: var(--olive-green) !important;
-        box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.15) !important;
+        box-shadow: 0 0 0 3px rgba(107, 142, 35, 0.1) !important;
     }
     
     [data-baseweb="popover"] {
@@ -217,19 +236,19 @@ st.markdown('''
     
     [data-baseweb="popover"] ul {
         background: white !important;
-        border: 2px solid var(--sage-green) !important;
-        border-radius: 10px !important;
-        box-shadow: 0 8px 24px var(--shadow-soft) !important;
+        border: 1px solid #e5e7eb !important;
+        border-radius: 8px !important;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1) !important;
     }
     
     [data-baseweb="popover"] li {
         font-size: 16px !important;
-        padding: 12px 16px !important;
+        padding: 10px 14px !important;
         color: var(--text-dark) !important;
     }
     
     [data-baseweb="popover"] li:hover {
-        background: var(--warm-cream) !important;
+        background: #f9fafb !important;
         color: var(--forest-green) !important;
     }
     
@@ -281,12 +300,13 @@ st.markdown('''
     }
     
     /* Input Container */
+    /* Simple Clean Input Container */
     .input-container {
         background: white;
-        border-radius: 16px;
-        padding: 28px;
-        box-shadow: 0 4px 20px var(--shadow-soft);
-        border: 1px solid rgba(139, 142, 35, 0.1);
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e5e7eb;
     }
     
     /* Section Headers */

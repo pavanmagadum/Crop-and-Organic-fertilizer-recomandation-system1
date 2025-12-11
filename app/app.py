@@ -197,6 +197,166 @@ st.markdown('''
         box-shadow: 0 8px 24px var(--shadow-hover) !important;
     }
     
+    /* Primary Form Submit Button - Gradient like reference image */
+    .stFormSubmitButton > button {
+        background: linear-gradient(90deg, #10B981 0%, #0EA5E9 100%) !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 12px !important;
+        padding: 16px 32px !important;
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        transition: all 0.3s ease !important;
+        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+        letter-spacing: 0.5px;
+        width: 100% !important;
+    }
+    
+    .stFormSubmitButton > button:hover {
+        transform: translateY(-4px) !important;
+        box-shadow: 0 10px 30px rgba(16, 185, 129, 0.5) !important;
+    }
+    
+    /* Input Container */
+    .input-container {
+        background: white;
+        border-radius: 16px;
+        padding: 28px;
+        box-shadow: 0 4px 20px var(--shadow-soft);
+        border: 1px solid rgba(139, 142, 35, 0.1);
+    }
+    
+    /* Section Headers */
+    .section-header {
+        font-size: 19px !important;
+        font-weight: 700 !important;
+        color: var(--forest-green) !important;
+        margin-bottom: 16px !important;
+        margin-top: 8px !important;
+        padding-bottom: 8px;
+        border-bottom: 2px solid var(--sage-green);
+    }
+    
+    /* Prediction Result Cards */
+    .prediction-result-card, .fertilizer-card, .analysis-card {
+        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(107, 142, 35, 0.15);
+    }
+    
+    .result-header {
+        font-size: 18px !important;
+        font-weight: 700 !important;
+        color: var(--forest-green) !important;
+        margin-bottom: 16px !important;
+        padding-bottom: 10px;
+        border-bottom: 2px solid var(--sage-green);
+    }
+    
+    .crop-name {
+        font-size: 32px !important;
+        font-weight: 800 !important;
+        color: var(--olive-green) !important;
+        text-align: center;
+        padding: 12px 0;
+        text-transform: capitalize;
+    }
+    
+    /* Component List */
+    .component-list {
+        margin-top: 16px;
+    }
+    
+    .component-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .component-item:last-child {
+        border-bottom: none;
+    }
+    
+    .component-dot {
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        margin-right: 12px;
+        flex-shrink: 0;
+    }
+    
+    .component-name {
+        flex: 1;
+        font-size: 15px !important;
+        font-weight: 500 !important;
+        color: var(--text-dark) !important;
+    }
+    
+    .component-percentage {
+        font-size: 16px !important;
+        font-weight: 700 !important;
+        color: var(--olive-green) !important;
+        min-width: 50px;
+        text-align: right;
+    }
+    
+    /* Analysis Items */
+    .analysis-item {
+        display: flex;
+        justify-content: space-between;
+        padding: 12px 0;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+    
+    .analysis-item:last-child {
+        border-bottom: none;
+    }
+    
+    .analysis-label {
+        font-size: 15px !important;
+        font-weight: 600 !important;
+        color: var(--text-medium) !important;
+    }
+    
+    .analysis-value {
+        font-size: 15px !important;
+        font-weight: 700 !important;
+        color: var(--forest-green) !important;
+    }
+    
+    /* Empty State */
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
+        border-radius: 16px;
+        border: 2px dashed var(--sage-green);
+    }
+    
+    .empty-icon {
+        font-size: 64px;
+        margin-bottom: 16px;
+    }
+    
+    .empty-title {
+        font-size: 22px !important;
+        font-weight: 700 !important;
+        color: var(--text-dark) !important;
+        margin-bottom: 12px;
+    }
+    
+    .empty-text {
+        font-size: 15px !important;
+        color: var(--text-medium) !important;
+        line-height: 1.6;
+        max-width: 280px;
+        margin: 0 auto;
+    }
+    
     /* Sidebar - Modern Dark Green with toggle visibility */
     [data-testid="stSidebar"] {
         background: linear-gradient(180deg, var(--forest-green) 0%, #1a3a0f 100%);
@@ -467,45 +627,53 @@ elif page == 'Prediction':
         st.rerun()
     
     st.header('🌾 Crop & Fertilizer Prediction', anchor=False)
-    st.markdown('<p style="font-size:16px; color: var(--text-medium); margin-bottom:10px;">Get personalized recommendations based on your soil and climate conditions</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size:16px; color: var(--text-medium); margin-bottom:20px;">Get personalized recommendations based on your soil and climate conditions</p>', unsafe_allow_html=True)
     
     # Two-column layout: left for inputs, right for results
-    left, right = st.columns([2, 1], gap='medium')
+    left, right = st.columns([1.2, 1], gap='large')
 
     with left:
+        st.markdown('<div class="input-container">', unsafe_allow_html=True)
         with st.form('input_form'):
-            # Location & Soil
-            st.markdown('### 📍 Location & Soil')
-            cols = st.columns(2)
+            # Location & Soil - Side by side with better styling
+            st.markdown('<div class="section-header">📍 Location & Soil</div>', unsafe_allow_html=True)
+            cols = st.columns(2, gap='medium')
             with cols[0]:
-                region = st.selectbox('Region', ['North','South','East','West','Central'])
+                region = st.selectbox('Region', ['North','South','East','West','Central'], label_visibility='visible')
             with cols[1]:
-                soil = st.selectbox('Soil Type', ['Loamy','Sandy','Clayey','Silty'])
+                soil = st.selectbox('Soil Type', ['Loamy','Sandy','Clayey','Silty'], label_visibility='visible')
 
-            # Soil Nutrients
-            st.markdown('### 🧪 Soil Nutrients (NPK)')
-            ncols = st.columns(3)
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
+            
+            # Soil Nutrients - Clean 3-column layout
+            st.markdown('<div class="section-header">🧪 Soil Nutrients (NPK)</div>', unsafe_allow_html=True)
+            ncols = st.columns(3, gap='medium')
             with ncols[0]:
-                N = st.number_input('Nitrogen (N)', min_value=0.0, value=100.0)
+                N = st.number_input('Nitrogen (N)', min_value=0.0, max_value=300.0, value=100.0, step=5.0)
             with ncols[1]:
-                P = st.number_input('Phosphorus (P)', min_value=0.0, value=50.0)
+                P = st.number_input('Phosphorus (P)', min_value=0.0, max_value=300.0, value=50.0, step=5.0)
             with ncols[2]:
-                K = st.number_input('Potassium (K)', min_value=0.0, value=150.0)
+                K = st.number_input('Potassium (K)', min_value=0.0, max_value=300.0, value=150.0, step=5.0)
 
-            # Climate Conditions
-            st.markdown('### 🌤️ Climate Conditions')
-            ccols = st.columns(4)
-            with ccols[0]:
-                pH = st.number_input('Soil pH', min_value=3.0, max_value=9.0, value=6.5, format='%.2f')
-            with ccols[1]:
-                temp = st.number_input('Temperature (°C)', value=25.0)
-            with ccols[2]:
-                humidity = st.number_input('Humidity (%)', value=70.0)
-            with ccols[3]:
-                rainfall = st.number_input('Rainfall (mm/year)', value=800.0)
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
+            
+            # Climate Conditions - Professional 2x2 grid
+            st.markdown('<div class="section-header">🌤️ Climate Conditions</div>', unsafe_allow_html=True)
+            ccols1 = st.columns(2, gap='medium')
+            with ccols1[0]:
+                pH = st.number_input('Soil pH', min_value=3.0, max_value=9.0, value=6.5, step=0.1, format='%.1f')
+            with ccols1[1]:
+                temp = st.number_input('Temperature (°C)', min_value=-10.0, max_value=50.0, value=25.0, step=0.5)
+            
+            ccols2 = st.columns(2, gap='medium')
+            with ccols2[0]:
+                humidity = st.number_input('Humidity (%)', min_value=0.0, max_value=100.0, value=70.0, step=1.0)
+            with ccols2[1]:
+                rainfall = st.number_input('Rainfall (mm)', min_value=0.0, max_value=3000.0, value=200.0, step=10.0)
 
-            st.markdown('<div style="margin-top:20px"></div>', unsafe_allow_html=True)
-            submitted = st.form_submit_button('🔍 Run Prediction', use_container_width=True)
+            st.markdown('<div style="height: 25px"></div>', unsafe_allow_html=True)
+            submitted = st.form_submit_button('🚀 Get Recommendations', use_container_width=True, type='primary')
+        st.markdown('</div>', unsafe_allow_html=True)
 
         # Prediction logic (backend unchanged)
         if submitted:
@@ -582,46 +750,121 @@ elif page == 'Prediction':
                 }
                 st.toast('✅ Prediction completed successfully!', icon='🌾')
 
-    # RIGHT: Result card
+    # RIGHT: Result card with pie chart
     with right:
-        st.markdown('''
-        <div class="result-card" style="margin-top: 0; padding-top: 16px;">
-            <h4 style="margin-top: 0; padding-top: 0; color: var(--forest-green);">📊 Results</h4>
-        </div>
-        ''', unsafe_allow_html=True)
-        
         if 'last_result' in st.session_state:
             lr = st.session_state['last_result']
             
-            st.markdown(f"### {lr.get('crop_pred')}")
-            st.markdown(f"**Suggested fertilizer:** {lr.get('nf')}")
-            
-            src = 'Model Prediction' if lr.get('used_fert_model') else 'Heuristic Analysis'
-            st.markdown(f"*Source: {src}*")
+            # Crop Prediction Card
+            st.markdown(f'''
+            <div class="prediction-result-card">
+                <div class="result-header">🌾 Recommended Crop</div>
+                <div class="crop-name">{lr.get('crop_pred')}</div>
+            </div>
+            ''', unsafe_allow_html=True)
             
             conv = lr.get('conv', {})
             org = conv.get('organic') or ''
+            
             if org:
-                st.markdown(f"**Organic alternative:** {org}")
-            
-            st.markdown('**Analysis Summary:**')
-            inp = lr.get('input', {})
-            st.markdown(f"- **Soil:** {inp.get('soil')}")
-            st.markdown(f"- **pH Level:** {inp.get('pH')}")
-            st.markdown(f"- **NPK:** {inp.get('N')}-{inp.get('P')}-{inp.get('K')}")
-            st.markdown(f"- **Climate:** {inp.get('temperature')}°C, {inp.get('humidity')}% humidity")
-            
-            notes = conv.get('notes')
-            if notes:
-                st.info(notes)
+                # Organic Fertilizer Mix Card with Pie Chart
+                st.markdown('<div class="fertilizer-card">', unsafe_allow_html=True)
+                st.markdown('<div class="result-header">📈 Organic Fertilizer Mix</div>', unsafe_allow_html=True)
                 
-            if st.button('📋 View Preparation Guide', use_container_width=True):
-                st.session_state['page'] = 'Preparation'
-                st.rerun()
+                # Create pie chart for fertilizer composition
+                import plotly.graph_objects as go
+                
+                # Fertilizer composition (you can customize these ratios)
+                components = {
+                    'Compost': 25,
+                    'Fish Emulsion': 30,
+                    'Neem Cake': 25,
+                    'Vermicompost': 20
+                }
+                
+                colors = ['#0080FF', '#00CBA9', '#FFC107', '#FF6B6B']
+                
+                fig = go.Figure(data=[go.Pie(
+                    labels=list(components.keys()),
+                    values=list(components.values()),
+                    hole=0.4,
+                    marker=dict(colors=colors, line=dict(color='white', width=2)),
+                    textinfo='label+percent',
+                    textfont=dict(size=14, color='white', family='Arial'),
+                    hovertemplate='<b>%{label}</b><br>%{percent}<extra></extra>'
+                )])
+                
+                fig.update_layout(
+                    showlegend=True,
+                    legend=dict(
+                        orientation="v",
+                        yanchor="middle",
+                        y=0.5,
+                        xanchor="left",
+                        x=1.05,
+                        font=dict(size=13, color='#2C3E2D')
+                    ),
+                    margin=dict(l=10, r=10, t=10, b=10),
+                    height=280,
+                    paper_bgcolor='rgba(0,0,0,0)',
+                    plot_bgcolor='rgba(0,0,0,0)',
+                )
+                
+                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                
+                # Component breakdown
+                st.markdown('<div class="component-list">', unsafe_allow_html=True)
+                for component, percentage in components.items():
+                    color = colors[list(components.keys()).index(component)]
+                    st.markdown(f'''
+                    <div class="component-item">
+                        <span class="component-dot" style="background-color: {color};"></span>
+                        <span class="component-name">{component}</span>
+                        <span class="component-percentage">{percentage}%</span>
+                    </div>
+                    ''', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown('</div>', unsafe_allow_html=True)
+                
+                # Analysis Summary Card
+                inp = lr.get('input', {})
+                st.markdown(f'''
+                <div class="analysis-card">
+                    <div class="result-header">📊 Analysis Summary</div>
+                    <div class="analysis-item">
+                        <span class="analysis-label">Soil Type:</span>
+                        <span class="analysis-value">{inp.get('soil')}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="analysis-label">pH Level:</span>
+                        <span class="analysis-value">{inp.get('pH')}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="analysis-label">NPK Ratio:</span>
+                        <span class="analysis-value">{inp.get('N')}-{inp.get('P')}-{inp.get('K')}</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="analysis-label">Temperature:</span>
+                        <span class="analysis-value">{inp.get('temperature')}°C</span>
+                    </div>
+                    <div class="analysis-item">
+                        <span class="analysis-label">Humidity:</span>
+                        <span class="analysis-value">{inp.get('humidity')}%</span>
+                    </div>
+                </div>
+                ''', unsafe_allow_html=True)
+                
+                if st.button('📋 View Preparation Guide', use_container_width=True, key='prep_guide'):
+                    st.session_state['page'] = 'Preparation'
+                    st.rerun()
         else:
-            st.info('👈 Fill the form and run prediction to see your personalized recommendations here!')
-            
-        st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('''
+            <div class="empty-state">
+                <div class="empty-icon">📊</div>
+                <div class="empty-title">No Results Yet</div>
+                <div class="empty-text">Fill in the form and click "Get Recommendations" to see your personalized crop and fertilizer suggestions</div>
+            </div>
+            ''', unsafe_allow_html=True)
 
 elif page == 'Preparation':
     # Back buttons

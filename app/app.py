@@ -136,20 +136,40 @@ st.markdown('''
         --shadow-hover: rgba(45, 80, 22, 0.25);
     }
     
-    /* Modern Background */
+    /* Professional Background with Subtle Agricultural Pattern */
     .stApp {
-        background: linear-gradient(135deg, #f5f7f0 0%, #e8f0e3 100%);
+        background: linear-gradient(135deg, rgba(245, 247, 240, 0.95) 0%, rgba(232, 240, 227, 0.95) 100%),
+                    url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80') center/cover fixed;
+        background-blend-mode: overlay;
     }
     
-    /* Main Container - Clean Modern Card */
+    .stApp::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: 
+            linear-gradient(45deg, transparent 48%, rgba(139, 142, 35, 0.02) 50%, transparent 52%),
+            linear-gradient(-45deg, transparent 48%, rgba(107, 142, 35, 0.02) 50%, transparent 52%);
+        background-size: 60px 60px;
+        pointer-events: none;
+        z-index: 0;
+    }
+    
+    /* Main Container - Elevated Glass Effect */
     .main .block-container {
-        background: white;
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
         border-radius: 20px;
         padding: 3rem 2.5rem;
-        box-shadow: 0 8px 32px var(--shadow-soft);
+        box-shadow: 0 12px 40px rgba(45, 80, 22, 0.15);
         max-width: 1200px;
         margin: 2rem auto;
         border-top: 4px solid var(--forest-green);
+        position: relative;
+        z-index: 1;
     }
     
     /* CONSISTENT FONT SIZING - Professional hierarchy */
@@ -339,12 +359,14 @@ st.markdown('''
     
     /* Input Container */
     /* Simple Clean Input Container */
+    /* Professional Glass Effect Cards */
     .input-container {
-        background: white;
-        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(8px);
+        border-radius: 12px;
         padding: 24px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.6);
     }
     
     /* Section Headers */
@@ -359,13 +381,21 @@ st.markdown('''
     }
     
     /* Prediction Result Cards */
+    /* Professional Result Cards with Glass Effect */
     .prediction-result-card, .fertilizer-card, .analysis-card {
-        background: linear-gradient(135deg, #ffffff 0%, #f8fffe 100%);
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(10px);
         border-radius: 16px;
         padding: 24px;
         margin-bottom: 20px;
-        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
-        border: 1px solid rgba(107, 142, 35, 0.15);
+        box-shadow: 0 6px 24px rgba(45, 80, 22, 0.12);
+        border: 1px solid rgba(139, 142, 35, 0.2);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .prediction-result-card:hover, .fertilizer-card:hover, .analysis-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 32px rgba(45, 80, 22, 0.18);
     }
     
     .result-header {

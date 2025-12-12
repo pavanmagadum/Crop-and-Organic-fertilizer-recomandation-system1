@@ -1,0 +1,20 @@
+/* Fix for clickable buttons */
+.stButton>button {
+    z-index: 100 !important;
+    pointer-events: auto !important;
+}
+
+button[kind="primary"] {
+    z-index: 100 !important;
+    pointer-events: auto !important;
+}
+
+.stFormSubmitButton>button {
+    z-index: 100 !important;
+    pointer-events: auto !important;
+}
+
+/* Ensure columns don't block buttons */
+[data-testid="column"] {
+    z-index: 1 !important;
+}

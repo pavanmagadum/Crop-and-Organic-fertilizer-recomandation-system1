@@ -1,0 +1,14 @@
+/* Remove default Streamlit Form styling */
+[data-testid="stForm"] {
+    background-color: transparent !important;
+    background: transparent !important;
+    border: none !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+}
+
+/* Also target the internal vertical block just in case */
+[data-testid="stForm"]>div:first-child {
+    background-color: transparent !important;
+}

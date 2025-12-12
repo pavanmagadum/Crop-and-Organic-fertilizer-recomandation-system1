@@ -1,0 +1,625 @@
+/* ============================================
+   ULTRA-MODERN PROFESSIONAL WEBAPP DESIGN
+   Climate-Aware Farming System
+   ============================================ */
+
+/* Hide Streamlit Branding */
+#MainMenu {
+    visibility: hidden !important;
+}
+
+footer {
+    visibility: hidden !important;
+}
+
+header {
+    visibility: hidden !important;
+}
+
+[data-testid="stToolbar"] {
+    display: none !important;
+}
+
+.viewerBadge_container__1QSob {
+    display: none !important;
+}
+
+/* Import Modern Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ============================================
+   COLOR SYSTEM - Professional Palette
+   ============================================ */
+:root {
+    --primary-green: #10B981;
+    --primary-dark: #059669;
+    --primary-light: #34D399;
+    --accent-blue: #0EA5E9;
+    --accent-purple: #8B5CF6;
+    --accent-orange: #F59E0B;
+    --text-primary: #111827;
+    --text-secondary: #6B7280;
+    --text-tertiary: #9CA3AF;
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F9FAFB;
+    --bg-tertiary: #F3F4F6;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+/* ============================================
+   ANIMATED GRADIENT BACKGROUND
+   ============================================ */
+.stApp {
+    background: linear-gradient(-45deg, #E8F5E9, #F1F8E9, #E3F2FD, #F3E5F5) !important;
+    background-size: 400% 400% !important;
+    animation: gradientShift 15s ease infinite !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+@keyframes gradientShift {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+/* Floating particles effect */
+.stApp::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ============================================
+   MAIN CONTAINER - Glassmorphism
+   ============================================ */
+.main .block-container {
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(20px) saturate(180%) !important;
+    -webkit-backdrop-filter: blur(20px) saturate(180%) !important;
+    border-radius: 24px !important;
+    padding: 2rem 1.5rem !important;
+    box-shadow: var(--shadow-2xl) !important;
+    max-width: 1400px !important;
+    margin: 1rem auto !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    position: relative;
+    z-index: 1;
+}
+
+/* ============================================
+   TYPOGRAPHY - Professional Hierarchy
+   ============================================ */
+* {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+h1 {
+    font-size: 36px !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-blue) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    margin: 0 0 8px 0 !important;
+    padding: 0 !important;
+    letter-spacing: -0.5px;
+    line-height: 1.2 !important;
+}
+
+h2 {
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin: 0 0 12px 0 !important;
+    padding: 0 !important;
+}
+
+h3 {
+    font-size: 22px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin: 0 0 10px 0 !important;
+    padding: 0 !important;
+}
+
+p,
+span,
+div,
+li {
+    font-size: 15px !important;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* ============================================
+   SIDEBAR - Modern Dark Theme
+   ============================================ */
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #1F2937 0%, #111827 100%) !important;
+    padding: 1.5rem 1rem !important;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1) !important;
+    min-width: 280px !important;
+    max-width: 280px !important;
+}
+
+[data-testid="stSidebar"] * {
+    color: white !important;
+}
+
+[data-testid="stSidebar"] h1,
+[data-testid="stSidebar"] h2,
+[data-testid="stSidebar"] h3 {
+    color: white !important;
+    -webkit-text-fill-color: white !important;
+}
+
+/* Sidebar Navigation Title */
+[data-testid="stSidebar"] .stMarkdown h1 {
+    font-size: 24px !important;
+    margin-bottom: 8px !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* ============================================
+   RADIO BUTTONS - Clean Navigation
+   ============================================ */
+[data-testid="stSidebar"] .stRadio {
+    background: transparent !important;
+}
+
+[data-testid="stSidebar"] .stRadio>label {
+    font-size: 16px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    margin-bottom: 12px !important;
+    display: block !important;
+}
+
+[data-testid="stSidebar"] .stRadio>div {
+    gap: 8px !important;
+}
+
+[data-testid="stSidebar"] .stRadio>div>label {
+    background: rgba(16, 185, 129, 0.1) !important;
+    border: 2px solid rgba(16, 185, 129, 0.3) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    margin: 4px 0 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+    display: flex !important;
+    align-items: center !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+}
+
+[data-testid="stSidebar"] .stRadio>div>label:hover {
+    background: rgba(16, 185, 129, 0.2) !important;
+    border-color: var(--primary-green) !important;
+    transform: translateX(4px);
+}
+
+[data-testid="stSidebar"] .stRadio>div>label[data-baseweb="radio"]>div:first-child {
+    background-color: var(--primary-green) !important;
+    border-color: var(--primary-green) !important;
+}
+
+/* ============================================
+   BUTTONS - Professional & Interactive
+   ============================================ */
+/* ============================================
+   BUTTONS - Modern & Minimalist
+   ============================================ */
+/* Default (Secondary) Button - Clean & Modern Outline */
+.stButton>button {
+    background: white !important;
+    border: 1px solid #E5E7EB !important;
+    color: #4B5563 !important;
+    /* var(--text-secondary) */
+    border-radius: 12px !important;
+    padding: 10px 24px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05) !important;
+    min-height: 44px !important;
+    width: 100%;
+}
+
+.stButton>button:hover {
+    border-color: var(--primary-green) !important;
+    color: var(--primary-green) !important;
+    background: #F0FDF4 !important;
+    /* Very light green */
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05) !important;
+}
+
+.stButton>button:active {
+    transform: translateY(0px) !important;
+    background: #DCFCE7 !important;
+}
+
+/* Remove the old ::before shine effect for secondary buttons */
+.stButton>button::before {
+    display: none !important;
+}
+
+/* Submit Button - Eye-catching Gradient */
+.stFormSubmitButton>button,
+button[kind="primary"] {
+    background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%) !important;
+    background-size: 200% 200% !important;
+    animation: gradientMove 3s ease infinite !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 14px !important;
+    padding: 16px 32px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4) !important;
+    letter-spacing: 0.5px;
+    width: 100% !important;
+    text-transform: uppercase;
+    cursor: pointer !important;
+}
+
+@keyframes gradientMove {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.stFormSubmitButton>button:hover,
+button[kind="primary"]:hover {
+    transform: translateY(-3px) scale(1.01) !important;
+    box-shadow: 0 12px 32px rgba(16, 185, 129, 0.6) !important;
+}
+
+/* ============================================
+   INPUT FIELDS - Modern & Clean
+   ============================================ */
+input,
+select,
+textarea,
+.stTextInput input,
+.stNumberInput input,
+.stSelectbox select,
+[data-baseweb="input"] input {
+    font-size: 15px !important;
+    padding: 12px 16px !important;
+    border: 2px solid #E5E7EB !important;
+    border-radius: 12px !important;
+    background: white !important;
+    color: var(--text-primary) !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: var(--shadow-sm) !important;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: #D1D5DB !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--primary-green) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+    background: white !important;
+}
+
+/* Remove inner containers */
+.stTextInput>div,
+.stNumberInput>div,
+.stTextInput>div>div,
+.stNumberInput>div>div {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* Selectbox */
+/* Selectbox - Simplified & Clean */
+[data-baseweb="select"]>div {
+    background-color: white !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 8px !important;
+    min-height: 42px !important;
+    box-shadow: none !important;
+}
+
+/* Aggressively force all internal elements AND PSEUDO-ELEMENTS to be transparent */
+[data-baseweb="select"]>div * {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+[data-baseweb="select"]>div *:before,
+[data-baseweb="select"]>div *:after {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    content: none !important;
+    /* Hides decorative pseudo-elements completely if they are causing artifacts */
+}
+
+/* Ensure text color remains visible */
+[data-baseweb="select"] .st-eb {
+    color: var(--text-primary) !important;
+}
+
+[data-baseweb="select"]:hover>div {
+    border-color: #9CA3AF !important;
+}
+
+[data-baseweb="select"]:focus-within>div {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* Labels */
+/* Labels - High Visibility */
+label,
+.stTextInput label,
+.stSelectbox label {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: #111827 !important;
+    /* Force Black */
+    margin-bottom: 8px !important;
+    letter-spacing: 0.3px;
+    text-transform: capitalize !important;
+    /* Ensure capitalization */
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Placeholders */
+input::placeholder {
+    color: #6B7280 !important;
+    /* Darker gray */
+    opacity: 1 !important;
+    font-weight: 500 !important;
+}
+
+/* ============================================
+/* ============================================
+   AUTH CARD - GREEN THEME (Reference Design)
+   ============================================ */
+/* Target the border container used for Login/Register */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: #15803d !important;
+    /* Solid Green */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2) !important;
+    border-radius: 20px !important;
+    padding: 40px !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+}
+
+/* Hover Effect for Card context - slight lift */
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Center content gap */
+[data-testid="stVerticalBlockBorderWrapper"]>div {
+    gap: 1.2rem !important;
+}
+
+/* INPUTS - Semi-transparent Dark Green Pills */
+[data-testid="stVerticalBlockBorderWrapper"] .stTextInput input,
+[data-testid="stVerticalBlockBorderWrapper"] .stSelectbox div[data-baseweb="select"] {
+    background: rgba(255, 255, 255, 0.15) !important;
+    /* Glassy effect */
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    border-radius: 30px !important;
+    /* Pill shape */
+    color: white !important;
+    padding: 12px 20px !important;
+    font-weight: 500 !important;
+}
+
+/* Placeholder Color */
+[data-testid="stVerticalBlockBorderWrapper"] input::placeholder {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* White Labels inside card */
+[data-testid="stVerticalBlockBorderWrapper"] label,
+[data-testid="stVerticalBlockBorderWrapper"] p,
+[data-testid="stVerticalBlockBorderWrapper"] h2,
+[data-testid="stVerticalBlockBorderWrapper"] div {
+    color: white !important;
+}
+
+/* BUTTONS - White Pill with Green Text */
+[data-testid="stVerticalBlockBorderWrapper"] .stButton>button {
+    background: #FFFFFF !important;
+    color: #047857 !important;
+    /* Dark Green text */
+    border-radius: 30px !important;
+    /* Pill shape */
+    font-weight: 700 !important;
+    border: none !important;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1) !important;
+    padding: 12px 30px !important;
+    transition: all 0.2s ease !important;
+}
+
+/* Reusable Action Button for Links */
+.action-btn {
+    display: inline-block;
+    background: var(--primary-green);
+    color: white !important;
+    padding: 8px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] .stButton>button:hover {
+    transform: scale(1.02) !important;
+    background: #F0FDF4 !important;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] .stTextInput input:focus {
+    border-color: var(--primary-green) !important;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
+}
+
+/* ============================================
+   CONTENT CARDS - Modern White & interactive
+   ============================================ */
+.app-card,
+.prediction-result-card,
+.fertilizer-card {
+    background: white !important;
+    border: 1px solid #E5E7EB !important;
+    border-radius: 16px !important;
+    padding: 24px !important;
+    margin-bottom: 20px !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.3s ease !important;
+    position: relative;
+    overflow: hidden;
+    /* Ensures the gradient strip stays inside */
+}
+
+.analysis-card {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(249, 250, 251, 0.95) 100%);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 0 0 16px 0 !important;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid rgba(16, 185, 129, 0.1);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.app-card::before,
+.prediction-result-card::before,
+.fertilizer-card::before,
+.analysis-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-green), var(--accent-blue), var(--accent-purple));
+    background-size: 200% 200%;
+    animation: gradientMove 3s ease infinite;
+}
+
+.app-card:hover,
+.prediction-result-card:hover,
+.fertilizer-card:hover,
+.analysis-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-2xl);
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .main .block-container {
+        padding: 1.5rem 1rem !important;
+        margin: 0.5rem auto !important;
+    }
+
+    h1 {
+        font-size: 28px !important;
+    }
+
+    h2 {
+        font-size: 22px !important;
+    }
+
+    [data-testid="stSidebar"] {
+        min-width: 240px !important;
+        max-width: 240px !important;
+    }
+}
+
+/* ============================================
+   SCROLLBAR - Custom Styling
+   ============================================ */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F3F4F6;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--primary-green), var(--accent-blue));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--primary-dark);
+}
+
+/* Force standard size for navigation buttons (Back / Home) */
+div[data-testid="column"] button:contains("Back"),
+div[data-testid="column"] button:contains("Home") {
+    width: 100% !important;
+    min-width: 100px !important;
+    max-width: 100% !important;
+    padding: 8px 12px !important;
+    height: 40px !important;
+}

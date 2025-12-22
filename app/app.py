@@ -97,12 +97,10 @@ def render_ai_doctor():
                         *   **DIY:** Mix milk and water (1:10) and spray. The protein interacts with the sun to kill fungus.
                         """
                         st.session_state.messages.append({"role": "assistant", "content": diagnosis})
-                        st.rerun()
 
         with b2:
             if st.button("🗑️ Reset", help="Clear conversation", use_container_width=True):
                 st.session_state.messages = []
-                st.rerun()
     
     # Initialize Chat History
     if "messages" not in st.session_state or not st.session_state.messages:
@@ -189,7 +187,6 @@ def render_ai_doctor():
                 </div>
                 """, unsafe_allow_html=True)
                 st.session_state.messages.append({"role": "assistant", "content": response})
-                st.rerun()
 
 def get_crop_duration_display(crop_name):
     """Get formatted duration display for a crop - Always returns valid duration"""
@@ -387,22 +384,18 @@ with nav_col1:
 with nav_col2:
     if st.button("Home", key="nav_home", use_container_width=True):
         st.session_state['page'] = 'Home'
-        st.rerun()
 
 with nav_col3:
     if st.button("Prediction", key="nav_pred", use_container_width=True):
         st.session_state['page'] = 'Prediction'
-        st.rerun()
 
 with nav_col4:
     if st.button("Preparation", key="nav_prep", use_container_width=True):
         st.session_state['page'] = 'Preparation'
-        st.rerun()
 
 with nav_col5:
     if st.button("Community", key="nav_comm", use_container_width=True):
         st.session_state['page'] = 'Community'
-        st.rerun()
 
 st.markdown('<br>', unsafe_allow_html=True)
 
@@ -414,7 +407,6 @@ page = st.session_state['page']
 # Helper function for navigation
 def navigate_to(target_page):
     st.session_state['page'] = target_page
-    st.rerun()
 
 # Keep OpenWeather API key input tucked under auth (optional)
 OPENWEATHER_KEY = None
@@ -1869,7 +1861,6 @@ elif page == 'Community':
                                 if hasattr(cdb, 'create_question'):
                                     cdb.create_question(q_title, q_desc, user.get('username'))
                                     st.toast('Question sent successfully!', icon='📨')
-                                    st.rerun()
                                 else:
                                     st.error('System error: Database unavailable.')
                             else:

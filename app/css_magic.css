@@ -1,0 +1,1111 @@
+/* ============================================
+   🎨 CSS MAGIC - COMPLETE TRANSFORMATION
+   Makes Streamlit look like Plagiarism Checker
+   NO sidebar • Top nav • Card-based • Modern
+   ============================================ */
+
+/* ============================================
+   HIDE ALL STREAMLIT ELEMENTS
+   ============================================ */
+#MainMenu,
+footer,
+[data-testid="stToolbar"],
+.stDeployButton {
+    visibility: hidden !important;
+    display: none !important;
+}
+
+header[data-testid="stHeader"] {
+    display: none !important;
+}
+
+/* COMPLETELY HIDE SIDEBAR */
+[data-testid="stSidebar"],
+section[data-testid="stSidebar"],
+[data-testid="collapsedControl"] {
+    display: none !important;
+    width: 0 !important;
+    min-width: 0 !important;
+}
+
+/* Expand main content to full width */
+.main {
+    margin-left: 0 !important;
+}
+
+section.main>div {
+    max-width: 100% !important;
+    padding-left: 0 !important;
+}
+
+/* Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+/* ============================================
+   COLOR SYSTEM
+   ============================================ */
+:root {
+    --bg-primary: #0a0e27;
+    --bg-secondary: #151932;
+    --bg-card: #1a1f3a;
+    --bg-input: #1e2139;
+    --text-primary: #ffffff;
+    --text-secondary: #e2e8f0;
+    --text-muted: #94a3b8;
+    --accent-cyan: #00d9ff;
+    --accent-purple: #7c3aed;
+    --accent-pink: #ec4899;
+    --border: #2d3748;
+    --border-light: #374151;
+}
+
+/* ============================================
+   MAIN LAYOUT
+   ============================================ */
+.stApp {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%) !important;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+}
+
+.main .block-container {
+    background: transparent !important;
+    max-width: 1400px !important;
+    padding: 0 2rem 2rem 2rem !important;
+    margin: 0 auto !important;
+}
+
+/* ============================================
+   TYPOGRAPHY
+   ============================================ */
+h1 {
+    font-size: 48px !important;
+    font-weight: 800 !important;
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    margin-bottom: 12px !important;
+    text-align: center !important;
+    line-height: 1.2 !important;
+}
+
+h2 {
+    font-size: 32px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 16px !important;
+}
+
+h3 {
+    font-size: 24px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 12px !important;
+}
+
+h4 {
+    font-size: 20px !important;
+    font-weight: 600 !important;
+    color: var(--text-primary) !important;
+}
+
+p,
+span,
+div,
+li {
+    color: var(--text-secondary) !important;
+    line-height: 1.7 !important;
+}
+
+/* ============================================
+   FEATURE CARDS - PLAGIARISM CHECKER STYLE
+   ============================================ */
+.feature-card-container {
+    margin-bottom: 24px;
+}
+
+.feature-card {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(21, 25, 50, 0.9) 100%) !important;
+    border: 1px solid #2d3748 !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.feature-card::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%) !important;
+    opacity: 0 !important;
+    transition: opacity 0.4s ease !important;
+}
+
+.feature-card:hover::before {
+    opacity: 1 !important;
+}
+
+.feature-card:hover {
+    transform: translateY(-8px) !important;
+    border-color: rgba(0, 217, 255, 0.5) !important;
+    box-shadow: 0 20px 40px rgba(0, 217, 255, 0.2),
+        0 0 60px rgba(124, 58, 237, 0.15) !important;
+}
+
+.feature-card-icon {
+    font-size: 48px !important;
+    margin-bottom: 16px !important;
+    display: block !important;
+    transition: transform 0.4s ease !important;
+}
+
+.feature-card:hover .feature-card-icon {
+    transform: scale(1.1) rotate(5deg) !important;
+}
+
+.feature-card-title {
+    font-size: 22px !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
+    margin-bottom: 16px !important;
+    transition: color 0.3s ease !important;
+}
+
+.feature-card:hover .feature-card-title {
+    background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+.feature-card-content {
+    min-height: 80px !important;
+}
+
+.feature-card-content p {
+    color: #94a3b8 !important;
+    font-size: 15px !important;
+    line-height: 1.6 !important;
+    transition: color 0.3s ease !important;
+}
+
+.feature-card:hover .feature-card-content p {
+    color: #e2e8f0 !important;
+}
+
+/* Feature card buttons */
+.feature-card-container .stButton>button,
+.feature-card-container button[kind="primary"] {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%) !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    width: 100% !important;
+    margin-top: 0 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3) !important;
+}
+
+.feature-card-container .stButton>button:hover,
+.feature-card-container button[kind="primary"]:hover {
+    background: linear-gradient(135deg, #0099cc 0%, #6b2fc9 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(0, 217, 255, 0.4) !important;
+}
+
+/* Make sure buttons are visible and clickable */
+.feature-card-container .stButton {
+    margin-top: 0 !important;
+    padding: 0 !important;
+}
+
+.feature-card-container [data-testid="baseButton-primary"],
+.feature-card-container [data-testid="stButton"] {
+    width: 100% !important;
+}
+
+/* ============================================
+   MODERN INPUTS
+   ============================================ */
+input,
+select,
+textarea,
+.stTextInput input,
+.stNumberInput input,
+[data-baseweb="input"] input {
+    font-size: 16px !important;
+    padding: 16px 20px !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 12px !important;
+    background: var(--bg-input) !important;
+    color: var(--text-primary) !important;
+    transition: all 0.3s ease !important;
+}
+
+input:hover,
+select:hover,
+textarea:hover {
+    border-color: var(--border-light) !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    border-color: var(--accent-cyan) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.15) !important;
+}
+
+.stTextInput>div,
+.stNumberInput>div {
+    background: transparent !important;
+    border: none !important;
+}
+
+/* Selectbox */
+[data-baseweb="select"]>div {
+    background: var(--bg-input) !important;
+    border: 2px solid var(--border) !important;
+    border-radius: 12px !important;
+    min-height: 52px !important;
+}
+
+[data-baseweb="select"]>div * {
+    color: var(--text-primary) !important;
+}
+
+[data-baseweb="select"]:focus-within>div {
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.15) !important;
+}
+
+/* Dropdown */
+[data-baseweb="popover"] {
+    background: var(--bg-input) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 12px !important;
+}
+
+[data-baseweb="popover"] li {
+    color: var(--text-secondary) !important;
+    padding: 14px 20px !important;
+}
+
+[data-baseweb="popover"] li:hover {
+    background: rgba(0, 217, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+}
+
+/* Labels */
+label,
+.stTextInput label,
+.stNumberInput label,
+.stSelectbox label {
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    color: var(--text-primary) !important;
+    margin-bottom: 10px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.5px !important;
+}
+
+input::placeholder {
+    color: var(--text-muted) !important;
+    opacity: 0.7 !important;
+}
+
+/* ============================================
+   BUTTONS - ENHANCED MAGIC CSS
+   ============================================ */
+/* Navigation buttons - styled as header links */
+[data-testid="column"] .stButton>button {
+    background: transparent !important;
+    color: #e2e8f0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+    width: auto !important;
+}
+
+[data-testid="column"] .stButton>button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--accent-cyan) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Primary action buttons with gradient and animation */
+.stFormSubmitButton>button,
+button[kind="primary"],
+button[type="primary"] {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%) !important;
+    background-size: 200% 200% !important;
+    animation: gradientShift 3s ease infinite !important;
+    padding: 14px 28px !important;
+    font-size: 16px !important;
+    font-weight: 700 !important;
+    text-transform: none !important;
+    letter-spacing: 0.5px !important;
+    border: none !important;
+    border-radius: 12px !important;
+    color: #ffffff !important;
+    box-shadow: 0 4px 16px rgba(0, 217, 255, 0.4), 0 0 20px rgba(124, 58, 237, 0.2) !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+.stFormSubmitButton>button::before,
+button[kind="primary"]::before,
+button[type="primary"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    width: 0 !important;
+    height: 0 !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.3) !important;
+    transform: translate(-50%, -50%) !important;
+    transition: width 0.6s, height 0.6s !important;
+}
+
+.stFormSubmitButton>button:hover,
+button[kind="primary"]:hover,
+button[type="primary"]:hover {
+    transform: translateY(-3px) scale(1.02) !important;
+    box-shadow: 0 8px 24px rgba(0, 217, 255, 0.5), 0 0 40px rgba(124, 58, 237, 0.3) !important;
+    animation: gradientShift 1.5s ease infinite, pulse 2s ease infinite !important;
+}
+
+.stFormSubmitButton>button:hover::before,
+button[kind="primary"]:hover::before,
+button[type="primary"]:hover::before {
+    width: 300px !important;
+    height: 300px !important;
+}
+
+.stFormSubmitButton>button:active,
+button[kind="primary"]:active,
+button[type="primary"]:active {
+    transform: translateY(-1px) scale(0.98) !important;
+}
+
+/* Regular buttons with gradient */
+.stButton>button:not([data-testid="column"] .stButton > button) {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3) !important;
+}
+
+.stButton>button:not([data-testid="column"] .stButton > button):hover {
+    background: linear-gradient(135deg, #0099cc 0%, #6b2fc9 100%) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 20px rgba(0, 217, 255, 0.4) !important;
+}
+
+/* Download buttons with green gradient */
+.stDownloadButton>button {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.stDownloadButton>button:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    transform: translateY(-2px) scale(1.02) !important;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Pulse animation for primary buttons */
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 8px 24px rgba(0, 217, 255, 0.5), 0 0 40px rgba(124, 58, 237, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 8px 24px rgba(0, 217, 255, 0.7), 0 0 60px rgba(124, 58, 237, 0.5);
+    }
+}
+
+@keyframes gradientShift {
+
+    0%,
+    100% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+}
+
+/* ============================================
+   COLUMNS - CARD LAYOUT WITH MAGIC
+   ============================================ */
+[data-testid="column"] {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(21, 25, 50, 0.9) 100%) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+[data-testid="column"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    background: linear-gradient(135deg, rgba(0, 217, 255, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%) !important;
+    opacity: 0 !important;
+    transition: opacity 0.4s ease !important;
+}
+
+[data-testid="column"]:hover::before {
+    opacity: 1 !important;
+}
+
+[data-testid="column"]:hover {
+    transform: translateY(-6px) !important;
+    box-shadow: 0 16px 32px rgba(0, 217, 255, 0.15),
+        0 0 40px rgba(124, 58, 237, 0.1) !important;
+    border-color: rgba(0, 217, 255, 0.4) !important;
+}
+
+/* ============================================
+   INPUTS - MODERN DARK STYLING
+   ============================================ */
+input,
+select,
+textarea,
+[data-baseweb="select"],
+[data-baseweb="input"],
+.stTextInput input,
+.stNumberInput input,
+.stSelectbox select {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
+    transition: all 0.3s ease !important;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+[data-baseweb="select"]:focus-within,
+[data-baseweb="input"]:focus-within,
+.stTextInput input:focus,
+.stNumberInput input:focus,
+.stSelectbox select:focus {
+    border-color: var(--accent-cyan) !important;
+    box-shadow: 0 0 0 3px rgba(0, 217, 255, 0.1) !important;
+    outline: none !important;
+}
+
+/* Input labels */
+label,
+.stTextInput label,
+.stNumberInput label,
+.stSelectbox label {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Fix white backgrounds in number inputs */
+[data-testid="stNumberInput"] input {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: #e2e8f0 !important;
+}
+
+/* Fix white backgrounds in select boxes */
+[data-testid="stSelectbox"] div[data-baseweb="select"] {
+    background: rgba(30, 41, 59, 0.8) !important;
+}
+
+[data-testid="stSelectbox"] div[data-baseweb="select"]>div {
+    background: rgba(30, 41, 59, 0.8) !important;
+    color: #e2e8f0 !important;
+}
+
+/* Dropdown menus */
+[role="listbox"],
+[data-baseweb="menu"],
+ul[role="listbox"] {
+    background: rgba(30, 41, 59, 0.95) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 10px !important;
+}
+
+[role="option"],
+li[role="option"] {
+    background: transparent !important;
+    color: #e2e8f0 !important;
+    padding: 10px 16px !important;
+}
+
+[role="option"]:hover,
+li[role="option"]:hover {
+    background: rgba(0, 217, 255, 0.1) !important;
+    color: var(--accent-cyan) !important;
+}
+
+/* Fix any remaining white backgrounds */
+div[style*="background-color: white"],
+div[style*="background-color: rgb(255, 255, 255)"],
+div[style*="background: white"],
+div[style*="background: rgb(255, 255, 255)"] {
+    background: rgba(26, 31, 58, 0.8) !important;
+}
+
+/* Fix dark text on dark backgrounds */
+div[style*="color: rgb(49, 51, 63)"],
+div[style*="color: #31333F"],
+span[style*="color: rgb(49, 51, 63)"],
+span[style*="color: #31333F"],
+p[style*="color: rgb(49, 51, 63)"],
+p[style*="color: #31333F"] {
+    color: #e2e8f0 !important;
+}
+
+/* ============================================
+   EXPANDERS AS CARDS WITH MAGIC
+   ============================================ */
+[data-testid="stExpander"] {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.8) 0%, rgba(21, 25, 50, 0.9) 100%) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    margin-bottom: 24px !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stExpander"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 4px !important;
+    height: 100% !important;
+    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple)) !important;
+    opacity: 0 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+[data-testid="stExpander"]:hover::before {
+    opacity: 1 !important;
+}
+
+[data-testid="stExpander"] summary {
+    color: var(--text-primary) !important;
+    font-weight: 600 !important;
+    padding: 20px !important;
+    font-size: 18px !important;
+    transition: color 0.3s ease !important;
+}
+
+[data-testid="stExpander"]:hover {
+    border-color: rgba(0, 217, 255, 0.4) !important;
+    box-shadow: 0 8px 16px rgba(0, 217, 255, 0.1) !important;
+}
+
+[data-testid="stExpander"]:hover summary {
+    color: var(--accent-cyan) !important;
+}
+
+/* ============================================
+   CONTAINERS AS CARDS WITH MAGIC
+   ============================================ */
+[data-testid="stVerticalBlock"]>div[data-testid="element-container"] {
+    background: transparent !important;
+}
+
+/* Style containers with borders as cards */
+div[data-testid="stVerticalBlock"]>div>div[style*="border"] {
+    background: linear-gradient(135deg, rgba(26, 31, 58, 0.6) 0%, rgba(21, 25, 50, 0.7) 100%) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    transition: all 0.3s ease !important;
+}
+
+div[data-testid="stVerticalBlock"]>div>div[style*="border"]:hover {
+    border-color: rgba(0, 217, 255, 0.3) !important;
+    box-shadow: 0 8px 16px rgba(0, 217, 255, 0.1) !important;
+    transform: translateY(-2px) !important;
+}
+
+/* All bordered containers - EVEN LIGHTER backgrounds with hover */
+/* Target every possible variation */
+[data-testid="stVerticalBlockBorderWrapper"],
+[data-testid="stVerticalBlock"]>[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stVerticalBlockBorderWrapper"],
+.stContainer,
+div[style*="border: 1px"],
+div[style*="border:1px"],
+div[data-baseweb="block-border"],
+section[data-testid="stVerticalBlock"]>div[style*="border"],
+section>div[style*="border: 1px"] {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.3) 0%, rgba(26, 31, 58, 0.4) 100%) !important;
+    border-color: rgba(139, 92, 246, 0.3) !important;
+    border-radius: 16px !important;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover,
+[data-testid="stVerticalBlock"]>[data-testid="stVerticalBlockBorderWrapper"]:hover,
+div[data-testid="stVerticalBlockBorderWrapper"]:hover,
+.stContainer:hover,
+div[style*="border: 1px"]:hover,
+div[style*="border:1px"]:hover,
+div[data-baseweb="block-border"]:hover,
+section[data-testid="stVerticalBlock"]>div[style*="border"]:hover,
+section>div[style*="border: 1px"]:hover {
+    border-color: rgba(139, 92, 246, 0.6) !important;
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.35), 0 0 60px rgba(139, 92, 246, 0.25), 0 0 100px rgba(139, 92, 246, 0.15) !important;
+    transform: translateY(-8px) scale(1.02) !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(26, 31, 58, 0.6) 100%) !important;
+}
+
+/* ============================================
+   FIX INPUT LABELS - NORMAL CASE NOT UPPERCASE
+   ============================================ */
+/* Override Streamlit's default uppercase labels */
+label[data-testid="stWidgetLabel"],
+.stTextInput label,
+.stSelectbox label,
+.stNumberInput label,
+.stTextArea label,
+label {
+    text-transform: none !important;
+    font-weight: 500 !important;
+    color: #94a3b8 !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Input fields styling */
+input[type="text"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    background: rgba(30, 41, 59, 0.5) !important;
+    border: 1px solid rgba(100, 116, 139, 0.3) !important;
+    border-radius: 8px !important;
+    color: #e2e8f0 !important;
+    padding: 10px 12px !important;
+    font-size: 14px !important;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+    border-color: rgba(139, 92, 246, 0.5) !important;
+    box-shadow: 0 0 0 2px rgba(139, 92, 246, 0.1) !important;
+    outline: none !important;
+}
+
+/* Hide "Press Enter to submit" helper text */
+.stTextInput>div>div>div[data-testid="InputInstructions"],
+[data-testid="InputInstructions"],
+.stTextInput small,
+.stNumberInput small,
+.stTextArea small {
+    display: none !important;
+    visibility: hidden !important;
+}
+
+/* ============================================
+   MAGIC HOVER EFFECTS FOR COMMUNITY PAGE CARDS
+   ============================================ */
+/* Login and Registration Cards - Purple Magic Glow */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    position: relative !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    transform: translateY(-8px) !important;
+    border-color: rgba(139, 92, 246, 0.8) !important;
+    box-shadow:
+        0 20px 40px rgba(139, 92, 246, 0.3),
+        0 0 60px rgba(139, 92, 246, 0.2),
+        0 0 100px rgba(139, 92, 246, 0.1) !important;
+}
+
+/* Add subtle glow animation on hover */
+@keyframes magicGlow {
+
+    0%,
+    100% {
+        box-shadow:
+            0 20px 40px rgba(139, 92, 246, 0.3),
+            0 0 60px rgba(139, 92, 246, 0.2);
+    }
+
+    50% {
+        box-shadow:
+            0 20px 40px rgba(139, 92, 246, 0.4),
+            0 0 80px rgba(139, 92, 246, 0.3);
+    }
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    animation: magicGlow 2s ease-in-out infinite !important;
+}
+
+/* Enhance the border glow */
+[data-testid="stVerticalBlockBorderWrapper"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: -2px !important;
+    left: -2px !important;
+    right: -2px !important;
+    bottom: -2px !important;
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.3), rgba(59, 130, 246, 0.3)) !important;
+    border-radius: 18px !important;
+    opacity: 0 !important;
+    transition: opacity 0.4s ease !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]:hover::before {
+    opacity: 1 !important;
+}
+
+
+/* Specific fix for Streamlit containers with border=True */
+div[class*="st-"][style*="border"] {
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+div[class*="st-"][style*="border"]:hover {
+    border-color: rgba(139, 92, 246, 0.6) !important;
+    box-shadow: 0 12px 24px rgba(139, 92, 246, 0.2), 0 0 40px rgba(139, 92, 246, 0.15) !important;
+    transform: translateY(-4px) !important;
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.5) 0%, rgba(26, 31, 58, 0.6) 100%) !important;
+}
+
+/* ============================================
+   ALL BUTTONS - MAGIC STYLING
+   ============================================ */
+/* Regular buttons with gradient */
+.stButton>button:not([data-testid="column"] .stButton > button) {
+    background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 100%) !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(0, 217, 255, 0.3) !important;
+}
+
+.stButton>button:not([data-testid="column"] .stButton > button):hover {
+    background: linear-gradient(135deg, #0099cc 0%, #6b2fc9 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(0, 217, 255, 0.4) !important;
+}
+
+/* Download buttons */
+.stDownloadButton>button {
+    background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+    color: var(--text-primary) !important;
+    border: none !important;
+    border-radius: 10px !important;
+    padding: 12px 24px !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3) !important;
+}
+
+.stDownloadButton>button:hover {
+    background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4) !important;
+}
+
+/* ============================================
+   FORCE DARK BACKGROUNDS
+   ============================================ */
+div[style*="background: white"],
+div[style*="background:white"],
+div[style*="background-color: white"],
+div[style*="background:#FFFFFF"],
+div[style*="background: #F9FAFB"],
+div[style*="background:#F9FAFB"] {
+    background: var(--bg-card) !important;
+}
+
+div[style*="color:#111827"],
+div[style*="color:#6B7280"],
+div[style*="color:#92400E"],
+div[style*="color:#78350F"],
+p[style*="color:#6B7280"] {
+    color: var(--text-primary) !important;
+}
+
+div[style*="border:1px solid #E5E7EB"],
+div[style*="border: 1px solid #E5E7EB"] {
+    border: 1px solid var(--border) !important;
+}
+
+/* ============================================
+   TABS
+   ============================================ */
+[data-baseweb="tab-list"] {
+    gap: 12px !important;
+    background: var(--bg-primary) !important;
+    padding: 8px !important;
+    border-radius: 12px !important;
+}
+
+[data-baseweb="tab"] {
+    background: transparent !important;
+    color: var(--text-muted) !important;
+    border-radius: 10px !important;
+    padding: 14px 28px !important;
+    font-weight: 600 !important;
+}
+
+[data-baseweb="tab"]:hover {
+    background: rgba(0, 217, 255, 0.1) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-baseweb="tab"][aria-selected="true"] {
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)) !important;
+    color: var(--text-primary) !important;
+}
+
+/* ============================================
+   METRICS
+   ============================================ */
+[data-testid="stMetric"] {
+    background: var(--bg-card) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 14px !important;
+    padding: 24px !important;
+}
+
+[data-testid="stMetric"] [data-testid="stMetricValue"] {
+    color: var(--accent-cyan) !important;
+    font-size: 40px !important;
+    font-weight: 800 !important;
+}
+
+/* ============================================
+   ALERTS
+   ============================================ */
+.stSuccess {
+    background: rgba(0, 217, 255, 0.15) !important;
+    border-left: 4px solid var(--accent-cyan) !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    padding: 18px !important;
+}
+
+.stError {
+    background: rgba(239, 68, 68, 0.15) !important;
+    border-left: 4px solid #ef4444 !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    padding: 18px !important;
+}
+
+.stWarning {
+    background: rgba(245, 158, 11, 0.15) !important;
+    border-left: 4px solid #f59e0b !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    padding: 18px !important;
+}
+
+.stInfo {
+    background: rgba(124, 58, 237, 0.15) !important;
+    border-left: 4px solid var(--accent-purple) !important;
+    color: var(--text-primary) !important;
+    border-radius: 10px !important;
+    padding: 18px !important;
+}
+
+/* ============================================
+   DATAFRAMES
+   ============================================ */
+[data-testid="stDataFrame"] {
+    background: var(--bg-card) !important;
+    border-radius: 12px !important;
+    border: 1px solid var(--border) !important;
+}
+
+[data-testid="stDataFrame"] table {
+    color: var(--text-secondary) !important;
+}
+
+[data-testid="stDataFrame"] th {
+    background: rgba(0, 217, 255, 0.15) !important;
+    color: var(--text-primary) !important;
+    font-weight: 700 !important;
+}
+
+/* ============================================
+   AUTH CARDS
+   ============================================ */
+[data-testid="stVerticalBlockBorderWrapper"] {
+    background: var(--bg-card) !important;
+    border: 2px solid rgba(0, 217, 255, 0.3) !important;
+    border-radius: 20px !important;
+    padding: 48px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+[data-testid="stVerticalBlockBorderWrapper"]::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 4px !important;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink), var(--accent-cyan)) !important;
+    background-size: 200% 100% !important;
+    animation: borderFlow 3s linear infinite !important;
+}
+
+@keyframes borderFlow {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+[data-testid="stVerticalBlockBorderWrapper"] label,
+[data-testid="stVerticalBlockBorderWrapper"] p,
+[data-testid="stVerticalBlockBorderWrapper"] h2,
+[data-testid="stVerticalBlockBorderWrapper"] div {
+    color: var(--text-primary) !important;
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--accent-cyan), var(--accent-purple));
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--accent-purple), var(--accent-pink));
+}
+
+/* ============================================
+   LOADING SPINNER
+   ============================================ */
+[data-testid="stSpinner"]>div {
+    border-color: rgba(0, 217, 255, 0.2) !important;
+    border-top-color: var(--accent-cyan) !important;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+@media (max-width: 768px) {
+    .main .block-container {
+        padding: 0 1rem 2rem 1rem !important;
+    }
+
+    h1 {
+        font-size: 36px !important;
+    }
+
+    h2 {
+        font-size: 28px !important;
+    }
+
+    [data-testid="column"] {
+        margin-bottom: 24px !important;
+    }
+}
+
+/* ============================================
+   SMOOTH TRANSITIONS
+   ============================================ */
+* {
+    transition: background-color 0.2s ease, border-color 0.2s ease !important;
+}
+
+.stApp,
+h1 {
+    transition: none !important;
+}
+
+/* HOME PAGE FEATURE CARDS */
+.feature-card { background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%) !important; border: 2px solid rgba(139, 92, 246, 0.3) !important; border-radius: 20px !important; padding: 32px !important; }
+.feature-card:hover { transform: translateY(-8px) scale(1.02) !important; border-color: rgba(139, 92, 246, 0.8) !important; box-shadow: 0 20px 40px rgba(139, 92, 246, 0.35), 0 0 60px rgba(139, 92, 246, 0.25) !important; }
+.feature-card-icon { font-size: 48px !important; text-align: center !important; margin-bottom: 20px !important; }
+.feature-card-title { color: #e2e8f0 !important; font-size: 24px !important; font-weight: 700 !important; text-align: center !important; margin-bottom: 16px !important; }
+.feature-card-content p { color: #94a3b8 !important; font-size: 15px !important; line-height: 1.7 !important; }
+
+
+/* GLOBAL FIX - ALL WHITE BOXES ON ALL PAGES */
+button, .stButton button, [data-testid='stButton'] button { background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%) !important; color: white !important; border: none !important; }
+button:hover { background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%) !important; transform: translateY(-2px) !important; }
+[data-testid='stExpander'] { background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; }
+.stExpander { background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%) !important; }
+div[data-baseweb='popover'] { background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(26, 31, 58, 0.95) 100%) !important; border: 1px solid rgba(139, 92, 246, 0.3) !important; }
+.stPopover { background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(26, 31, 58, 0.95) 100%) !important; }

@@ -25,6 +25,12 @@ import streamlit.components.v1 as components
 from src.weather_api import fetch_weather
 from community import db as cdb
 from src.pdf_utils import generate_preparation_pdf
+from dotenv import load_dotenv
+
+# Load environment variables for admin authentication
+load_dotenv()
+ADMIN_PASSWORD = os.getenv('ADMIN_PASSWORD', 'Admin@2025')  # Default password if .env not found
+
 
 # Comprehensive crop duration data (in days) - Complete coverage for all crops
 CROP_DURATION = {
@@ -241,15 +247,15 @@ def set_query_params_safe(**kwargs):
         st.session_state[k] = v
 
 # ULTRA-PROFESSIONAL RESPONSIVE WEBAPP - Load External CSS
-# Load custom CSS from file to bypass caching
+# Load CSS MAGIC (Complete UI Transformation)
 import os
-css_file_path = os.path.join(os.path.dirname(__file__), 'custom_style.css')
+css_file_path = os.path.join(os.path.dirname(__file__), 'css_magic.css')
 if os.path.exists(css_file_path):
     with open(css_file_path, 'r', encoding='utf-8') as f:
         custom_css = f.read()
     st.markdown(f'<style>{custom_css}</style>', unsafe_allow_html=True)
 else:
-    st.warning("Custom CSS file not found!")
+    st.warning("Dark Theme CSS file not found!")
 
 # Load button fix CSS
 button_fix_path = os.path.join(os.path.dirname(__file__), 'button_fix.css')
@@ -265,827 +271,150 @@ if os.path.exists(form_fix_path):
         form_css = f.read()
     st.markdown(f'<style>{form_css}</style>', unsafe_allow_html=True)
 
-# Also add inline critical CSS for immediate effect
-st.markdown('''
-<style>
-    /* CRITICAL STYLES - FORCE LOAD */
-    .stApp {
-        background: linear-gradient(-45deg, #E8F5E9, #F1F8E9, #E3F2FD, #F3E5F5) !important;
-        background-size: 400% 400% !important;
-        animation: gradientShift 15s ease infinite !important;
-    }
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    .main .block-container {
-        background: rgba(255, 255, 255, 0.75) !important;
-        backdrop-filter: blur(20px) !important;
-        border-radius: 24px !important;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
-    }
+# Inline CSS commented out - Dark theme CSS file is now loaded instead
+# st.markdown('''
+# <style>
+#     /* CRITICAL STYLES - FORCE LOAD */
+#     .stApp {
+#         background: linear-gradient(-45deg, #E8F5E9, #F1F8E9, #E3F2FD, #F3E5F5) !important;
+#         background-size: 400% 400% !important;
+#         animation: gradientShift 15s ease infinite !important;
+#     }
+#     @keyframes gradientShift {
+#         0% { background-position: 0% 50%; }
+#         50% { background-position: 100% 50%; }
+#         100% { background-position: 0% 50%; }
+#     }
+#     .main .block-container {
+#         background: rgba(255, 255, 255, 0.75) !important;
+#         backdrop-filter: blur(20px) !important;
+#         border-radius: 24px !important;
+#         box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+#     }
+# 
+#     /* HIDE 'Press Enter to apply' tooltip */
+#     [data-testid="InputInstructions"] {
+#         display: none !important;
+#     }
+#     
+#     /* Hide placeholder when typing/focused (Cleaner look) */
+#     input:focus::placeholder {
+#         color: transparent !important;
+#     }
+#     
+#     /* CRITICAL OVERRIDE FOR LOGIN CARD */
+#     /* Target only the container with our marker */
+#     div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) {
+#         background-color: #15803d !important;
+#         background: #15803d !important;
+#         border-color: rgba(255,255,255,0.2) !important;
+#         box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
+#     }
+#     
+#     /* Ensure the inner content div is transparent */
+#     div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) > div {
+#         background-color: transparent !important;
+#         background: transparent !important;
+#     }
+# 
+#     div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) * {
+#         color: white !important;
+#     }
+#     
+#     h1 {
+#         background: linear-gradient(135deg, #10B981 0%, #0EA5E9 100%) !important;
+#         -webkit-background-clip: text !important;
+#         -webkit-text-fill-color: transparent !important;
+#         font-size: 40px !important;
+#         font-weight: 800 !important;
+#     }
+#     .stButton > button {
+#         background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
+#         color: white !important;
+#         border-radius: 10px !important;
+#         padding: 12px 24px !important;
+#     }
+#     .stFormSubmitButton > button {
+#         background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%) !important;
+#         background-size: 200% 200% !important;
+#         animation: gradientMove 3s ease infinite !important;
+#         color: white !important;
+#         border-radius: 12px !important;
+#         padding: 16px 32px !important;
+#         font-size: 16px !important;
+#         font-weight: 700 !important;
+#         text-transform: uppercase !important;
+#     }
+#     @keyframes gradientMove {
+#         0% { background-position: 0% 50%; }
+#         50% { background-position: 100% 50%; }
+#         100% { background-position: 0% 50%; }
+#     }
+#     #MainMenu {visibility: hidden !important;}
+#     footer {visibility: hidden !important;}
+#     header {visibility: hidden !important;}
+# </style>
+# ''', unsafe_allow_html=True)
 
-    /* HIDE 'Press Enter to apply' tooltip */
-    [data-testid="InputInstructions"] {
-        display: none !important;
-    }
-    
-    /* Hide placeholder when typing/focused (Cleaner look) */
-    input:focus::placeholder {
-        color: transparent !important;
-    }
-    
-    /* CRITICAL OVERRIDE FOR LOGIN CARD */
-    /* Target only the container with our marker */
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) {
-        background-color: #15803d !important;
-        background: #15803d !important;
-        border-color: rgba(255,255,255,0.2) !important;
-        box-shadow: 0 25px 50px rgba(0,0,0,0.3) !important;
-    }
-    
-    /* Ensure the inner content div is transparent */
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) > div {
-        background-color: transparent !important;
-        background: transparent !important;
-    }
 
-    div[data-testid="stVerticalBlockBorderWrapper"]:has(#login-card-target) * {
-        color: white !important;
-    }
-    
-    h1 {
-        background: linear-gradient(135deg, #10B981 0%, #0EA5E9 100%) !important;
-        -webkit-background-clip: text !important;
-        -webkit-text-fill-color: transparent !important;
-        font-size: 40px !important;
-        font-weight: 800 !important;
-    }
-    .stButton > button {
-        background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
-        color: white !important;
-        border-radius: 10px !important;
-        padding: 12px 24px !important;
-    }
-    .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%) !important;
-        background-size: 200% 200% !important;
-        animation: gradientMove 3s ease infinite !important;
-        color: white !important;
-        border-radius: 12px !important;
-        padding: 16px 32px !important;
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        text-transform: uppercase !important;
-    }
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    #MainMenu {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    header {visibility: hidden !important;}
-</style>
-''', unsafe_allow_html=True)
+# Second inline CSS block commented out - Dark theme CSS file handles all styling
+# st.markdown('''
+# <style>
+#     /* CACHE BUSTER: 2025-12-12-13:31 - FORCE RELOAD */
+#     /* All CSS moved to dark_theme.css file */
+# </style>
+# ''', unsafe_allow_html=True)
 
+# TOP NAVIGATION BAR with WORKING LINKS
+st.markdown("""
+<div style="background: rgba(21, 25, 50, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid #2d3748; padding: 1rem 2rem; position: sticky; top: 0; z-index: 1000; display: flex; justify-content: space-between; align-items: center; margin: -2rem -2rem 2rem -2rem;">
+    <div style="font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 12px;">
+        🌾 Climate-Aware Farming
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-st.markdown('''
-<style>
-    /* CACHE BUSTER: 2025-12-12-13:31 - FORCE RELOAD */
-    /* ============================================
-       CORE SYSTEM - Hide Streamlit Branding
-       ============================================ */
-    #MainMenu {visibility: hidden !important;}
-    footer {visibility: hidden !important;}
-    header {visibility: hidden !important;}
-    [data-testid="stToolbar"] {display: none !important;}
-    .viewerBadge_container__1QSob {display: none !important;}
-    
-    /* ============================================
-       PREMIUM COLOR SYSTEM
-       ============================================ */
-    :root {
-        --primary-green: #10B981;
-        --primary-dark: #059669;
-        --primary-light: #34D399;
-        --accent-blue: #0EA5E9;
-        --accent-purple: #8B5CF6;
-        --accent-orange: #F59E0B;
-        --bg-primary: #FFFFFF;
-        --bg-secondary: #F9FAFB;
-        --text-primary: #111827;
-        --text-secondary: #6B7280;
-        --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-        --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-        --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-    
-    /* ============================================
-       ANIMATED GRADIENT BACKGROUND
-       ============================================ */
-    .stApp {
-        background: linear-gradient(-45deg, #E8F5E9, #F1F8E9, #E3F2FD, #F3E5F5);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-        padding: 0 !important;
-        margin: 0 !important;
-    }
-    
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    .stApp::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-image: 
-            radial-gradient(circle at 20% 30%, rgba(16, 185, 129, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(14, 165, 233, 0.05) 0%, transparent 50%),
-            radial-gradient(circle at 40% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 50%);
-        pointer-events: none;
-        z-index: 0;
-        animation: particleFloat 20s ease-in-out infinite;
-    }
-    
-    @keyframes particleFloat {
-        0%, 100% { opacity: 0.3; transform: translateY(0px); }
-        50% { opacity: 0.6; transform: translateY(-20px); }
-    }
-    
-    /* ============================================
-       PERFECT SPACING - NO GAPS
-       ============================================ */
-    .main .block-container {
-        background: rgba(255, 255, 255, 0.75);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-radius: 24px;
-        padding: 2.5rem 2rem !important;
-        box-shadow: var(--shadow-2xl);
-        max-width: 1400px;
-        margin: 1.5rem auto !important;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        position: relative;
-        z-index: 1;
-    }
-    
-    /* Remove all unwanted gaps */
-    .element-container {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    .stMarkdown {
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Perfect column spacing */
-    [data-testid="column"] {
-        padding: 0 8px !important;
-    }
-    
-    [data-testid="column"]:first-child {
-        padding-left: 0 !important;
-    }
-    
-    [data-testid="column"]:last-child {
-        padding-right: 0 !important;
-    }
-    
-    /* Remove top padding from columns */
-    [data-testid="column"] > div {
-        padding-top: 0 !important;
-        margin-top: 0 !important;
-    }
-    
-    /* ============================================
-       TYPOGRAPHY - Professional
-       ============================================ */
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-    
-    /* Protect Icons */
-    .material-icons, [data-testid="stExpander"] svg, [data-testid="stExpander"] i {
-        font-family: 'Material Icons' !important;
-    }
+# Initialize session state for page navigation
+if 'page' not in st.session_state:
+    st.session_state['page'] = 'Home'
 
-    /* SAFE MODE: Apply Font ONLY to Content Text (Headings/Paragraphs) to avoid breaking Icons */
-    h1, h2, h3, h4, h5, h6, p, .stMarkdown {
-        font-family: 'Inter', sans-serif;
-    }
-    
-    h1 {
-        font-size: 40px !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, var(--primary-green) 0%, var(--accent-blue) 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        margin: 0 0 6px 0 !important;
-        padding: 0 !important;
-        letter-spacing: -1px;
-        line-height: 1.2 !important;
-    }
-    
-    h2 {
-        font-size: 30px !important;
-        font-weight: 700 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 12px 0 !important;
-        padding: 0 !important;
-        letter-spacing: -0.5px;
-    }
-    
-    h3 {
-        font-size: 22px !important;
-        font-weight: 600 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 10px 0 !important;
-        padding: 0 !important;
-    }
-    
-    h4 {
-        font-size: 18px !important;
-        font-weight: 600 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 8px 0 !important;
-        padding: 0 !important;
-    }
-    
-    p, span, div, li, label {
-        font-size: 15px !important;
-        color: var(--text-secondary);
-        line-height: 1.6;
-        margin: 0 !important;
-    }
-    
-    /* ============================================
-       MODERN INPUT FIELDS
-       ============================================ */
-    input, select, textarea,
-    .stTextInput input,
-    .stNumberInput input,
-    .stSelectbox select,
-    [data-baseweb="input"] input {
-        font-size: 14px !important;
-        padding: 11px 14px !important;
-        border: 2px solid #E5E7EB !important;
-        border-radius: 10px !important;
-        background: white !important;
-        color: var(--text-primary) !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: var(--shadow-sm) !important;
-        margin: 0 !important;
-    }
-    
-    input:hover, select:hover, textarea:hover {
-        border-color: #D1D5DB !important;
-        box-shadow: var(--shadow-md) !important;
-    }
-    
-    input:focus, select:focus, textarea:focus {
-        border-color: var(--primary-green) !important;
-        outline: none !important;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
-    }
-    
-    .stTextInput > div,
-    .stNumberInput > div,
-    .stTextInput > div > div,
-    .stNumberInput > div > div {
-        background: transparent !important;
-        border: none !important;
-        box-shadow: none !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    [data-baseweb="select"] > div {
-        background: white !important;
-        border: 2px solid #E5E7EB !important;
-        border-radius: 10px !important;
-        min-height: 44px !important;
-        transition: all 0.3s ease !important;
-        box-shadow: var(--shadow-sm) !important;
-        margin: 0 !important;
-    }
-    
-    [data-baseweb="select"]:hover > div {
-        border-color: #D1D5DB !important;
-        box-shadow: var(--shadow-md) !important;
-    }
-    
-    [data-baseweb="select"]:focus-within > div {
-        border-color: var(--primary-green) !important;
-        box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1) !important;
-    }
-    
-    [data-baseweb="popover"] ul {
-        background: white !important;
-        border: 1px solid #E5E7EB !important;
-        border-radius: 10px !important;
-        box-shadow: var(--shadow-xl) !important;
-        padding: 6px !important;
-    }
-    
-    [data-baseweb="popover"] li {
-        font-size: 14px !important;
-        padding: 9px 14px !important;
-        color: var(--text-primary) !important;
-        border-radius: 6px !important;
-        margin: 2px 0 !important;
-        transition: all 0.2s ease !important;
-    }
-    
-    [data-baseweb="popover"] li:hover {
-        background: #F3F4F6 !important;
-        color: var(--primary-green) !important;
-    }
-    
-    [data-testid="stCaptionContainer"],
-    .stTextInput > label > div:last-child,
-    .stNumberInput > label > div:last-child {
-        display: none !important;
-    }
-    
-    label {
-        font-size: 12px !important;
-        font-weight: 600 !important;
-        color: var(--text-primary) !important;
-        margin-bottom: 6px !important;
-        letter-spacing: 0.5px;
-        text-transform: uppercase;
-        display: block !important;
-    }
-    
-    /* ============================================
-       PREMIUM BUTTONS
-       ============================================ */
-    .stButton > button {
-        background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-dark) 100%) !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 10px !important;
-        padding: 12px 24px !important;
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35) !important;
-        letter-spacing: 0.3px;
-        min-height: 44px !important;
-        width: 100%;
-        position: relative;
-        overflow: hidden;
-        margin: 0 !important;
-    }
-    
-    .stButton > button::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: -100%;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-        transition: left 0.5s;
-    }
-    
-    .stButton > button:hover::before {
-        left: 100%;
-    }
-    
-    .stButton > button:hover {
-        transform: translateY(-2px) !important;
-        box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45) !important;
-    }
-    
-    .stFormSubmitButton > button {
-        background: linear-gradient(135deg, #10B981 0%, #0EA5E9 50%, #8B5CF6 100%) !important;
-        background-size: 200% 200% !important;
-        animation: gradientMove 3s ease infinite !important;
-        color: white !important;
-        border: none !important;
-        border-radius: 12px !important;
-        padding: 16px 32px !important;
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        transition: all 0.3s ease !important;
-        box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4) !important;
-        letter-spacing: 0.5px;
-        width: 100% !important;
-        text-transform: uppercase;
-        margin: 0 !important;
-    }
-    
-    @keyframes gradientMove {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
-    }
-    
-    .stFormSubmitButton > button:hover {
-        transform: translateY(-3px) scale(1.01) !important;
-        box-shadow: 0 10px 28px rgba(16, 185, 129, 0.5) !important;
-    }
-    
-    /* ============================================
-       PERFECT CARD LAYOUTS - NO GAPS
-       ============================================ */
-    .input-container {
-        background: rgba(255, 255, 255, 0.92);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-        padding: 24px;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid rgba(255, 255, 255, 0.5);
-        transition: all 0.3s ease;
-        margin: 0 !important;
-    }
-    
-    .input-container:hover {
-        box-shadow: var(--shadow-xl);
-        transform: translateY(-2px);
-    }
-    
-    .section-header {
-        font-size: 16px !important;
-        font-weight: 700 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 16px 0 !important;
-        padding: 0 0 10px 0 !important;
-        border-bottom: 3px solid transparent;
-        background: linear-gradient(white, white), 
-                    linear-gradient(90deg, var(--primary-green), var(--accent-blue));
-        background-clip: padding-box, border-box;
-        background-origin: padding-box, border-box;
-        border-image: linear-gradient(90deg, var(--primary-green), var(--accent-blue)) 1;
-    }
-    
-    .prediction-result-card, .fertilizer-card, .analysis-card {
-        background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(249,250,251,0.95) 100%);
-        backdrop-filter: blur(10px);
-        border-radius: 16px;
-        padding: 24px;
-        margin: 0 0 16px 0 !important;
-        box-shadow: var(--shadow-lg);
-        border: 1px solid rgba(16, 185, 129, 0.1);
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .prediction-result-card::before,
-    .fertilizer-card::before,
-    .analysis-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 3px;
-        background: linear-gradient(90deg, var(--primary-green), var(--accent-blue), var(--accent-purple));
-        background-size: 200% 200%;
-        animation: gradientMove 3s ease infinite;
-    }
-    
-    .prediction-result-card:hover,
-    .fertilizer-card:hover,
-    .analysis-card:hover {
-        transform: translateY(-3px);
-        box-shadow: var(--shadow-xl);
-    }
-    
-    .result-header {
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 16px 0 !important;
-        padding: 0 0 10px 0 !important;
-        border-bottom: 2px solid #E5E7EB;
-    }
-    
-    .crop-name {
-        font-size: 32px !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        text-align: center;
-        padding: 12px 0 !important;
-        margin: 0 !important;
-        text-transform: capitalize;
-        letter-spacing: -0.5px;
-    }
-    
-    .crop-duration {
-        font-size: 14px !important;
-        color: var(--text-secondary) !important;
-        text-align: center;
-        padding: 10px 16px !important;
-        margin: 12px 0 0 0 !important;
-        background: linear-gradient(135deg, #F0FDF4, #DBEAFE);
-        border-radius: 10px;
-        border: 1px solid #D1FAE5;
-    }
-    
-    .analysis-item {
-        display: flex;
-        justify-content: space-between;
-        padding: 12px 0 !important;
-        margin: 0 !important;
-        border-bottom: 1px solid #F3F4F6;
-        transition: all 0.2s ease;
-    }
-    
-    .analysis-item:hover {
-        background: #F9FAFB;
-        padding: 12px 8px !important;
-        border-radius: 6px;
-    }
-    
-    .analysis-item:last-child {
-        border-bottom: none;
-    }
-    
-    .analysis-label {
-        font-size: 14px !important;
-        font-weight: 600 !important;
-        color: var(--text-secondary) !important;
-    }
-    
-    .analysis-value {
-        font-size: 14px !important;
-        font-weight: 700 !important;
-        color: var(--primary-green) !important;
-    }
-    
-    .empty-state {
-        text-align: center;
-        padding: 60px 30px !important;
-        margin: 0 !important;
-        background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%);
-        border-radius: 16px;
-        border: 2px dashed #D1D5DB;
-    }
-    
-    .empty-icon {
-        font-size: 64px;
-        margin: 0 0 16px 0 !important;
-        animation: bounce 2s ease-in-out infinite;
-    }
-    
-    @keyframes bounce {
-        0%, 100% { transform: translateY(0); }
-        50% { transform: translateY(-8px); }
-    }
-    
-    .empty-title {
-        font-size: 22px !important;
-        font-weight: 700 !important;
-        color: var(--text-primary) !important;
-        margin: 0 0 10px 0 !important;
-    }
-    
-    .empty-text {
-        font-size: 15px !important;
-        color: var(--text-secondary) !important;
-        line-height: 1.6;
-        max-width: 350px;
-        margin: 0 auto !important;
-    }
-    
-    /* ============================================
-       SIDEBAR
-       ============================================ */
-    [data-testid="stSidebar"] {
-        background: linear-gradient(180deg, #1F2937 0%, #111827 100%);
-        padding: 1.5rem 1rem;
-        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.1);
-    }
-    
-    [data-testid="collapsedControl"] {
-        background: var(--primary-green) !important;
-        color: white !important;
-        border-radius: 0 10px 10px 0 !important;
-        padding: 10px !important;
-        transition: all 0.3s ease !important;
-    }
-    
-    [data-testid="collapsedControl"]:hover {
-        background: var(--primary-dark) !important;
-        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4) !important;
-    }
-    
-    [data-testid="stSidebar"] * {
-        color: white !important;
-    }
-    
-    [data-testid="stSidebar"] .stRadio > label {
-        font-size: 18px !important;
-        font-weight: 700 !important;
-        margin-bottom: 14px !important;
-        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-    }
-    
-    [data-testid="stSidebar"] label {
-        font-size: 15px !important;
-        padding: 12px 14px !important;
-        border-radius: 10px !important;
-        transition: all 0.3s ease !important;
-        cursor: pointer !important;
-        text-transform: none !important;
-    }
-    
-    [data-testid="stSidebar"] label:hover {
-        background: rgba(16, 185, 129, 0.2) !important;
-        transform: translateX(5px);
-    }
-    
-    [data-testid="stSidebar"] [data-baseweb="radio"] > div:first-child {
-        background-color: var(--primary-green) !important;
-        border-color: var(--primary-green) !important;
-    }
-    
-    /* ============================================
-       HOME PAGE CARDS
-       ============================================ */
-    .app-card {
-        background: white;
-        border-radius: 16px;
-        padding: 28px;
-        margin: 0 0 16px 0 !important;
-        box-shadow: var(--shadow-md);
-        border: 1px solid #F3F4F6;
-        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .app-card::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 3px;
-        height: 100%;
-        background: linear-gradient(180deg, var(--primary-green), var(--accent-blue));
-        transform: scaleY(0);
-        transition: transform 0.3s ease;
-    }
-    
-    .app-card:hover::before {
-        transform: scaleY(1);
-    }
-    
-    .app-card:hover {
-        transform: translateY(-6px);
-        box-shadow: var(--shadow-xl);
-        border-color: var(--primary-green);
-    }
-    
-    /* ============================================
-       UTILITIES
-       ============================================ */
-    hr {
-        border: none;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, #E5E7EB, transparent);
-        margin: 32px 0 !important;
-    }
-    
-    .stAlert {
-        border-radius: 12px !important;
-        border-left: 4px solid var(--primary-green) !important;
-        background: #F0FDF4 !important;
-        padding: 14px 18px !important;
-        box-shadow: var(--shadow-md) !important;
-        margin: 12px 0 !important;
-    }
-    
-    .stToast {
-        background: white !important;
-        border-left: 4px solid var(--primary-green) !important;
-        border-radius: 12px !important;
-        box-shadow: var(--shadow-xl) !important;
-    }
-    
-    [data-testid="stMetricValue"] {
-        font-size: 32px !important;
-        font-weight: 800 !important;
-        background: linear-gradient(135deg, var(--primary-green), var(--accent-blue));
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-    }
-    
-    [data-testid="stMetricLabel"] {
-        font-size: 13px !important;
-        color: var(--text-secondary) !important;
-        font-weight: 600 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-    }
-    
-    ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-        background: #F3F4F6;
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-        background: linear-gradient(180deg, var(--primary-green), var(--accent-blue));
-        border-radius: 10px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-        background: var(--primary-dark);
-    }
-    
-    /* ============================================
-       RESPONSIVE DESIGN
-       ============================================ */
-    @media (max-width: 768px) {
-        .main .block-container {
-            padding: 1.5rem 1rem !important;
-            margin: 1rem auto !important;
-        }
-        
-        h1 {
-            font-size: 32px !important;
-        }
-        
-        h2 {
-            font-size: 24px !important;
-        }
-        
-        .app-card {
-            padding: 20px !important;
-        }
-        
-        .prediction-result-card, .fertilizer-card, .analysis-card {
-            padding: 18px !important;
-        }
-    }
-</style>
-''', unsafe_allow_html=True)
+# WORKING NAVIGATION - Using columns for clickable buttons styled as links
+nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([3, 1, 1, 1, 1])
 
-# Initialize session state if not already done
-st.title('🌾 Climate‑Aware Crop & Organic Fertilizer Recommendation System', anchor=False)
-st.markdown('<p style="font-size:18px; color: var(--text-medium); margin-bottom:24px;">Sustainable agriculture powered by climate-aware technology</p>', unsafe_allow_html=True)
+with nav_col1:
+    st.markdown("", unsafe_allow_html=True)  # Spacer
 
-# Sidebar with title and navigation
-with st.sidebar:
-    st.markdown("# 🌾 Navigation")
-    st.markdown("---")
+with nav_col2:
+    if st.button("Home", key="nav_home", use_container_width=True):
+        st.session_state['page'] = 'Home'
+        st.rerun()
 
-# Check if page is set via session_state (from button clicks), otherwise use sidebar
-if 'page' in st.session_state:
-    default_page = st.session_state['page']
-    try:
-        default_index = ['Home', 'Prediction', 'Preparation', 'Community'].index(default_page)
-    except ValueError:
-        default_index = 0
-else:
-    default_index = 0
+with nav_col3:
+    if st.button("Prediction", key="nav_pred", use_container_width=True):
+        st.session_state['page'] = 'Prediction'
+        st.rerun()
 
-# Load sidebar navigation CSS
-sidebar_css_path = os.path.join(os.path.dirname(__file__), 'sidebar_nav.css')
-if os.path.exists(sidebar_css_path):
-    with open(sidebar_css_path, 'r', encoding='utf-8') as f:
-        sidebar_css = f.read()
-    st.markdown(f'<style>{sidebar_css}</style>', unsafe_allow_html=True)
+with nav_col4:
+    if st.button("Preparation", key="nav_prep", use_container_width=True):
+        st.session_state['page'] = 'Preparation'
+        st.rerun()
 
-# Navigation in sidebar with clear labels
-with st.sidebar:
-    page = st.radio(
-        "Choose a page:",
-        ["Home", "Prediction", "Preparation", "Community"],
-        index=default_index,
-        label_visibility="visible",
-        key="navigation_radio"
-    )
-    
-    st.markdown("---")
+with nav_col5:
+    if st.button("Community", key="nav_comm", use_container_width=True):
+        st.session_state['page'] = 'Community'
+        st.rerun()
+
+st.markdown('<br>', unsafe_allow_html=True)
+
+# Get current page
+page = st.session_state['page']
 
 # Update session state with current page
-st.session_state['page'] = page
 
 # Helper function for navigation
 def navigate_to(target_page):
     st.session_state['page'] = target_page
-    st.session_state['navigation_radio'] = target_page
+    st.rerun()
 
 # Keep OpenWeather API key input tucked under auth (optional)
 OPENWEATHER_KEY = None
@@ -1096,187 +425,218 @@ if 'user' not in st.session_state:
 
 # Page rendering: Home, Prediction, Preparation, Community
 if page == 'Home':
-    st.header('🏡 Welcome to Climate-Aware Farming', anchor=False)
-    st.markdown('''
-    <div style="background: linear-gradient(135deg, var(--warm-cream), white); 
-                padding: 24px; border-radius: 15px; border-left: 5px solid var(--forest-green);
-                box-shadow: 0 4px 20px var(--shadow-soft); margin: 20px 0;">
-        <p style="font-size: 16px; line-height: 1.8; color: var(--text-dark); margin: 0;">
-            <strong>Empower your farming</strong> with data-driven crop recommendations and sustainable 
-            fertilizer solutions. Our platform combines soil analysis, climate data, and organic farming 
-            practices to help you make informed decisions.
-        </p>
-    </div>
-    ''', unsafe_allow_html=True)
+    # FIX WHITE CARDS - INJECT CSS
+    st.markdown("""
+    <style>
+    /* Feature Cards */
+    .feature-card {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%) !important;
+        border: 2px solid rgba(139, 92, 246, 0.3) !important;
+        border-radius: 20px !important;
+        padding: 32px !important;
+    }
+    .feature-card:hover {
+        transform: translateY(-8px) !important;
+        box-shadow: 0 20px 40px rgba(139, 92, 246, 0.35) !important;
+    }
+    .feature-card-title { color: #e2e8f0 !important; }
+    
+    /* Fix all white boxes/containers */
+    div[style*="background-color: white"],
+    div[style*="background: white"],
+    div[style*="background-color:#fff"],
+    div[style*="background:#fff"],
+    div[style*="background: #F3F4F6"],
+    div[style*="background:#F3F4F6"] {
+        background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%) !important;
+        border: 1px solid rgba(139, 92, 246, 0.3) !important;
+    }
+    
+    /* Fix white text on white background */
+    div[style*="color: white"] {
+        color: #e2e8f0 !important;
+    }
+    
+    /* Fix action buttons */
+    .action-btn, a.action-btn {
+        background: #8B5CF6 !important;
+        color: white !important;
+        padding: 8px 16px !important;
+        border-radius: 8px !important;
+        text-decoration: none !important;
+        display: inline-block !important;
+        font-weight: 600 !important;
+    }
+    .action-btn:hover {
+        background: #7C3AED !important;
+        transform: translateY(-2px) !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+    
+    # Title and subtitle
+    st.markdown("""
+    <h1 style="font-size: 48px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); 
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 12px;">
+        Climate-Aware Crop & Fertilizer Recommendation
+    </h1>
+    <p style="font-size: 18px; color: #94a3b8; text-align: center; margin-bottom: 48px;">
+        Sustainable agriculture powered by climate-aware technology
+    </p>
+    """, unsafe_allow_html=True)
     
     st.markdown("### ✨ Key Features")
+    st.markdown("<br>", unsafe_allow_html=True)
     
-    # Feature cards
-    col1, col2 = st.columns(2)
-    with col1:
-        st.markdown('''
-        <div class="app-card">
-            <h4 style="color: var(--forest-green); margin-bottom: 12px;">🌾 Smart Crop Prediction</h4>
-            <p style="font-size: 16px; color: var(--text-dark);">
-                Get personalized crop recommendations based on your soil's NPK levels, pH, 
-                rainfall, and temperature data.
-            </p>
-        </div>
-        ''', unsafe_allow_html=True)
-        
-    with col2:
-        st.markdown('''
-        <div class="app-card">
-            <h4 style="color: var(--forest-green); margin-bottom: 12px;">🍃 Organic Fertilizer</h4>
-            <p style="font-size: 16px; color: var(--text-dark);">
-                Convert conventional fertilizers to organic alternatives with step-by-step 
-                preparation guides and video tutorials.
-            </p>
-        </div>
-        ''', unsafe_allow_html=True)
-    
-    col3, col4 = st.columns(2)
-    with col3:
-        st.markdown('''
-        <div class="app-card">
-            <h4 style="color: var(--forest-green); margin-bottom: 12px;">📋 Preparation Guides</h4>
-            <p style="font-size: 16px; color: var(--text-dark);">
-                Download detailed PDF guides with recipes, ingredients, and instructions 
-                for making organic fertilizers at home.
-            </p>
-        </div>
-        ''', unsafe_allow_html=True)
-        
-    with col4:
-        st.markdown('''
-        <div class="app-card">
-            <h4 style="color: var(--forest-green); margin-bottom: 12px;">👥 Expert Community</h4>
-            <p style="font-size: 16px; color: var(--text-dark);">
-                Connect with agricultural experts, ask questions, and get verified answers 
-                from experienced professionals.
-            </p>
-        </div>
-        ''', unsafe_allow_html=True)
-    
-    # Quick action buttons - ROBUST NAVIGATION FIX
-    st.markdown("### 🚀 Quick Actions")
-    
-    col1, col2, col3 = st.columns(3)
-    
-    def navigate_to(target_page):
-        st.session_state['page'] = target_page
-        st.session_state['navigation_radio'] = target_page
+    # 4 CARDS in 2x2 grid - BUTTONS INSIDE
+    col1, col2 = st.columns(2, gap="large")
     
     with col1:
-        st.button('🌾 Start Prediction', 
-                 key='home_pred', 
-                 use_container_width=True, 
-                 type='primary',
-                 on_click=navigate_to,
-                 args=('Prediction',))
+        # Card 1: Smart Crop Prediction
+        st.markdown("""
+        <div class="feature-card-container">
+            <div class="feature-card">
+                <div class="feature-card-icon">🌾</div>
+                <h3 class="feature-card-title">Smart Crop Prediction</h3>
+                <div class="feature-card-content">
+                    <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                        Get personalized crop recommendations based on your soil's NPK levels, pH, 
+                        rainfall, and temperature data.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="?page=Prediction" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">⚡ Start Prediction</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Card 3: Preparation Guides
+        st.markdown("""
+        <div class="feature-card-container">
+            <div class="feature-card">
+                <div class="feature-card-icon">📋</div>
+                <h3 class="feature-card-title">Preparation Guides</h3>
+                <div class="feature-card-content">
+                    <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                        Download detailed PDF guides with step-by-step recipes and instructions 
+                        for making organic fertilizers at home.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="?page=Preparation" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">📚 View Guides</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     with col2:
-        st.button('📋 View Preparations', 
-                 key='home_prep', 
-                 use_container_width=True, 
-                 type='primary',
-                 on_click=navigate_to,
-                 args=('Preparation',))
-    
-    with col3:
-        st.button('👥 Join Community', 
-                 key='home_comm', 
-                 use_container_width=True, 
-                 type='primary',
-                 on_click=navigate_to,
-                 args=('Community',))
+        # Card 2: Organic Fertilizer
+        st.markdown("""
+        <div class="feature-card-container">
+            <div class="feature-card">
+                <div class="feature-card-icon">🍃</div>
+                <h3 class="feature-card-title">Organic Fertilizer</h3>
+                <div class="feature-card-content">
+                    <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                        Convert conventional fertilizers to organic alternatives with our 
+                        comprehensive conversion tool and preparation guides.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="?page=Preparation" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">🌱 Convert Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
+        st.markdown("<br>", unsafe_allow_html=True)
+        
+        # Card 4: Expert Community
+        st.markdown("""
+        <div class="feature-card-container">
+            <div class="feature-card">
+                <div class="feature-card-icon">👥</div>
+                <h3 class="feature-card-title">Expert Community</h3>
+                <div class="feature-card-content">
+                    <p style="color: #94a3b8; font-size: 15px; line-height: 1.6; margin: 0 0 20px 0;">
+                        Connect with agricultural experts and farmers. Ask questions and get 
+                        verified answers from professionals.
+                    </p>
+                    <div style="text-align: right;">
+                        <a href="?page=Community" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">👋 Join Community</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
 
 elif page == 'Prediction':
-    # Professional navigation buttons
-    nav_cols = st.columns([0.12, 0.88], gap="small")
-    with nav_cols[0]:
-        def go_home():
-            st.session_state['page'] = 'Home'
-            st.session_state['navigation_radio'] = 'Home'
-            
-        st.button('← Back', key='pred_back', use_container_width=True, on_click=go_home)
-    
-    st.markdown('<div style="height: 10px"></div>', unsafe_allow_html=True)
-    st.header('🌾 Crop & Fertilizer Prediction', anchor=False)
-    st.markdown('<p style="font-size:16px; color: var(--text-medium); margin-bottom:20px;">Get personalized recommendations based on your soil and climate conditions</p>', unsafe_allow_html=True)
+    # Title and subtitle
+    st.markdown("""
+    <h1 style="font-size: 42px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); 
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; text-align: center; margin-bottom: 12px;">
+        🌾 Smart Crop & Fertilizer Prediction
+    </h1>
+    <p style="font-size: 17px; color: #94a3b8; text-align: center; margin-bottom: 40px;">
+        Get personalized recommendations based on your soil and climate conditions
+    </p>
+    """, unsafe_allow_html=True)
     
     # Two-column layout: left for inputs, right for results
     left, right = st.columns([1.2, 1], gap='large')
 
     with left:
-        # 1. LOCATION & SOIL CARD
-        st.markdown("""
-        <div class="app-card" style="border-left: 5px solid #10B981;">
-            <h4 style="color:#064E3B; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
-                📍 Location & Soil Context
-            </h4>
-        """, unsafe_allow_html=True)
-        
-        cols = st.columns(2, gap='medium')
-        with cols[0]:
-            region = st.selectbox('Region / Zone', ['North','South','East','West','Central'], label_visibility='visible')
-        with cols[1]:
-            soil = st.selectbox('Soil Texture', ['Loamy','Sandy','Clayey','Silty'], label_visibility='visible')
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div style="height: 15px"></div>', unsafe_allow_html=True)
-        
-        # 2. SOIL NUTRIENTS CARD
-        st.markdown("""
-        <div class="app-card" style="border-left: 5px solid #8B5CF6;">
-            <h4 style="color:#4C1D95; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
-                🧪 Soil Nutrients (NPK)
-            </h4>
-        """, unsafe_allow_html=True)
-        
-        ncols = st.columns(3, gap='small')
-        with ncols[0]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Nitrogen (N)</div>', unsafe_allow_html=True)
-            N = st.number_input('Nitrogen', min_value=0.0, max_value=300.0, value=100.0, step=5.0, label_visibility="collapsed")
-        with ncols[1]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Phosphorus (P)</div>', unsafe_allow_html=True)
-            P = st.number_input('Phosphorus', min_value=0.0, max_value=300.0, value=50.0, step=5.0, label_visibility="collapsed")
-        with ncols[2]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Potassium (K)</div>', unsafe_allow_html=True)
-            K = st.number_input('Potassium', min_value=0.0, max_value=300.0, value=150.0, step=5.0, label_visibility="collapsed")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div style="height: 15px"></div>', unsafe_allow_html=True)
-        
-        # 3. CLIMATE CONDITIONS CARD
-        st.markdown("""
-        <div class="app-card" style="border-left: 5px solid #0EA5E9;">
-            <h4 style="color:#0C4A6E; margin-bottom:15px; display:flex; align-items:center; gap:8px;">
-                🌤️ Environmental Factors
-            </h4>
-        """, unsafe_allow_html=True)
-        
-        ccols1 = st.columns(2, gap='medium')
-        with ccols1[0]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Soil pH Level</div>', unsafe_allow_html=True)
-            pH = st.number_input('Soil pH Level', min_value=3.0, max_value=9.0, value=6.5, step=0.1, format='%.1f', label_visibility="collapsed")
-        with ccols1[1]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Temperature (°C)</div>', unsafe_allow_html=True)
-            temp = st.number_input('Temperature (°C)', min_value=-10.0, max_value=50.0, value=25.0, step=0.5, label_visibility="collapsed")
-        
-        ccols2 = st.columns(2, gap='medium')
-        with ccols2[0]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Humidity (%)</div>', unsafe_allow_html=True)
-            humidity = st.number_input('Humidity (%)', min_value=0.0, max_value=100.0, value=70.0, step=1.0, label_visibility="collapsed")
-        with ccols2[1]:
-            st.markdown('<div style="font-size:13px; font-weight:700; color:#4B5563; margin-bottom:-25px; padding-left:2px;">Rainfall (mm)</div>', unsafe_allow_html=True)
-            rainfall = st.number_input('Rainfall (mm)', min_value=0.0, max_value=3000.0, value=200.0, step=10.0, label_visibility="collapsed")
-        st.markdown('</div>', unsafe_allow_html=True)
-
-        st.markdown('<div style="height: 25px"></div>', unsafe_allow_html=True)
-        
-        # MAIN ACTION BUTTON
-        submitted = st.button('🚀 Analyze & Recommend', use_container_width=True, type='primary', help="Click to process data")
+        # SINGLE BEAUTIFUL INPUT CARD - Using Streamlit's native bordered container
+        with st.container(border=True):
+            st.markdown("""
+                <h3 style="color: #00d9ff; margin-bottom: 24px; font-size: 22px; font-weight: 700;">
+                    📊 Enter Your Farm Details
+                </h3>
+            """, unsafe_allow_html=True)
+            
+            # Location & Soil
+            st.markdown('<p style="color: #e2e8f0; font-weight: 600; margin-bottom: 12px; font-size: 15px;">📍 Location & Soil</p>', unsafe_allow_html=True)
+            cols = st.columns(2, gap='medium')
+            with cols[0]:
+                region = st.selectbox('Region / Zone', ['North','South','East','West','Central'], label_visibility='visible')
+            with cols[1]:
+                soil = st.selectbox('Soil Texture', ['Loamy','Sandy','Clayey','Silty'], label_visibility='visible')
+            
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
+            
+            # Soil Nutrients (NPK)
+            st.markdown('<p style="color: #e2e8f0; font-weight: 600; margin-bottom: 12px; font-size: 15px;">🧪 Soil Nutrients (NPK)</p>', unsafe_allow_html=True)
+            ncols = st.columns(3, gap='small')
+            with ncols[0]:
+                N = st.number_input('Nitrogen (N)', min_value=0.0, max_value=300.0, value=100.0, step=5.0, label_visibility="visible")
+            with ncols[1]:
+                P = st.number_input('Phosphorus (P)', min_value=0.0, max_value=300.0, value=50.0, step=5.0, label_visibility="visible")
+            with ncols[2]:
+                K = st.number_input('Potassium (K)', min_value=0.0, max_value=300.0, value=150.0, step=5.0, label_visibility="visible")
+            
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
+            
+            # Environmental Factors
+            st.markdown('<p style="color: #e2e8f0; font-weight: 600; margin-bottom: 12px; font-size: 15px;">🌤️ Environmental Factors</p>', unsafe_allow_html=True)
+            ccols1 = st.columns(2, gap='medium')
+            with ccols1[0]:
+                pH = st.number_input('Soil pH Level', min_value=3.0, max_value=9.0, value=6.5, step=0.1, format='%.1f', label_visibility="visible")
+            with ccols1[1]:
+                temp = st.number_input('Temperature (°C)', min_value=-10.0, max_value=50.0, value=25.0, step=0.5, label_visibility="visible")
+            
+            ccols2 = st.columns(2, gap='medium')
+            with ccols2[0]:
+                humidity = st.number_input('Humidity (%)', min_value=0.0, max_value=100.0, value=70.0, step=1.0, label_visibility="visible")
+            with ccols2[1]:
+                rainfall = st.number_input('Rainfall (mm)', min_value=0.0, max_value=3000.0, value=200.0, step=10.0, label_visibility="visible")
+            
+            st.markdown('<div style="height: 30px"></div>', unsafe_allow_html=True)
+            
+            # MAIN ACTION BUTTON (INSIDE THE CONTAINER)
+            submitted = st.button('🚀 Analyze & Recommend', use_container_width=True, type='primary', help="Click to process data")
         
         # Analysis Summary Card - Attractive card below input form
         if 'last_result' in st.session_state:
@@ -1284,35 +644,36 @@ elif page == 'Prediction':
             lr = st.session_state['last_result']
             inp = lr.get('input', {})
             st.markdown(f'''
-            <div class="analysis-card">
-                <div class="result-header">📊 Analysis Summary</div>
-                <div class="analysis-item">
-                    <span class="analysis-label">Region:</span>
-                    <span class="analysis-value">{inp.get('region')}</span>
+            <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+            border: 1px solid rgba(100, 116, 139, 0.3); border-radius: 16px; padding: 20px; margin-bottom: 20px;">
+                <div style="color: #00d9ff; font-size: 18px; font-weight: 700; margin-bottom: 16px;">📊 Analysis Summary</div>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">Region:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('region')}</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">Soil Type:</span>
-                    <span class="analysis-value">{inp.get('soil')}</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">Soil Type:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('soil')}</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">pH Level:</span>
-                    <span class="analysis-value">{inp.get('pH')}</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">pH Level:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('pH')}</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">NPK Ratio:</span>
-                    <span class="analysis-value">{inp.get('N')}-{inp.get('P')}-{inp.get('K')}</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">NPK Ratio:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('N')}-{inp.get('P')}-{inp.get('K')}</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">Temperature:</span>
-                    <span class="analysis-value">{inp.get('temperature')}°C</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">Temperature:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('temperature')}°C</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">Humidity:</span>
-                    <span class="analysis-value">{inp.get('humidity')}%</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid rgba(100, 116, 139, 0.2);">
+                    <span style="color: #94a3b8; font-weight: 600;">Humidity:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('humidity')}%</span>
                 </div>
-                <div class="analysis-item">
-                    <span class="analysis-label">Rainfall:</span>
-                    <span class="analysis-value">{inp.get('rainfall')} mm</span>
+                <div style="display: flex; justify-content: space-between; padding: 8px 0;">
+                    <span style="color: #94a3b8; font-weight: 600;">Rainfall:</span>
+                    <span style="color: #e2e8f0; font-weight: 500;">{inp.get('rainfall')} mm</span>
                 </div>
             </div>
             ''', unsafe_allow_html=True)
@@ -1419,44 +780,44 @@ elif page == 'Prediction':
                 
                 # Use plain string concatenation with NO indentation to prevent Markdown code block interpretation
                 html_content = f"""
-<div style="margin-top: 20px; background: white; border-radius: 12px; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);">
-<h3 style="color: var(--secondary-blue); font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">📅 Crop Calendar</h3>
+<div style="margin-top: 20px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%); border-radius: 16px; padding: 20px; border: 1px solid rgba(100, 116, 139, 0.3);">
+<h3 style="color: #00d9ff; font-size: 18px; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; font-weight: 700;">📅 Crop Calendar</h3>
 <div style="display: flex; justify-content: space-between; margin-bottom: 20px;">
-<div style="text-align: center; flex: 1; border-right: 1px solid #eee;">
-<div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Sowing</div>
-<div style="font-size: 16px; font-weight: 600; color: var(--forest-green); margin-top: 4px;">{sow}</div>
+<div style="text-align: center; flex: 1; border-right: 1px solid rgba(100, 116, 139, 0.3);">
+<div style="font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Sowing</div>
+<div style="font-size: 16px; font-weight: 600; color: #10B981; margin-top: 4px;">{sow}</div>
 </div>
 <div style="text-align: center; flex: 1;">
-<div style="font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 0.5px;">Harvest</div>
-<div style="font-size: 16px; font-weight: 600; color: var(--accent-orange); margin-top: 4px;">{hvst}</div>
+<div style="font-size: 12px; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px;">Harvest</div>
+<div style="font-size: 16px; font-weight: 600; color: #F59E0B; margin-top: 4px;">{hvst}</div>
 </div>
 </div>
-<h3 style="color: var(--secondary-blue); font-size: 18px; margin-bottom: 15px; margin-top: 25px; display: flex; align-items: center; gap: 8px;">🌤️ 5-Day Forecast</h3>
+<h3 style="color: #00d9ff; font-size: 18px; margin-bottom: 15px; margin-top: 25px; display: flex; align-items: center; gap: 8px; font-weight: 700;">🌤️ 5-Day Forecast</h3>
 <div style="display: flex; justify-content: space-between; gap: 8px;">
-<div style="text-align: center; background: #f8FAFC; padding: 8px; border-radius: 8px; flex: 1;">
-<div style="font-size: 12px; font-weight: 600;">Today</div>
+<div style="text-align: center; background: rgba(30, 41, 59, 0.4); padding: 8px; border-radius: 8px; flex: 1; border: 1px solid rgba(100, 116, 139, 0.2);">
+<div style="font-size: 12px; font-weight: 600; color: #e2e8f0;">Today</div>
 <div style="font-size: 20px;">☀️</div>
-<div style="font-size: 12px; font-weight: 600;">32°</div>
+<div style="font-size: 12px; font-weight: 600; color: #e2e8f0;">32°</div>
 </div>
-<div style="text-align: center; background: #f8FAFC; padding: 8px; border-radius: 8px; flex: 1;">
-<div style="font-size: 12px; color: #666;">{d1}</div>
+<div style="text-align: center; background: rgba(30, 41, 59, 0.4); padding: 8px; border-radius: 8px; flex: 1; border: 1px solid rgba(100, 116, 139, 0.2);">
+<div style="font-size: 12px; color: #cbd5e1;">{d1}</div>
 <div style="font-size: 20px;">⛅</div>
-<div style="font-size: 12px; color: #666;">30°</div>
+<div style="font-size: 12px; color: #cbd5e1;">30°</div>
 </div>
-<div style="text-align: center; background: #f8FAFC; padding: 8px; border-radius: 8px; flex: 1;">
-<div style="font-size: 12px; color: #666;">{d2}</div>
+<div style="text-align: center; background: rgba(30, 41, 59, 0.4); padding: 8px; border-radius: 8px; flex: 1; border: 1px solid rgba(100, 116, 139, 0.2);">
+<div style="font-size: 12px; color: #cbd5e1;">{d2}</div>
 <div style="font-size: 20px;">🌧️</div>
-<div style="font-size: 12px; color: #666;">28°</div>
+<div style="font-size: 12px; color: #cbd5e1;">28°</div>
 </div>
-<div style="text-align: center; background: #f8FAFC; padding: 8px; border-radius: 8px; flex: 1;">
-<div style="font-size: 12px; color: #666;">{d3}</div>
+<div style="text-align: center; background: rgba(30, 41, 59, 0.4); padding: 8px; border-radius: 8px; flex: 1; border: 1px solid rgba(100, 116, 139, 0.2);">
+<div style="font-size: 12px; color: #cbd5e1;">{d3}</div>
 <div style="font-size: 20px;">☁️</div>
-<div style="font-size: 12px; color: #666;">29°</div>
+<div style="font-size: 12px; color: #cbd5e1;">29°</div>
 </div>
 </div>
-<div style="margin-top: 25px; background: #FEF3C7; padding: 12px; border-radius: 8px; border-left: 4px solid #F59E0B;">
-<div style="font-size: 13px; font-weight: 600; color: #92400E; margin-bottom: 4px;">💡 Farming Tip</div>
-<div style="font-size: 13px; color: #B45309; line-height: 1.4;">Ensure proper drainage in the field to prevent waterlogging during the upcoming rains.</div>
+<div style="margin-top: 25px; background: rgba(245, 158, 11, 0.1); padding: 12px; border-radius: 8px; border-left: 4px solid #F59E0B;">
+<div style="font-size: 13px; font-weight: 600; color: #FCD34D; margin-bottom: 4px;">💡 Farming Tip</div>
+<div style="font-size: 13px; color: #FDE68A; line-height: 1.4;">Ensure proper drainage in the field to prevent waterlogging during the upcoming rains.</div>
 </div>
 </div>
 """
@@ -1475,6 +836,7 @@ elif page == 'Prediction':
             alternatives_map = {
                 'rice': 'Jute, Maize',
                 'maize': 'Cotton, Soybean',
+                'wheat': 'Rice, Maize',
                 'chickpea': 'Kidneybeans, Mothbeans',
                 'kidneybeans': 'Chickpea, Pigeonpeas',
                 'pigeonpeas': 'Blackgram, Mothbeans',
@@ -1482,6 +844,7 @@ elif page == 'Prediction':
                 'mungbean': 'Mothbeans, Lentil',
                 'blackgram': 'Pigeonpeas, Mothbeans',
                 'lentil': 'Mungbean, Peas',
+                'peas': 'Lentil, Chickpea',
                 'pomegranate': 'Orange, Papaya',
                 'banana': 'Coconut, Mango',
                 'mango': 'Banana, Coconut',
@@ -1496,38 +859,54 @@ elif page == 'Prediction':
                 'jute': 'Rice, Maize',
                 'coffee': 'Tea, Rubber',
                 'soybean': 'Maize, Cotton',
-                'kidneybeans': 'Chickpea, Mothbeans',
-                'mothbeans': 'Kidneybeans, Chickpea',
-                'mungbean': 'Lentil, Blackgram',
-                'blackgram': 'Mungbean, Lentil',
-                'lentil': 'Mungbean, Peas'
+                'sugarcane': 'Rice, Cotton',
             }
             
             alts = alternatives_map.get(crop_name.strip().lower(), 'Similar seasonal crops')
             
+            # CROP PREDICTION CARD - EVEN LIGHTER background
             st.markdown(f'''
-            <div class="prediction-result-card" style="box-shadow: 0 10px 30px -10px rgba(16, 185, 129, 0.4); border: 2px solid #10B981;">
-                <div style="text-align:center; margin-bottom:10px;">
-                    <span style="background:#ECFDF5; color:#047857; padding:5px 12px; border-radius:20px; font-size:12px; font-weight:700; text-transform:uppercase;">Top Recommendation</span>
+            <div style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.03) 100%), 
+            linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+            border: 2px solid #10B981; border-radius: 20px; padding: 32px; margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.15), 0 0 30px rgba(16, 185, 129, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                <div style="text-align:center; margin-bottom:16px;">
+                    <span style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+                    color: #ffffff; padding: 8px 20px; border-radius: 25px; font-size: 13px; 
+                    font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+                    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);">✨ Top Recommendation</span>
                 </div>
-                <div class="crop-name" style="font-size:36px !important; margin-bottom:5px !important;">{crop_name}</div>
-                <div style="color: var(--text-secondary); font-size: 15px; margin-bottom: 20px; font-weight: 500; text-align: center;">
-                    <span style="color: var(--primary-green); font-weight: 600;">Alternatives:</span> {alts}
+                <div style="font-size: 48px; font-weight: 900; text-align: center; margin-bottom: 12px;
+                background: linear-gradient(135deg, #10B981 0%, #34D399 100%);
+                -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+                    {crop_name}
                 </div>
-                <div class="crop-duration">
-                    <span style="color: var(--olive-green); font-weight: 600;">⏱ Duration:</span> {duration_display}
+                <div style="color: #cbd5e1; font-size: 16px; margin-bottom: 20px; font-weight: 500; text-align: center;">
+                    <span style="color: #10B981; font-weight: 700;">Alternatives:</span> <span style="color: #e2e8f0;">{alts}</span>
+                </div>
+                <div style="text-align: center; color: #cbd5e1; font-size: 15px; font-weight: 600;">
+                    <span style="color: #10B981;">⏱ Duration:</span> <span style="color: #e2e8f0;">{duration_display}</span>
                 </div>
             </div>
             ''', unsafe_allow_html=True)
             
-            # Non-Organic Fertilizer Recommendation (First)
+            # CHEMICAL FERTILIZER CARD - EVEN LIGHTER background
             nf = lr.get('nf', 'N/A')
             st.markdown(f'''
-            <div class="fertilizer-card" style="margin-top: 20px; border-left: 5px solid #3B82F6;">
-                <div class="result-header" style="color:#1E40AF; border-bottom-color:#BFDBFE;">🧪 Chemical Recom.</div>
-                <div style="padding: 16px; background: #EFF6FF; border-radius: 10px; margin-top: 12px;">
-                    <div style="font-size: 20px; font-weight: 700; color: #1E40AF;">{nf}</div>
-                    <div style="margin-top: 8px; color: #60A5FA; font-size: 13px;">
+            <div style="background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(37, 99, 235, 0.03) 100%), 
+            linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+            border: 2px solid #3B82F6; border-radius: 20px; padding: 28px; margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(59, 130, 246, 0.15), 0 0 30px rgba(59, 130, 246, 0.03);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                <div style="color: #60A5FA; font-size: 20px; font-weight: 700; margin-bottom: 16px; 
+                display: flex; align-items: center; gap: 10px;">
+                    🧪 Chemical Recommendation
+                </div>
+                <div style="background: rgba(59, 130, 246, 0.05); border-radius: 12px; padding: 20px; 
+                border: 1px solid rgba(59, 130, 246, 0.15);">
+                    <div style="font-size: 28px; font-weight: 800; color: #60A5FA; margin-bottom: 8px;">{nf}</div>
+                    <div style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
                         Standard chemical fertilizer for immediate nutrient boost.
                     </div>
                 </div>
@@ -1538,101 +917,129 @@ elif page == 'Prediction':
             org = conv.get('organic') or ''
             
             if org:
-                # Organic Alternative Card with Pie Chart Comparison
-                st.markdown('''
-                <div class="fertilizer-card" style="margin-top: 24px; border-left: 5px solid #65A30D;">
-                    <div class="result-header" style="color:#365314; border-bottom-color:#D9F99D;">🌿 Organic Alternative</div>
-                    <div style="padding: 16px; background: #ECFCCB; border-radius: 10px; margin-top: 12px;">
-                        <div style="font-size: 20px; font-weight: 700; color: #365314;">''' + org + '''</div>
-                        <div style="margin-top: 8px; color: #4D7C0F; font-size: 13px;">
-                            Sustainable choice for long-term health.
+                # ORGANIC ALTERNATIVE CARD - EVEN LIGHTER background
+                st.markdown(f'''
+                <div style="background: linear-gradient(135deg, rgba(101, 163, 13, 0.05) 0%, rgba(77, 124, 15, 0.03) 100%), 
+                linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+                border: 2px solid #84CC16; border-radius: 20px; padding: 28px; margin-bottom: 24px;
+                box-shadow: 0 8px 32px rgba(132, 204, 22, 0.15), 0 0 30px rgba(132, 204, 22, 0.03);
+                transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);">
+                    <div style="color: #A3E635; font-size: 20px; font-weight: 700; margin-bottom: 16px; 
+                    display: flex; align-items: center; gap: 10px;">
+                        🌿 Organic Alternative
+                    </div>
+                    <div style="background: rgba(132, 204, 22, 0.05); border-radius: 12px; padding: 20px; 
+                    border: 1px solid rgba(132, 204, 22, 0.15);">
+                        <div style="font-size: 28px; font-weight: 800; color: #A3E635; margin-bottom: 8px;">{org}</div>
+                        <div style="color: #cbd5e1; font-size: 14px; line-height: 1.6;">
+                            Sustainable choice for long-term soil health and environmental benefits.
                         </div>
                     </div>
                 </div>
                 ''', unsafe_allow_html=True)
                 
-                # Comparison Pie Charts
-                st.markdown('<div style="margin-top: 24px;">', unsafe_allow_html=True)
-                st.markdown('<h3 style="text-align: center; color: var(--forest-green); margin-bottom: 20px;">Fertilizer Composition Comparison</h3>', unsafe_allow_html=True)
-                
-                import plotly.graph_objects as go
-                from plotly.subplots import make_subplots
-                
-                # Define compositions for both fertilizer types
-                non_organic_comp = {
-                    'Urea': 40,
-                    'DAP': 30,
-                    'Potash': 20,
-                    'Ammonium': 10
-                }
-                
-                organic_comp = {
-                    'Compost': 30,
-                    'Fish Emulsion': 25,
-                    'Neem Cake': 25,
-                    'Vermicompost': 20
-                }
-                
-                # Create side-by-side pie charts
-                fig = make_subplots(
-                    rows=1, cols=2,
-                    specs=[[{'type':'pie'}, {'type':'pie'}]],
-                    subplot_titles=('Non-Organic Fertilizer', 'Organic Fertilizer Alternative')
-                )
-                
-                # Non-organic pie chart
-                fig.add_trace(go.Pie(
-                    labels=list(non_organic_comp.keys()),
-                    values=list(non_organic_comp.values()),
-                    marker=dict(colors=['#FF6B6B', '#FFA07A', '#FFD700', '#FF8C00']),
-                    textinfo='label+percent',
-                    textposition='auto',
-                    name='Non-Organic'
-                ), row=1, col=1)
-                
-                # Organic pie chart
-                fig.add_trace(go.Pie(
-                    labels=list(organic_comp.keys()),
-                    values=list(organic_comp.values()),
-                    marker=dict(colors=['#2D5016', '#6B8E23', '#8FBC8F', '#90EE90']),
-                    textinfo='label+percent',
-                    textposition='auto',
-                    name='Organic'
-                ), row=1, col=2)
-                
-                fig.update_layout(
-                    showlegend=False,
-                    margin=dict(l=20, r=20, t=60, b=20),
-                    height=350,
-                    paper_bgcolor='rgba(0,0,0,0)',
-                    plot_bgcolor='rgba(0,0,0,0)',
-                    font=dict(size=14, color='#2C3E2D', family='Arial')
-                )
-                
-
-
-                
-                st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
-                st.markdown('</div>', unsafe_allow_html=True)
-                
-                # Preparation Steps Card
-                prep = conv.get('preparation_steps') or []
-                if isinstance(prep, list) and prep:
-                    st.markdown(f'''
-                    <div class="fertilizer-card" style="margin-top: 24px;">
-                        <div class="result-header">📋 Preparation Steps for {org}</div>
-                    </div>
+                # BEAUTIFUL 3D PIE CHARTS CARD - Using Streamlit's native bordered container
+                with st.container(border=True):
+                    st.markdown('''
+                        <h3 style="text-align: center; color: #A78BFA; font-size: 26px; font-weight: 800; 
+                        margin-bottom: 24px; text-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);">
+                            📊 Fertilizer Composition Comparison
+                        </h3>
                     ''', unsafe_allow_html=True)
                     
-                    for i, step in enumerate(prep, start=1):
-                        st.markdown(f'''
-                        <div style="padding: 12px; background: white; border-left: 4px solid var(--olive-green); 
-                                    margin-bottom: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
-                            <span style="font-weight: 700; color: var(--forest-green); font-size: 16px;">Step {i}:</span>
-                            <span style="color: var(--text-dark); font-size: 16px; margin-left: 8px;">{step}</span>
-                        </div>
-                        ''', unsafe_allow_html=True)
+                    import plotly.graph_objects as go
+                    from plotly.subplots import make_subplots
+                    
+                    # Define compositions for both fertilizer types
+                    non_organic_comp = {
+                        'Urea': 40,
+                        'DAP': 30,
+                        'Potash': 20,
+                        'Ammonium': 10
+                    }
+                    
+                    organic_comp = {
+                        'Compost': 30,
+                        'Fish Emulsion': 25,
+                        'Neem Cake': 25,
+                        'Vermicompost': 20
+                    }
+                    
+                    # Create side-by-side 3D pie charts
+                    fig = make_subplots(
+                        rows=1, cols=2,
+                        specs=[[{'type':'pie'}, {'type':'pie'}]],
+                        subplot_titles=('<b>Non-Organic Fertilizer</b>', '<b>Organic Fertilizer Alternative</b>')
+                    )
+                    
+                    # Non-organic 3D pie chart with beautiful colors
+                    fig.add_trace(go.Pie(
+                        labels=list(non_organic_comp.keys()),
+                        values=list(non_organic_comp.values()),
+                        marker=dict(
+                            colors=['#FF6B6B', '#FFA07A', '#FFD700', '#FF8C00'],
+                            line=dict(color='#1e293b', width=2)
+                        ),
+                        textinfo='label+percent',
+                        textposition='auto',
+                        textfont=dict(size=14, color='white', family='Arial Black'),
+                        hoverinfo='label+percent+value',
+                        hole=0.3,  # Donut style for modern look
+                        pull=[0.05, 0, 0, 0],  # Pull out first slice
+                        name='Non-Organic'
+                    ), row=1, col=1)
+                    
+                    # Organic 3D pie chart with beautiful green colors
+                    fig.add_trace(go.Pie(
+                        labels=list(organic_comp.keys()),
+                        values=list(organic_comp.values()),
+                        marker=dict(
+                            colors=['#2D5016', '#6B8E23', '#8FBC8F', '#90EE90'],
+                            line=dict(color='#1e293b', width=2)
+                        ),
+                        textinfo='label+percent',
+                        textposition='auto',
+                        textfont=dict(size=14, color='white', family='Arial Black'),
+                        hoverinfo='label+percent+value',
+                        hole=0.3,  # Donut style for modern look
+                        pull=[0.05, 0, 0, 0],  # Pull out first slice
+                        name='Organic'
+                    ), row=1, col=2)
+                    
+                    # Update layout for dark theme and responsiveness
+                    fig.update_layout(
+                        showlegend=False,
+                        margin=dict(l=20, r=20, t=80, b=20),
+                        height=450,
+                        paper_bgcolor='rgba(0,0,0,0)',
+                        plot_bgcolor='rgba(0,0,0,0)',
+                        font=dict(size=15, color='#e2e8f0', family='Arial, sans-serif'),
+                        annotations=[
+                            dict(
+                                text='<b>Non-Organic Fertilizer</b>',
+                                x=0.18,
+                                y=1.08,
+                                xref='paper',
+                                yref='paper',
+                                showarrow=False,
+                                font=dict(size=16, color='#FFA07A', family='Arial Black')
+                            ),
+                            dict(
+                                text='<b>Organic Fertilizer Alternative</b>',
+                                x=0.82,
+                                y=1.08,
+                                xref='paper',
+                                yref='paper',
+                                showarrow=False,
+                                font=dict(size=16, color='#90EE90', family='Arial Black')
+                            )
+                        ]
+                    )
+                    
+                    # Display chart with responsive width (INSIDE THE CONTAINER)
+                    st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
                 
+                # Removed preparation steps section - already available on Preparation page
                 st.button('📋 View Full Preparation Guide', 
                          use_container_width=True, 
                          key='prep_guide',
@@ -1648,30 +1055,18 @@ elif page == 'Prediction':
             ''', unsafe_allow_html=True)
 
 elif page == 'Preparation':
-    # Professional navigation buttons
-    nav_cols = st.columns([0.12, 0.12, 0.76], gap="small")
-    with nav_cols[0]:
-        st.button('← Back', 
-                 key='prep_back_pred', 
-                 use_container_width=True,
-                 on_click=navigate_to,
-                 args=('Prediction',))
-    with nav_cols[1]:
-        st.button('🏠 Home', 
-                 key='prep_back_home', 
-                 use_container_width=True,
-                 on_click=navigate_to,
-                 args=('Home',))
-    
+    # No navigation buttons - using top header navigation only
     st.markdown('<div style="height: 10px"></div>', unsafe_allow_html=True)
     st.header('📋 Organic Fertilizer Preparation Guide', anchor=False)
-    st.markdown('<p style="font-size:16px; color: var(--text-medium);">Step-by-step instructions and video tutorials</p>', unsafe_allow_html=True)
+    st.markdown('<p style="font-size:16px; color: #94a3b8;">Step-by-step instructions and video tutorials</p>', unsafe_allow_html=True)
+    
     if 'last_result' not in st.session_state:
         st.markdown('''
-        <div class="empty-state">
-            <div class="empty-icon">🍃</div>
-            <div class="empty-title">No Organic Fertilizer Selected</div>
-            <div class="empty-text">Go to the Prediction page and calculate recommendations first to see the preparation guide.</div>
+        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+        border: 1px solid rgba(100, 116, 139, 0.3); border-radius: 16px; padding: 60px 40px; text-align: center;">
+            <div style="font-size: 60px; margin-bottom: 20px;">🍃</div>
+            <div style="color: #e2e8f0; font-size: 24px; font-weight: 700; margin-bottom: 12px;">No Organic Fertilizer Selected</div>
+            <div style="color: #94a3b8; font-size: 16px; line-height: 1.6;">Go to the Prediction page and calculate recommendations first to see the preparation guide.</div>
         </div>
         ''', unsafe_allow_html=True)
     else:
@@ -1681,14 +1076,17 @@ elif page == 'Preparation':
         notes = conv.get('notes', 'No specific notes available.')
         prep = conv.get('preparation_steps') or []
         
-        # Hero Card for Organic Fertilizer
+        # Hero Card for Organic Fertilizer - DARK THEME
         st.markdown(f'''
-        <div class="app-card" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; border: none;">
+        <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+        border-radius: 20px; padding: 32px; margin-bottom: 24px;
+        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);">
             <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="font-size: 40px; background: rgba(255,255,255,0.2); width: 80px; height: 80px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">🍃</div>
+                <div style="font-size: 48px; background: rgba(255,255,255,0.2); width: 90px; height: 90px; 
+                display: flex; align-items: center; justify-content: center; border-radius: 50%;">🍃</div>
                 <div>
-                    <h2 style="color: white; margin: 0; font-size: 24px; font-weight: 700;">{organic_name}</h2>
-                    <p style="color: rgba(255,255,255,0.9); margin: 5px 0 0 0; font-size: 15px;">Recommended Organic Equivalent</p>
+                    <h2 style="color: white; margin: 0; font-size: 28px; font-weight: 800;">{organic_name}</h2>
+                    <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 16px;">Recommended Organic Equivalent</p>
                 </div>
             </div>
         </div>
@@ -1698,45 +1096,59 @@ elif page == 'Preparation':
         col1, col2 = st.columns([1.6, 1], gap="large")
         
         with col1:
-            # UPGRADED RECIPE CARD UI
-            # Start the card container
-            card_html = """
-            <div class="app-card" style="border-top: 5px solid #10B981; min-height: 400px; padding: 25px;">
-                <h3 style="color:#064E3B; margin-bottom:20px; display:flex; align-items:center; gap:10px; border-bottom:1px solid #E5E7EB; padding-bottom:15px; margin-top:0;">
-                    🥣 Preparation Method
-                </h3>
-                <div style="display: flex; flex-direction: column; gap: 15px;">
-            """
-            
-            if isinstance(prep, list) and prep:
-                for i, step in enumerate(prep, start=1):
-                    # Ensure step is a string
-                    step_text = str(step).strip()
-                    # Use single line string to avoid indentation issues
-                    card_html += f'<div style="display: flex; gap: 15px; align-items: flex-start;"><div style="flex-shrink: 0; width: 32px; height: 32px; background: #ECFDF5; color: #059669; border: 2px solid #10B981; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px;">{i}</div><div style="color: #374151; font-size: 16px; line-height: 1.6; padding-top: 2px;">{step_text}</div></div>'
+            # PREPARATION METHOD CARD - DARK THEME
+            with st.container(border=True):
+                st.markdown('''
+                    <h3 style="color: #00d9ff; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; 
+                    font-size: 22px; font-weight: 700; border-bottom: 1px solid rgba(100, 116, 139, 0.3); 
+                    padding-bottom: 15px; margin-top: 0;">
+                        🥣 Preparation Method
+                    </h3>
+                ''', unsafe_allow_html=True)
                 
-                card_html += "</div></div>"
-                st.markdown(card_html, unsafe_allow_html=True)
-            else:
-                st.info('No detailed steps available.')
-                st.markdown('</div>', unsafe_allow_html=True)
+                if isinstance(prep, list) and prep:
+                    for i, step in enumerate(prep, start=1):
+                        step_text = str(step).strip()
+                        st.markdown(f'''
+                        <div style="display: flex; gap: 15px; align-items: flex-start; margin-bottom: 16px;">
+                            <div style="flex-shrink: 0; width: 36px; height: 36px; 
+                            background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
+                            color: white; border-radius: 50%; display: flex; align-items: center; 
+                            justify-content: center; font-weight: 700; font-size: 16px;
+                            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">{i}</div>
+                            <div style="color: #e2e8f0; font-size: 16px; line-height: 1.7; padding-top: 6px; flex: 1;">
+                                {step_text}
+                            </div>
+                        </div>
+                        ''', unsafe_allow_html=True)
+                else:
+                    st.info('No detailed steps available.')
                 
         with col2:
-            # UPGRADED STICKY NOTE UI
-            st.markdown("""
-            <div style="background: #FEF3C7; padding: 20px; border-radius: 4px; margin-bottom: 20px; box-shadow: 3px 3px 10px rgba(0,0,0,0.1); transform: rotate(-1deg); border-top: 1px solid #FDE68A; position: relative;">
-                <div style="position: absolute; top: -15px; left: 45%; color: rgba(0,0,0,0.1); font-size: 30px;">📌</div>
-                <h3 style="color: #92400E; font-size: 18px; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
-                     Important Notes
+            # IMPORTANT NOTES CARD - DARK THEME
+            st.markdown(f'''
+            <div style="background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(217, 119, 6, 0.1) 100%), 
+            linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+            padding: 24px; border-radius: 16px; margin-bottom: 24px; 
+            box-shadow: 0 8px 32px rgba(245, 158, 11, 0.2);
+            border: 2px solid rgba(245, 158, 11, 0.3); border-left: 6px solid #F59E0B; position: relative;">
+                <div style="position: absolute; top: -15px; left: 45%; color: rgba(245, 158, 11, 0.4); font-size: 36px;">📌</div>
+                <h3 style="color: #FCD34D; font-size: 20px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-weight: 700;">
+                    💡 Important Notes
                 </h3>
-                <div style="color: #78350F; font-size: 15px; line-height: 1.6; font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif !important;">
-            """ + f"{notes}" + """
+                <div style="color: #FDE68A; font-size: 15px; line-height: 1.7;">
+                    {notes}
                 </div>
             </div>
-            """, unsafe_allow_html=True)
+            ''', unsafe_allow_html=True)
             
-            # Download Section
-            st.markdown('<h3 style="color: var(--secondary-blue); font-size: 18px; display: flex; align-items: center; gap: 8px; margin-top: 10px;">💾 Resources</h3>', unsafe_allow_html=True)
+            # RESOURCES SECTION - DARK THEME
+            st.markdown('''
+                <h3 style="color: #00d9ff; font-size: 20px; display: flex; align-items: center; gap: 8px; 
+                margin-top: 10px; margin-bottom: 16px; font-weight: 700;">
+                    💾 Resources
+                </h3>
+            ''', unsafe_allow_html=True)
             
             prep_text = '\n'.join([f"{i}. {s}" for i, s in enumerate(prep, start=1)]) if isinstance(prep, list) else str(prep)
             pdf_bytes = None
@@ -1801,11 +1213,19 @@ elif page == 'Preparation':
             if total_found == 0:
                 st.info('No tutorial videos found for this organic fertilizer in Kannada/Hindi/English.')
             else:
-                # Video Tutorials Section
+                # Video Tutorials Section - DARK THEME
                 st.markdown('<div style="height: 30px;"></div>', unsafe_allow_html=True)
                 with st.container(border=True):
-                    st.markdown('<h3 style="color:#111827; margin-bottom:10px;">🎥 Video Tutorials</h3>', unsafe_allow_html=True)
-                    st.markdown('<p style="color:#6B7280; font-size:14px; margin-bottom:20px;">Watch step-by-step guides in your preferred language</p>', unsafe_allow_html=True)
+                    st.markdown('''
+                        <h3 style="color: #00d9ff; margin-bottom: 10px; font-size: 22px; font-weight: 700;">
+                            🎥 Video Tutorials
+                        </h3>
+                    ''', unsafe_allow_html=True)
+                    st.markdown('''
+                        <p style="color: #94a3b8; font-size: 14px; margin-bottom: 20px;">
+                            Watch step-by-step guides in your preferred language
+                        </p>
+                    ''', unsafe_allow_html=True)
                     
                     # Create tabs for languages
                     tabs = st.tabs(languages)
@@ -1836,25 +1256,24 @@ elif page == 'Preparation':
 
 
 elif page == 'Community':
-    # Professional navigation buttons
-    nav_cols = st.columns([0.12, 0.12, 0.76], gap="small")
-    with nav_cols[0]:
-        st.button('← Back', 
-                 key='comm_back_prep', 
-                 use_container_width=True,
-                 on_click=navigate_to,
-                 args=('Preparation',))
-    with nav_cols[1]:
-        st.button('🏠 Home', 
-                 key='comm_back_home', 
-                 use_container_width=True,
-                 on_click=navigate_to,
-                 args=('Home',))
-    
+    # No navigation buttons - using top header navigation only
     st.markdown('<div style="height: 10px"></div>', unsafe_allow_html=True)
     
-    st.header('👥 Expert Community', anchor=False)
-    st.markdown('<p style="font-size:16px; color: var(--text-medium);">Connect with agricultural experts and get verified answers</p>', unsafe_allow_html=True)
+    # SMALLER, SIMPLER HERO SECTION
+    st.markdown('''
+    <div style="background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.08) 100%), 
+    linear-gradient(135deg, rgba(30, 41, 59, 0.3) 0%, rgba(26, 31, 58, 0.4) 100%);
+    border-radius: 16px; padding: 24px; margin-bottom: 24px; text-align: center;
+    border: 1px solid rgba(139, 92, 246, 0.2);">
+        <div style="font-size: 32px; margin-bottom: 8px;">👥</div>
+        <h2 style="color: #e2e8f0; margin: 0; font-size: 24px; font-weight: 700;">
+            Welcome to Community
+        </h2>
+        <p style="color: #94a3b8; margin: 8px 0 0 0; font-size: 14px;">
+            Connect with agricultural experts and get verified answers
+        </p>
+    </div>
+    ''', unsafe_allow_html=True)
     
     # Initialize show_register state if not exists
     if 'show_register' not in st.session_state:
@@ -1862,39 +1281,35 @@ elif page == 'Community':
     
     user = st.session_state.get('user')
     
-    # If user is not logged in, show modern login/register form
+    # If user is not logged in, show login/register form
     if not user:
-        # Use a centered layout
-        col1, col2, col3 = st.columns([1, 1.2, 1])
+        # Centered layout with beautiful card
+        col1, col2, col3 = st.columns([1, 1.4, 1])
         
         with col2:
-            st.markdown('<div style="height: 40px"></div>', unsafe_allow_html=True)
+            st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
             
-            # Dynamic Header based on state
+            # REGISTRATION CARD
             if st.session_state.get('show_register'):
-                # Card Container
+                # Use Streamlit's bordered container
                 with st.container(border=True):
-                    # Hidden Marker for CSS targeting
-                    st.markdown('<div id="login-card-target"></div>', unsafe_allow_html=True)
-                    
-                    # White text is handled by CSS now
-                    st.markdown("""
-                        <div style="text-align: center; margin-bottom: 20px;">
-                            <h2 style="font-size: 24px; margin: 0;">Create Your Account</h2>
+                    st.markdown('''
+                        <div style="text-align: center; margin-bottom: 32px;">
+                            <div style="font-size: 56px; margin-bottom: 16px;">🌱</div>
+                            <h2 style="color: #10B981; margin: 0; font-size: 32px; font-weight: 800;">Create Your Account</h2>
+                            <p style="color: #94a3b8; margin: 8px 0 0 0; font-size: 15px;">Join our farming community today</p>
                         </div>
-                    """, unsafe_allow_html=True)
+                    ''', unsafe_allow_html=True)
                     
-                    r_user = st.text_input('Username', placeholder='Choose a username', key='reg_user')
-                    r_pw = st.text_input('Password', type='password', placeholder='Create a password', key='reg_pw')
-                    r_pw_confirm = st.text_input('Confirm Password', type='password', placeholder='Confirm password', key='reg_pw_confirm')
-                    r_role = st.selectbox('I am a', ['Farmer', 'Agricultural Expert'], key='reg_role')
+                    r_user = st.text_input('Username', placeholder='Choose a unique username', key='reg_user', label_visibility='visible')
+                    r_pw = st.text_input('Password', type='password', placeholder='Create a strong password', key='reg_pw', label_visibility='visible')
+                    r_pw_confirm = st.text_input('Confirm Password', type='password', placeholder='Confirm password', key='reg_pw_confirm', label_visibility='visible')
+                    r_role = st.selectbox('I am a', ['Farmer', 'Agricultural Expert'], key='reg_role', label_visibility='visible')
                     
-                    st.markdown('<div style="height: 10px"></div>', unsafe_allow_html=True)
-                    # Button style is White Pill via CSS
                     register_btn = st.button('Sign Up', use_container_width=True, type='primary', key='reg_btn')
                     
                     if register_btn:
-                        if not r_user or not r_pw:
+                        if not r_user or not r_pw or not r_pw_confirm:
                             st.error('Please fill all fields')
                         elif r_pw != r_pw_confirm:
                             st.error('Passwords do not match')
@@ -1909,32 +1324,46 @@ elif page == 'Community':
                                     st.rerun()
                             else:
                                 st.error('Registration failed (username exists)')
-                    
-                    # Footer Link Style
-                    st.markdown("""
-                        <div style="text-align: center; margin-top: 15px;">
-                            <p style="font-size: 14px; opacity: 0.9;">Already have an account?</p>
-                        </div>
-                    """, unsafe_allow_html=True)
-                    
-                    if st.button('Login Here', use_container_width=True, key='goto_login'):
-                        st.session_state['show_register'] = False
-                        st.rerun()
+                
+                # Footer outside container
+                st.markdown("""
+                    <div style="text-align: center; margin-top: 24px;">
+                        <p style="color: #94a3b8; font-size: 14px;">Already have an account?</p>
+                    </div>
+                """, unsafe_allow_html=True)
+                
+                if st.button('Login Here', use_container_width=True, key='goto_login'):
+                    st.session_state['show_register'] = False
+                    st.rerun()
 
             else:
-                # Login View
+                # LOGIN CARD - Use Streamlit's bordered container
+                query_params = st.query_params
+                is_admin_mode = query_params.get('admin', ['false'])[0].lower() == 'true' if isinstance(query_params.get('admin', ['false']), list) else query_params.get('admin', 'false').lower() == 'true'
+                
+                # Use Streamlit's bordered container
                 with st.container(border=True):
-                    # Hidden Marker for CSS targeting
-                    st.markdown('<div id="login-card-target"></div>', unsafe_allow_html=True)
-
-                    st.markdown("""
-                        <div style="text-align: center; margin-bottom: 30px;">
-                            <h2 style="font-size: 26px; font-weight: 700; margin: 0;">Login to Your Account</h2>
-                        </div>
-                    """, unsafe_allow_html=True)
+                    # Different header for admin vs regular login
+                    if is_admin_mode:
+                        st.markdown('''
+                            <div style="text-align: center; margin-bottom: 32px;">
+                                <div style="font-size: 56px; margin-bottom: 16px;">🔐</div>
+                                <h2 style="color: #FBBF24; margin: 0; font-size: 32px; font-weight: 800;">ADMIN LOGIN</h2>
+                                <p style="color: #FCD34D; margin: 8px 0 0 0; font-size: 15px; font-weight: 600;">Authorized Access Only</p>
+                            </div>
+                        ''', unsafe_allow_html=True)
+                    else:
+                        st.markdown('''
+                            <div style="text-align: center; margin-bottom: 32px;">
+                                <div style="font-size: 56px; margin-bottom: 16px;">👋</div>
+                                <h2 style="color: #60A5FA; margin: 0; font-size: 32px; font-weight: 800;">Welcome Back!</h2>
+                                <p style="color: #94a3b8; margin: 8px 0 0 0; font-size: 15px;">Login to continue to your account</p>
+                            </div>
+                        ''', unsafe_allow_html=True)
                     
-                    username = st.text_input('Username', placeholder='Username', key='login_user')
-                    password = st.text_input('Password', type='password', placeholder='Password', key='login_pw')
+                    # Inputs inside the container
+                    username = st.text_input('Username', placeholder='Enter your username', key='login_user', label_visibility='visible')
+                    password = st.text_input('Password', type='password', placeholder='Enter your password', key='login_pw', label_visibility='visible')
                     
                     st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
                     login_btn = st.button('Sign In', use_container_width=True, type='primary', key='login_btn')
@@ -1943,43 +1372,85 @@ elif page == 'Community':
                         if not username or not password:
                             st.error('Enter username & password')
                         else:
-                            u = cdb.authenticate(username, password)
-                            if u:
-                                st.session_state['user'] = u
-                                st.success(f'Welcome back, {u["username"]}!')
-                                st.rerun()
+                            if is_admin_mode and username == 'admin':
+                                u = cdb.authenticate_admin(username, password, ADMIN_PASSWORD)
+                                if u:
+                                    st.session_state['user'] = u
+                                    st.success(f'Welcome Admin!')
+                                    st.rerun()
+                                else:
+                                    st.error('Invalid admin credentials')
                             else:
-                                st.error('Invalid credentials')
-                    
-                    # Yellow/White Footer Links
+                                u = cdb.authenticate(username, password)
+                                if u:
+                                    st.session_state['user'] = u
+                                    st.success(f'Welcome back, {u["username"]}!')
+                                    st.rerun()
+                                else:
+                                    st.error('Invalid credentials')
+                
+                # Footer outside container
+                if not is_admin_mode:
                     st.markdown("""
                         <div style="text-align: center; margin-top: 20px;">
-                            <a href="#" style="color: #FCD34D; text-decoration: none; font-size: 14px; font-weight: 600;">Forgot Password?</a>
+                            <a href="#" style="color: #60A5FA; text-decoration: none; font-size: 14px; font-weight: 600;">Forgot Password?</a>
                             <div style="height: 10px;"></div>
-                            <span style="color: rgba(255,255,255,0.9); font-size: 14px;">First time user? </span>
+                            <span style="color: #94a3b8; font-size: 14px;">First time user? </span>
                         </div>
                     """, unsafe_allow_html=True)
                     
                     if st.button('Sign Up', key='goto_register', use_container_width=True):
                         st.session_state['show_register'] = True
                         st.rerun()
-            
+                else:
+                    st.markdown("""
+                        <div style="text-align: center; margin-top: 20px;">
+                            <p style="color: #FCD34D; font-size: 13px; font-style: italic; font-weight: 600;">
+                                🔒 Admin access is restricted to authorized personnel only
+                            </p>
+                        </div>
+                    """, unsafe_allow_html=True)
+
 
     
-    # If user is logged in, show dashboard
-    # If user is logged in, show dashboard
+    # If user is logged in, show ULTRA-MODERN dashboard
     else:
-        # User header with logout
+        # BEAUTIFUL USER HEADER CARD
         col1, col2 = st.columns([0.85, 0.15])
         with col1:
+            role_raw = user.get("role", "User")
+            role_display = "Expert" if role_raw.lower() == 'agricultural expert' else role_raw.title()
+            
+            # Determine role color
+            if role_raw.lower() == 'admin':
+                role_color = "#FBBF24"
+                role_bg = "linear-gradient(135deg, #FBBF24, #F59E0B)"
+            elif role_raw.lower() in ['expert', 'agricultural expert']:
+                role_color = "#A78BFA"
+                role_bg = "linear-gradient(135deg, #A78BFA, #8B5CF6)"
+            else:
+                role_color = "#10B981"
+                role_bg = "linear-gradient(135deg, #10B981, #059669)"
+            
             st.markdown(f'''
-            <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 20px;">
-                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #10B981, #059669); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 24px;">
-                    {user.get("username")[0].upper()}
-                </div>
-                <div>
-                    <h3 style="margin: 0; color: var(--text-primary);">Hello, {user.get("username")}!</h3>
-                    <p style="margin: 0; color: var(--text-secondary); font-size: 14px;">Logged in as {user.get("role").title()}</p>
+            <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%);
+            border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 20px; padding: 24px; margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(139, 92, 246, 0.15);">
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div style="width: 70px; height: 70px; background: {role_bg}; 
+                    border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                    color: white; font-size: 32px; font-weight: 800;
+                    box-shadow: 0 8px 24px rgba(139, 92, 246, 0.4);">
+                        {user.get("username")[0].upper()}
+                    </div>
+                    <div style="flex: 1;">
+                        <h3 style="margin: 0; color: #e2e8f0; font-size: 24px; font-weight: 700;">
+                            Hello, {user.get("username")}! 👋
+                        </h3>
+                        <p style="margin: 4px 0 0 0; color: #94a3b8; font-size: 15px;">
+                            Logged in as <span style="color: {role_color}; font-weight: 600;">{role_display}</span>
+                        </p>
+                    </div>
                 </div>
             </div>
             ''', unsafe_allow_html=True)
@@ -1991,8 +1462,199 @@ elif page == 'Community':
                 st.info('Logged out successfully')
                 st.rerun()
         
+        # ============================================
+        # ADMIN DASHBOARD
+        # ============================================
+        if user.get('role') == 'admin':
+            st.markdown("---")
+            st.markdown("## 🔐 Admin Control Panel")
+            st.caption("Complete system administration and monitoring")
+            
+            tab1, tab2, tab3, tab4 = st.tabs(['👥 User Management', '📊 System Analytics', '📰 Content Management', '🎓 Sessions Management'])
+            
+            # TAB 1: User Management
+            with tab1:
+                st.markdown("### 👥 Registered Users")
+                
+                users = cdb.get_all_users()
+                if users:
+                    st.markdown(f"**Total Users:** {len(users)}")
+                    
+                    # Display users in a nice table format
+                    for user_data in users:
+                        user_id, username, role = user_data
+                        
+                        col1, col2, col3, col4 = st.columns([0.5, 2, 2, 2])
+                        
+                        with col1:
+                            st.markdown(f"**#{user_id}**")
+                        
+                        with col2:
+                            st.markdown(f"**{username}**")
+                        
+                        with col3:
+                            role_badge_color = "#10B981" if role == "farmer" else "#0EA5E9"
+                            st.markdown(f'<span style="background: {role_badge_color}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{role.upper()}</span>', unsafe_allow_html=True)
+                        
+                        with col4:
+                            col_edit, col_delete = st.columns(2)
+                            
+                            with col_edit:
+                                new_role = st.selectbox(
+                                    "Change Role",
+                                    ["farmer", "agricultural expert"],
+                                    key=f"role_{user_id}",
+                                    label_visibility="collapsed"
+                                )
+                                if st.button("Update", key=f"update_{user_id}", use_container_width=True):
+                                    if cdb.update_user_role(username, new_role):
+                                        st.success(f"Updated {username}'s role to {new_role}")
+                                        st.rerun()
+                            
+                            with col_delete:
+                                if st.button("🗑️ Delete", key=f"delete_{user_id}", use_container_width=True):
+                                    if cdb.delete_user(username):
+                                        st.success(f"Deleted user {username}")
+                                        st.rerun()
+                        
+                        st.markdown("---")
+                else:
+                    st.info("No users registered yet.")
+            
+            # TAB 2: System Analytics
+            with tab2:
+                st.markdown("### 📊 System Overview")
+                
+                analytics = cdb.simple_analytics()
+                
+                # Display metrics in cards
+                col1, col2, col3, col4 = st.columns(4)
+                
+                with col1:
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #10B981, #059669); padding: 20px; border-radius: 12px; text-align: center; color: white;">
+                        <div style="font-size: 32px; font-weight: 800;">{analytics['users']}</div>
+                        <div style="font-size: 14px; opacity: 0.9;">Total Users</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col2:
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #0EA5E9, #0284C7); padding: 20px; border-radius: 12px; text-align: center; color: white;">
+                        <div style="font-size: 32px; font-weight: 800;">{analytics['posts']}</div>
+                        <div style="font-size: 14px; opacity: 0.9;">Total Posts</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col3:
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #8B5CF6, #7C3AED); padding: 20px; border-radius: 12px; text-align: center; color: white;">
+                        <div style="font-size: 32px; font-weight: 800;">{analytics['questions']}</div>
+                        <div style="font-size: 14px; opacity: 0.9;">Total Questions</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col4:
+                    st.markdown(f"""
+                    <div style="background: linear-gradient(135deg, #F59E0B, #D97706); padding: 20px; border-radius: 12px; text-align: center; color: white;">
+                        <div style="font-size: 32px; font-weight: 800;">{analytics['histories']}</div>
+                        <div style="font-size: 14px; opacity: 0.9;">Predictions Made</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                st.markdown("<div style='height: 30px'></div>", unsafe_allow_html=True)
+                
+                # Detailed user breakdown
+                st.markdown("### 👥 User Role Distribution")
+                users = cdb.get_all_users()
+                if users:
+                    farmer_count = sum(1 for u in users if u[2] == 'farmer')
+                    expert_count = sum(1 for u in users if u[2] in ['agricultural expert', 'expert'])
+                    
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        st.metric("Farmers", farmer_count)
+                    with col2:
+                        st.metric("Experts", expert_count)
+            
+            # TAB 3: Content Management
+            with tab3:
+                st.markdown("### 📰 Community Posts")
+                
+                posts = cdb.get_all_posts_admin()
+                if posts:
+                    for post in posts:
+                        post_id, title, content, author, created_at = post
+                        
+                        with st.expander(f"📄 {title} - by {author}"):
+                            st.markdown(f"**Posted:** {created_at}")
+                            st.markdown(f"**Content:** {content}")
+                            
+                            if st.button(f"🗑️ Delete Post", key=f"delete_post_{post_id}"):
+                                if cdb.delete_post(post_id):
+                                    st.success("Post deleted")
+                                    st.rerun()
+                else:
+                    st.info("No posts yet.")
+                
+                st.markdown("---")
+                st.markdown("### ❓ Questions")
+                
+                questions = cdb.get_all_questions_admin()
+                if questions:
+                    for q in questions:
+                        q_id, title, content, author, created_at, views, saves = q
+                        
+                        with st.expander(f"❓ {title} - by {author}"):
+                            st.markdown(f"**Asked:** {created_at}")
+                            st.markdown(f"**Views:** {views} | **Saves:** {saves}")
+                            st.markdown(f"**Question:** {content}")
+                            
+                            if st.button(f"🗑️ Delete Question", key=f"delete_q_{q_id}"):
+                                if cdb.delete_question(q_id):
+                                    st.success("Question deleted")
+                                    st.rerun()
+                else:
+                    st.info("No questions yet.")
+            
+            # TAB 4: Sessions Management
+            with tab4:
+                st.markdown("### 🎓 Create New Session")
+                
+                with st.form("create_session_form"):
+                    session_title = st.text_input("Session Title")
+                    session_link = st.text_input("Meeting Link (Zoom/Google Meet)")
+                    session_time = st.text_input("Scheduled Time (e.g., 'Tomorrow 3 PM')")
+                    session_expert = st.text_input("Expert Name")
+                    
+                    submit = st.form_submit_button("Create Session")
+                    
+                    if submit:
+                        if session_title and session_link and session_time and session_expert:
+                            if cdb.create_session(session_title, session_link, session_time, session_expert):
+                                st.success("Session created successfully!")
+                                st.rerun()
+                        else:
+                            st.error("Please fill all fields")
+                
+                st.markdown("---")
+                st.markdown("### 📅 Existing Sessions")
+                
+                sessions = cdb.list_sessions()
+                if sessions:
+                    for s in sessions:
+                        sid, stitle, slink, swhen, sexpert = s
+                        
+                        with st.expander(f"🎓 {stitle}"):
+                            st.markdown(f"**Expert:** {sexpert}")
+                            st.markdown(f"**Time:** {swhen}")
+                            st.markdown(f"**Link:** {slink}")
+                else:
+                    st.info("No sessions scheduled.")
+        
         # Farmer Dashboard
-        if user.get('role') == 'farmer':
+        elif user.get('role') == 'farmer':
+
             tab1, tab2, tab3, tab4 = st.tabs(['📰 Community Feed', '🤖 AI Crop Doctor', '🗣️ Ask an Expert', '📜 My History'])
             
             # TAB 1: Community Feed (Sessions + Posts)
@@ -2022,9 +1684,9 @@ elif page == 'Community':
                         for s in sessions:
                             sid, stitle, slink, swhen, sexpert = s
                             st.markdown(f'''
-                            <div class="app-card" style="padding: 20px; border-left: 5px solid #EF4444; background: linear-gradient(to right, #FEF2F2, white);">
+                            <div class="app-card" style="padding: 20px; border-left: 5px solid #EF4444; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 12px;">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <h4 style="margin:0; color: #B91C1C;">{stitle}</h4>
+                                    <h4 style="margin:0; color: #FCA5A5;">{stitle}</h4>
                                     <span style="background:#FEE2E2; color:#B91C1C; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">LIVE</span>
                                 </div>
                                 <div style="font-size: 13px; color: #7F1D1D; margin: 5px 0;">� {swhen} with {sexpert}</div>
@@ -2044,17 +1706,17 @@ elif page == 'Community':
                     
                     for author, title, body, time in stories:
                         st.markdown(f'''
-                        <div class="app-card" style="padding: 20px;">
+                        <div class="app-card" style="padding: 20px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
                             <div style="display:flex; gap:12px;">
                                 <div style="width:40px; height:40px; background:#10B981; border-radius:50%; color:white; display:flex; align-items:center; justify-content:center; font-weight:bold;">{author[0]}</div>
                                 <div>
-                                    <div style="font-weight:700; color:#374151;">{author}</div>
-                                    <div style="font-size:12px; color:#6B7280;">{time}</div>
+                                    <div style="font-weight:700; color:#e2e8f0;">{author}</div>
+                                    <div style="font-size:12px; color:#94a3b8;">{time}</div>
                                 </div>
                             </div>
                             <h4 style="margin: 10px 0 5px 0; color: var(--primary-green);">{title}</h4>
-                            <p style="color: #4B5563; font-size: 14px; margin:0;">{body}</p>
-                            <div style="margin-top:10px; display:flex; gap:15px; font-size:13px; color:#6B7280;">
+                            <p style="color: #94a3b8; font-size: 14px; margin:0;">{body}</p>
+                            <div style="margin-top:10px; display:flex; gap:15px; font-size:13px; color:#94a3b8;">
                                 <span>❤️ 24 Likes</span>
                                 <span>💬 5 Comments</span>
                             </div>
@@ -2068,9 +1730,9 @@ elif page == 'Community':
                         for p in posts:
                             pid, ptitle, pcontent, puser, pdate = p[0], p[1], p[2], p[3], p[4]
                             st.markdown(f'''
-                            <div style="padding: 15px; background: #F3F4F6; border-radius: 12px; margin-bottom: 10px;">
-                                <div style="font-weight:bold; color:#1F2937;">{ptitle}</div>
-                                <div style="color:#4B5563; font-size:13px;">{pcontent}</div>
+                            <div style="padding: 15px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px; margin-bottom: 10px;">
+                                <div style="font-weight:bold; color:#e2e8f0;">{ptitle}</div>
+                                <div style="color:#94a3b8; font-size:13px;">{pcontent}</div>
                                 <div style="font-size:11px; color:#9CA3AF; margin-top:5px;">Posted by {puser}</div>
                             </div>
                             ''', unsafe_allow_html=True)
@@ -2225,12 +1887,12 @@ elif page == 'Community':
                             
                             # Question Card
                             st.markdown(f'''
-                            <div class="app-card" style="margin-bottom: 20px; padding: 20px;">
+                            <div class="app-card" style="margin-bottom: 20px; padding: 20px; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
                                 <div style="display:flex; justify-content:space-between; align-items:flex-start;">
-                                    <h4 style="margin:0; color:#374151;">{qtitle}</h4>
+                                    <h4 style="margin:0; color:#e2e8f0;">{qtitle}</h4>
                                     <span style="font-size:12px; color:#9CA3AF;">{qdate}</span>
                                 </div>
-                                <p style="color:#4B5563; font-size:15px; margin-top:8px; line-height:1.5;">{qcontent}</p>
+                                <p style="color:#94a3b8; font-size:15px; margin-top:8px; line-height:1.5;">{qcontent}</p>
                             ''', unsafe_allow_html=True)
                             
                             # Answers Section
@@ -2238,15 +1900,15 @@ elif page == 'Community':
                             if ans:
                                 for a in ans:
                                     _, acontent, aexpert, adate, averified = a
-                                    badge = '<span style="background:#DCFCE7; color:#166534; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">VERIFIED EXPERT</span>' if averified else '<span style="background:#F3F4F6; color:#4B5563; padding:2px 8px; border-radius:12px; font-size:11px;">COMMUNITY REPLY</span>'
+                                    badge = '<span style="background:#10B981; color:white; padding:2px 8px; border-radius:12px; font-size:11px; font-weight:700;">VERIFIED EXPERT</span>' if averified else '<span style="background:rgba(139, 92, 246, 0.3); color:#A78BFA; padding:2px 8px; border-radius:12px; font-size:11px;">COMMUNITY REPLY</span>'
                                     
                                     st.markdown(f'''
-                                    <div style="background: #F8FAFC; padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid #E2E8F0;">
+                                    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.4) 0%, rgba(26, 31, 58, 0.5) 100%); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(139, 92, 246, 0.2);">
                                         <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
-                                            <div style="font-size:13px; font-weight:700; color:#1F2937;">{aexpert}</div>
+                                            <div style="font-size:13px; font-weight:700; color:#e2e8f0;">{aexpert}</div>
                                             {badge}
                                         </div>
-                                        <div style="color:#334155; font-size:14px; line-height:1.5;">{acontent}</div>
+                                        <div style="color:#94a3b8; font-size:14px; line-height:1.5;">{acontent}</div>
                                     </div>
                                     ''', unsafe_allow_html=True)
                             else:
@@ -2289,7 +1951,7 @@ elif page == 'Community':
                 </div>
             """, unsafe_allow_html=True)
 
-            tab1, tab2, tab3, tab4 = st.tabs(['💬 Q&A Hub', '📅 Live Sessions', '🌍 Organic Mapping', '🤖 AI Assistant'])
+            tab1, tab2, tab3 = st.tabs(['💬 Q&A Hub', '📅 Live Sessions', '🤖 AI Assistant'])
             
             # TAB 1: Q&A HUB
             with tab1:
@@ -2340,7 +2002,7 @@ elif page == 'Community':
                                 st.info("👀 Peer Review: Other experts have answered this. Review their advice below.")
                                 for a in ans:
                                     aid, acontent, aexpert, adate, averified = a[0], a[1], a[2], a[3], a[4]
-                                    icon = "🥇" if averified else "👨‍�"
+                                    icon = "🥇" if averified else "👨‍"
                                     bg = "#ecfdf5" if averified else "#eff6ff"
                                     st.markdown(f"""
                                     <div style="background: {bg}; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e5e7eb; margin-left: 20px;">
@@ -2405,6 +2067,7 @@ elif page == 'Community':
                             when_str = f"{s_date} {s_time}"
                             if hasattr(cdb, 'create_session'):
                                 cdb.create_session(s_title, s_link, when_str, user.get('username'))
+                                cdb.create_session(s_title, s_link, when_str, user.get('username'))
                                 st.success('Session Published!')
                                 st.rerun()
 
@@ -2425,38 +2088,8 @@ elif page == 'Community':
                     else:
                         st.info("No active sessions.")
 
-            # TAB 3: ORGANIC MAPPING (ADMIN)
+            # TAB 3: AI ASSISTANT (Moved up)
             with tab3:
-                st.markdown("### 🌍 Impact & Organic Resource Mapping")
-                st.markdown("Manage the database of organic fertilizers and crop recommendations here.")
-                
-                # Mock Data Editor for "Organic Mapping"
-                # In a real app, this would query cdb.get_fertilizers()
-                
-                col1, col2 = st.columns(2)
-                with col1:
-                    with st.container(border=True):
-                        st.metric("Total Farmers Assisted", "1,248", "+12%")
-                with col2:
-                    with st.container(border=True):
-                        st.metric("Organic Conversions", "856", "+5%")
-
-                st.markdown("#### 🥦 Suggested Fertilizer Database")
-                # Creating a mock dataframe to simulate the admin capability
-                import pandas as pd
-                mock_data = pd.DataFrame({
-                    'Soil Type': ['Clay', 'Sandy', 'Loamy', 'Silt'],
-                    'Nitrogen Level': ['High', 'Low', 'Medium', 'Low'],
-                    'Recommended Organic Fix': ['Compost Tea', 'Manure', 'Bio-Char', 'Green Manure'],
-                    'Mapping ID': ['ORG-001', 'ORG-002', 'ORG-003', 'ORG-004']
-                })
-                edited_df = st.data_editor(mock_data, use_container_width=True, num_rows="dynamic")
-                
-                if st.button("Save Mapping Changes"):
-                    st.success("Organic Mapping Database Updated Successfully!")
-
-            # TAB 4: AI ASSISTANT
-            with tab4:
                 render_ai_doctor()
 
 st.subheader('F2C Marketplace (Coming Soon)')

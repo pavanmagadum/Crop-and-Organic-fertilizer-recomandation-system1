@@ -1,3 +1,4 @@
+# Updated: 2025-12-28 - Fixed Join Stream button text color
 import streamlit as st, joblib, pandas as pd, os, json
 import sys
 from pathlib import Path
@@ -268,6 +269,93 @@ if os.path.exists(form_fix_path):
         form_css = f.read()
     st.markdown(f'<style>{form_css}</style>', unsafe_allow_html=True)
 
+# CRITICAL FIX: Inline CSS to disable text input in selectboxes (CACHE BUSTER: 2025-12-26-22:51)
+st.markdown('''
+<style>
+/* FORCE SELECTBOX TO BE DROPDOWN-ONLY - NO TEXT INPUT */
+[data-testid="stSelectbox"] input[role="combobox"] {
+    pointer-events: none !important;
+    caret-color: transparent !important;
+    cursor: pointer !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    background: rgba(30, 41, 59, 0.8) !important;
+}
+
+[data-testid="stSelectbox"] div[data-baseweb="select"] {
+    cursor: pointer !important;
+    pointer-events: auto !important;
+}
+
+[data-testid="stSelectbox"] input {
+    caret-color: transparent !important;
+    cursor: pointer !important;
+    pointer-events: none !important;
+}
+
+[data-testid="stSelectbox"] svg {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+</style>
+
+<script>
+// CRITICAL FIX: Make selectbox inputs readonly via JavaScript
+(function() {
+    function makeSelectboxesReadonly() {
+        const selectboxInputs = document.querySelectorAll('[data-testid="stSelectbox"] input[role="combobox"]');
+        selectboxInputs.forEach(input => {
+            // Set readonly attribute
+            input.setAttribute('readonly', 'readonly');
+            input.readOnly = true;
+            
+            // Prevent all keyboard events
+            input.addEventListener('keydown', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            input.addEventListener('keypress', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            input.addEventListener('keyup', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }, true);
+            
+            input.addEventListener('input', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }, true);
+        });
+    }
+    
+    // Run immediately
+    makeSelectboxesReadonly();
+    
+    // Run after DOM changes (for dynamically loaded selectboxes)
+    const observer = new MutationObserver(makeSelectboxesReadonly);
+    observer.observe(document.body, { childList: true, subtree: true });
+    
+    // Also run on page load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', makeSelectboxesReadonly);
+    }
+    
+    // Run periodically to catch any missed selectboxes
+    setInterval(makeSelectboxesReadonly, 500);
+})();
+</script>
+''', unsafe_allow_html=True)
+
 # Inline CSS commented out - Dark theme CSS file is now loaded instead
 # st.markdown('''
 # <style>
@@ -495,13 +583,13 @@ if page == 'Home':
                         Get personalized crop recommendations based on your soil's NPK levels, pH, 
                         rainfall, and temperature data.
                     </p>
-                    <div style="text-align: right;">
-                        <a href="?page=Prediction" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">⚡ Start Prediction</a>
-                    </div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
+        if st.button('⚡ Start Prediction', key='home_pred_btn', use_container_width=False):
+            st.session_state['page'] = 'Prediction'
+            st.rerun()
         
         st.markdown("<br>", unsafe_allow_html=True)
         
@@ -516,13 +604,13 @@ if page == 'Home':
                         Download detailed PDF guides with step-by-step recipes and instructions 
                         for making organic fertilizers at home.
                     </p>
-                    <div style="text-align: right;">
-                        <a href="?page=Preparation" style="background: linear-gradient(135deg, #8B5CF6 0%, #7C3AED 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">📚 View Guides</a>
-                    </div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
+        if st.button('📚 View Guides', key='home_prep_btn', use_container_width=False):
+            st.session_state['page'] = 'Preparation'
+            st.rerun()
     
     with col2:
         # Card 2: Organic Fertilizer
@@ -536,13 +624,13 @@ if page == 'Home':
                         Convert conventional fertilizers to organic alternatives with our 
                         comprehensive conversion tool and preparation guides.
                     </p>
-                    <div style="text-align: right;">
-                        <a href="?page=Preparation" style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">🌱 Convert Now</a>
-                    </div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
+        if st.button('🌱 Convert Now', key='home_convert_btn', use_container_width=False):
+            st.session_state['page'] = 'Preparation'
+            st.rerun()
         
         st.markdown("<br>", unsafe_allow_html=True)
         
@@ -557,13 +645,13 @@ if page == 'Home':
                         Connect with agricultural experts and farmers. Ask questions and get 
                         verified answers from professionals.
                     </p>
-                    <div style="text-align: right;">
-                        <a href="?page=Community" style="background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: white; padding: 8px 20px; border-radius: 8px; text-decoration: none; font-size: 13px; font-weight: 600; display: inline-block;">👋 Join Community</a>
-                    </div>
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
+        if st.button('👋 Join Community', key='home_comm_btn', use_container_width=False):
+            st.session_state['page'] = 'Community'
+            st.rerun()
 
 elif page == 'Prediction':
     # Title and subtitle
@@ -593,9 +681,11 @@ elif page == 'Prediction':
             st.markdown('<p style="color: #e2e8f0; font-weight: 600; margin-bottom: 12px; font-size: 15px;">📍 Location & Soil</p>', unsafe_allow_html=True)
             cols = st.columns(2, gap='medium')
             with cols[0]:
-                region = st.selectbox('Region / Zone', ['North','South','East','West','Central'], label_visibility='visible')
+                st.markdown('<p style="color: #94a3b8; font-size: 13px; margin-bottom: 6px; font-weight: 500;">Region / Zone</p>', unsafe_allow_html=True)
+                region = st.radio('Region / Zone', ['North','South','East','West','Central'], label_visibility='collapsed', key='region_select', horizontal=False)
             with cols[1]:
-                soil = st.selectbox('Soil Texture', ['Loamy','Sandy','Clayey','Silty'], label_visibility='visible')
+                st.markdown('<p style="color: #94a3b8; font-size: 13px; margin-bottom: 6px; font-weight: 500;">Soil Texture</p>', unsafe_allow_html=True)
+                soil = st.radio('Soil Texture', ['Loamy','Sandy','Clayey','Silty'], label_visibility='collapsed', key='soil_select', horizontal=False)
             
             st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
             
@@ -1235,8 +1325,8 @@ elif page == 'Preparation':
                                 col_idx = i % 3
                                 with vcols[col_idx]:
                                     st.markdown(f"""
-                                    <div style="background:white; border-radius:8px; overflow:hidden; border:1px solid #E5E7EB; height:100%;">
-                                        <div style="padding:10px; font-weight:600; font-size:14px; height:60px; overflow:hidden; text-overflow:ellipsis; background:#F9FAFB; border-bottom:1px solid #E5E7EB;">
+                                    <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border-radius:8px; overflow:hidden; border:1px solid rgba(139, 92, 246, 0.3); height:100%;">
+                                        <div style="padding:10px; font-weight:600; font-size:14px; height:60px; overflow:hidden; text-overflow:ellipsis; background: rgba(139, 92, 246, 0.1); border-bottom:1px solid rgba(139, 92, 246, 0.2); color: #e2e8f0;">
                                             {v.get('title')}
                                         </div>
                                     </div>
@@ -1296,7 +1386,7 @@ elif page == 'Community':
                     r_user = st.text_input('Username', placeholder='Choose a unique username', key='reg_user', label_visibility='visible')
                     r_pw = st.text_input('Password', type='password', placeholder='Create a strong password', key='reg_pw', label_visibility='visible')
                     r_pw_confirm = st.text_input('Confirm Password', type='password', placeholder='Confirm password', key='reg_pw_confirm', label_visibility='visible')
-                    r_role = st.selectbox('I am a', ['Farmer', 'Agricultural Expert'], key='reg_role', label_visibility='visible')
+                    r_role = st.radio('I am a', ['Farmer', 'Agricultural Expert'], key='reg_role', label_visibility='visible', horizontal=False)
                     
                     register_btn = st.button('Sign Up', use_container_width=True, type='primary', key='reg_btn')
                     
@@ -1492,11 +1582,12 @@ elif page == 'Community':
                             col_edit, col_delete = st.columns(2)
                             
                             with col_edit:
-                                new_role = st.selectbox(
+                                new_role = st.radio(
                                     "Change Role",
                                     ["farmer", "agricultural expert"],
                                     key=f"role_{user_id}",
-                                    label_visibility="collapsed"
+                                    label_visibility="collapsed",
+                                    horizontal=False
                                 )
                                 if st.button("Update", key=f"update_{user_id}", use_container_width=True):
                                     if cdb.update_user_role(username, new_role):
@@ -1681,8 +1772,8 @@ elif page == 'Community':
                                     <h4 style="margin:0; color: #FCA5A5;">{stitle}</h4>
                                     <span style="background:#FEE2E2; color:#B91C1C; padding:2px 8px; border-radius:10px; font-size:11px; font-weight:700;">LIVE</span>
                                 </div>
-                                <div style="font-size: 13px; color: #7F1D1D; margin: 5px 0;">� {swhen} with {sexpert}</div>
-                                <a href="{slink}" target="_blank" class="action-btn" style="background:#EF4444; margin-top:5px;">Join Stream</a>
+                                <div style="font-size: 13px; color: #7F1D1D; margin: 5px 0;"> {swhen} with {sexpert}</div>
+                                <a href="{slink}" target="_blank" class="action-btn" style="background:#EF4444; color:#FFFFFF; margin-top:5px;">Join Stream</a>
                             </div>
                             ''', unsafe_allow_html=True)
                     
@@ -1781,11 +1872,6 @@ elif page == 'Community':
                         import time
                         with st.spinner('AI Doctor is examining the leaf patterns...'):
                             time.sleep(1.5)
-                        
-                        st.markdown("---")
-                        st.markdown("#### Diagnosis Result")
-                        st.error("🚨 **Early Blight** Detected (94% Confidence)")
-                        st.markdown("This is a common fungal disease affecting tomato and potato plants.")
                 
                 with col_ai_right:
                     if uploaded_file is not None:
@@ -1813,14 +1899,20 @@ elif page == 'Community':
                         
                         # 3. CHEMICAL OPTION (Always Visible now)
                         st.markdown("""
-                        <div class="app-card" style="background:#FFF1F2; border:1px solid #FECDD3; padding:20px; margin-top:15px;">
-                            <h4 style="margin-top:0; color:#9F1239;">🧪 Non-Organic / Chemical Option (Fast Action)</h4>
-                            <p style="font-weight:bold; color:#881337; margin-bottom:10px;">Copper Fungicide or Mancozeb</p>
-                            <div style="background:#FEF3C7; border-left:4px solid #F59E0B; color:#92400E; padding:12px; border-radius:8px; font-size:14px;">
+                        <div class="app-card" style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border:1px solid rgba(239, 68, 68, 0.3); padding:20px; margin-top:15px; border-radius:12px;">
+                            <h4 style="margin-top:0; color:#FCA5A5;">🧪 Non-Organic / Chemical Option (Fast Action)</h4>
+                            <p style="font-weight:bold; color:#e2e8f0; margin-bottom:10px;">Copper Fungicide or Mancozeb</p>
+                            <div style="background: rgba(251, 191, 36, 0.2); border-left:4px solid #F59E0B; color:#FCD34D; padding:12px; border-radius:8px; font-size:14px;">
                                 ⚠️ Use protective gear. Do not spray 3 days before harvest.
                             </div>
                         </div>
                         """, unsafe_allow_html=True)
+                        
+                        # DIAGNOSIS RESULT (Moved here)
+                        st.markdown("---")
+                        st.markdown("### 🔬 Diagnosis Result")
+                        st.error("🚨 **Early Blight** Detected (94% Confidence)")
+                        st.markdown("This is a common fungal disease affecting tomato and potato plants.")
                         
                         st.caption("Disclaimer: AI advice is experimental. Always consult an expert if unsure.")
                     
@@ -1950,7 +2042,7 @@ elif page == 'Community':
                 col_ctrl1, col_ctrl2 = st.columns([2, 2])
                 with col_ctrl1:
                     # Renamed filter to be more explicit about functionality
-                    q_filter = st.selectbox('View Mode', ['Unanswered Questions', 'All Discussions (Peer Review)'], key='q_filter')
+                    q_filter = st.radio('View Mode', ['Unanswered Questions', 'All Discussions (Peer Review)'], key='q_filter', horizontal=True, label_visibility='visible')
                 
                 qs = cdb.list_questions()
                 if qs:
@@ -1974,16 +2066,16 @@ elif page == 'Community':
                         
                         with st.container():
                             st.markdown(f'''
-                            <div class="app-card" style="padding: 24px; border-left: 4px solid {card_color};">
+                            <div class="app-card" style="padding: 24px; border-left: 4px solid {card_color}; background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 12px;">
                                 <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                                    <span style="background: #F3F4F6; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #4B5563;">{status_text}</span>
-                                    <span style="font-size: 13px; color: #6B7280;">{qdate}</span>
+                                    <span style="background: rgba(139, 92, 246, 0.2); padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 600; color: #A78BFA;">{status_text}</span>
+                                    <span style="font-size: 13px; color: #94a3b8;">{qdate}</span>
                                 </div>
-                                <h3 style="margin: 0 0 10px 0; color: var(--text-primary); font-size: 18px;">{qtitle}</h3>
-                                <p style="color: var(--text-secondary); margin-bottom: 15px;">{qcontent}</p>
+                                <h3 style="margin: 0 0 10px 0; color: #e2e8f0; font-size: 18px;">{qtitle}</h3>
+                                <p style="color: #94a3b8; margin-bottom: 15px;">{qcontent}</p>
                                 <div style="display: flex; align-items: center; gap: 10px; font-size: 13px;">
-                                    <div style="width: 24px; height: 24px; background: #E5E7EB; border-radius: 50%; display: flex; align-items: center; justify-content: center;">👤</div>
-                                    <span style="font-weight: 500;">{quser}</span>
+                                    <div style="width: 24px; height: 24px; background: rgba(139, 92, 246, 0.3); border-radius: 50%; display: flex; align-items: center; justify-content: center;">👤</div>
+                                    <span style="font-weight: 500; color: #e2e8f0;">{quser}</span>
                                 </div>
                             </div>
                             ''', unsafe_allow_html=True)
@@ -1994,11 +2086,12 @@ elif page == 'Community':
                                 for a in ans:
                                     aid, acontent, aexpert, adate, averified = a[0], a[1], a[2], a[3], a[4]
                                     icon = "🥇" if averified else "👨‍"
-                                    bg = "#ecfdf5" if averified else "#eff6ff"
+                                    bg = "rgba(16, 185, 129, 0.2)" if averified else "rgba(139, 92, 246, 0.2)"
+                                    border_color = "rgba(16, 185, 129, 0.3)" if averified else "rgba(139, 92, 246, 0.3)"
                                     st.markdown(f"""
-                                    <div style="background: {bg}; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e5e7eb; margin-left: 20px;">
-                                        <div style="font-weight: 600; font-size: 13px; color: #1e40af; margin-bottom: 4px;">{icon} Expert {aexpert} said:</div>
-                                        <div style="font-size: 14px; color: #374151;">{acontent}</div>
+                                    <div style="background: {bg}; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid {border_color}; margin-left: 20px;">
+                                        <div style="font-weight: 600; font-size: 13px; color: #A78BFA; margin-bottom: 4px;">{icon} Expert {aexpert} said:</div>
+                                        <div style="font-size: 14px; color: #e2e8f0;">{acontent}</div>
                                     </div>
                                     """, unsafe_allow_html=True)
                                     

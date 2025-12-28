@@ -1561,44 +1561,131 @@ elif page == 'Community':
                 users = cdb.get_all_users()
                 if users:
                     st.markdown(f"**Total Users:** {len(users)}")
+                    st.markdown('<div style="height: 20px"></div>', unsafe_allow_html=True)
                     
-                    # Display users in a nice table format
+                    # Display users in beautiful cards with login info
                     for user_data in users:
-                        user_id, username, role = user_data
+                        # Handle both old (3 columns) and new (5 columns) database schemas
+                        if len(user_data) == 5:
+                            user_id, username, role, created_at, last_login = user_data
+                        elif len(user_data) == 3:
+                            user_id, username, role = user_data
+                            created_at = None
+                            last_login = None
+                        else:
+                            # Fallback for unexpected data
+                            continue
                         
-                        col1, col2, col3, col4 = st.columns([0.5, 2, 2, 2])
                         
-                        with col1:
-                            st.markdown(f"**#{user_id}**")
+                        # Format dates nicely
+                        if created_at and created_at != 'None' and created_at != '':
+                            try:
+                                from datetime import datetime
+                                created_dt = datetime.fromisoformat(created_at)
+                                created_display = created_dt.strftime("%b %d, %Y at %I:%M %p")
+                            except Exception as e:
+                                created_display = str(created_at) if created_at else "Unknown"
+                        else:
+                            created_display = "Unknown"
                         
-                        with col2:
-                            st.markdown(f"**{username}**")
+                        if last_login and last_login != 'None' and last_login != '':
+                            try:
+                                from datetime import datetime
+                                login_dt = datetime.fromisoformat(last_login)
+                                last_login_display = login_dt.strftime("%b %d, %Y at %I:%M %p")
+                                
+                                # Calculate time since last login
+                                time_diff = datetime.now() - login_dt
+                                if time_diff.days == 0:
+                                    if time_diff.seconds < 60:
+                                        time_ago = "Just now"
+                                    elif time_diff.seconds < 3600:
+                                        time_ago = f"{time_diff.seconds // 60} minutes ago"
+                                    else:
+                                        time_ago = f"{time_diff.seconds // 3600} hours ago"
+                                elif time_diff.days == 1:
+                                    time_ago = "Yesterday"
+                                else:
+                                    time_ago = f"{time_diff.days} days ago"
+                            except Exception as e:
+                                last_login_display = str(last_login) if last_login else "Never"
+                                time_ago = ""
+                        else:
+                            last_login_display = "Never logged in"
+                            time_ago = ""
                         
-                        with col3:
-                            role_badge_color = "#10B981" if role == "farmer" else "#0EA5E9"
-                            st.markdown(f'<span style="background: {role_badge_color}; color: white; padding: 4px 12px; border-radius: 12px; font-size: 12px; font-weight: 600;">{role.upper()}</span>', unsafe_allow_html=True)
+                        # Role badge color
+                        if role == "admin":
+                            role_badge_color = "#FBBF24"
+                            role_icon = "🔐"
+                        elif role in ["agricultural expert", "expert"]:
+                            role_badge_color = "#8B5CF6"
+                            role_icon = "👨‍🔬"
+                        else:
+                            role_badge_color = "#10B981"
+                            role_icon = "🧑‍🌾"
                         
-                        with col4:
-                            col_edit, col_delete = st.columns(2)
+                        # Beautiful user card - Use components.html to force rendering
+                        html_content = f'''
+                        <div style="background: linear-gradient(135deg, rgba(30, 41, 59, 0.6) 0%, rgba(26, 31, 58, 0.7) 100%); 
+                        border: 2px solid rgba(139, 92, 246, 0.3); border-radius: 16px; padding: 24px; margin-bottom: 16px;
+                        box-shadow: 0 8px 24px rgba(139, 92, 246, 0.2);">
+                            <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 20px;">
+                                <div style="width: 60px; height: 60px; background: linear-gradient(135deg, {role_badge_color}, {role_badge_color}dd); 
+                                border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+                                color: white; font-size: 28px; font-weight: 800; box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);">
+                                    {username[0].upper()}
+                                </div>
+                                <div style="flex: 1;">
+                                    <h3 style="margin: 0; color: #e2e8f0; font-size: 22px; font-weight: 700;">{username}</h3>
+                                    <div style="margin-top: 6px;">
+                                        <span style="background: {role_badge_color}; color: white; padding: 5px 14px; border-radius: 14px; 
+                                        font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;">
+                                            {role_icon} {role.upper()}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
                             
-                            with col_edit:
-                                new_role = st.radio(
-                                    "Change Role",
-                                    ["farmer", "agricultural expert"],
-                                    key=f"role_{user_id}",
-                                    label_visibility="collapsed",
-                                    horizontal=False
-                                )
-                                if st.button("Update", key=f"update_{user_id}", use_container_width=True):
-                                    if cdb.update_user_role(username, new_role):
-                                        st.success(f"Updated {username}'s role to {new_role}")
-                                        st.rerun()
-                            
-                            with col_delete:
-                                if st.button("🗑️ Delete", key=f"delete_{user_id}", use_container_width=True):
-                                    if cdb.delete_user(username):
-                                        st.success(f"Deleted user {username}")
-                                        st.rerun()
+                            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; 
+                            padding: 16px; background: rgba(139, 92, 246, 0.15); border-radius: 12px; border: 1px solid rgba(139, 92, 246, 0.3);">
+                                <div>
+                                    <div style="color: #94a3b8; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">📅 Registered</div>
+                                    <div style="color: #e2e8f0; font-size: 15px; font-weight: 600;">{created_display}</div>
+                                </div>
+                                <div>
+                                    <div style="color: #94a3b8; font-size: 11px; font-weight: 700; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px;">🕐 Last Login</div>
+                                    <div style="color: #00d9ff; font-size: 15px; font-weight: 700;">{last_login_display}</div>
+                                    {f'<div style="color: #A78BFA; font-size: 12px; margin-top: 4px; font-style: italic;">{time_ago}</div>' if time_ago else ''}
+                                </div>
+                            </div>
+                        </div>
+                        '''
+                        components.html(html_content, height=200)
+                        
+                        # Action buttons below the card
+                        col_edit, col_delete = st.columns([3, 1])
+                        
+                        with col_edit:
+                            st.markdown("**Change Role:**")
+                            new_role = st.radio(
+                                "Select Role",
+                                ["farmer", "agricultural expert"],
+                                key=f"role_{user_id}",
+                                label_visibility="collapsed",
+                                horizontal=True
+                            )
+                            if st.button("✅ Update Role", key=f"update_{user_id}", use_container_width=True, type="primary"):
+                                if cdb.update_user_role(username, new_role):
+                                    st.success(f"✅ Updated {username}'s role to {new_role}")
+                                    st.rerun()
+                        
+                        with col_delete:
+                            st.markdown('<div style="height: 28px"></div>', unsafe_allow_html=True)
+                            if st.button("🗑️ Delete User", key=f"delete_{user_id}", use_container_width=True):
+                                if cdb.delete_user(username):
+                                    st.success(f"🗑️ Deleted user {username}")
+                                    st.rerun()
                         
                         st.markdown("---")
                 else:

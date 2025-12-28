@@ -4,7 +4,7 @@ def init_db(path=DB_PATH):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     conn = sqlite3.connect(path)
     c = conn.cursor()
-    c.execute('''CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT, role TEXT)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS users(id INTEGER PRIMARY KEY, username TEXT UNIQUE, password TEXT, role TEXT, created_at TEXT, last_login TEXT)''')
     c.execute('''CREATE TABLE IF NOT EXISTS posts(id INTEGER PRIMARY KEY, title TEXT, content TEXT, author TEXT, created_at TEXT)''')
     c.execute('''CREATE TABLE IF NOT EXISTS sessions(id INTEGER PRIMARY KEY, title TEXT, link TEXT, scheduled_at TEXT, expert TEXT)''')
     c.execute('''CREATE TABLE IF NOT EXISTS comments(id INTEGER PRIMARY KEY, post_id INTEGER, user TEXT, content TEXT, created_at TEXT)''')
@@ -15,12 +15,24 @@ def init_db(path=DB_PATH):
     # questions and answers
     c.execute('''CREATE TABLE IF NOT EXISTS questions(id INTEGER PRIMARY KEY, title TEXT, content TEXT, author TEXT, attachment_path TEXT, created_at TEXT, views INTEGER DEFAULT 0, saves INTEGER DEFAULT 0)''')
     c.execute('''CREATE TABLE IF NOT EXISTS answers(id INTEGER PRIMARY KEY, question_id INTEGER, content TEXT, expert TEXT, created_at TEXT, verified INTEGER DEFAULT 0)''')
+    
+    # Migration: Add columns if they don't exist (for existing databases)
+    try:
+        c.execute("ALTER TABLE users ADD COLUMN created_at TEXT")
+    except:
+        pass
+    try:
+        c.execute("ALTER TABLE users ADD COLUMN last_login TEXT")
+    except:
+        pass
+    
     conn.commit(); conn.close()
 def hash_pass(pw): return hashlib.sha256(pw.encode()).hexdigest()
 def create_user(username, password, role='farmer', path=DB_PATH):
     conn = sqlite3.connect(path); c = conn.cursor()
     try:
-        c.execute('INSERT INTO users(username,password,role) VALUES (?,?,?)',(username,hash_pass(password),role))
+        created_at = datetime.datetime.now().isoformat()
+        c.execute('INSERT INTO users(username,password,role,created_at) VALUES (?,?,?,?)',(username,hash_pass(password),role,created_at))
         conn.commit(); return True
     except Exception as e:
         return False
@@ -30,10 +42,18 @@ def authenticate(username, password, path=DB_PATH):
     conn = sqlite3.connect(path); c = conn.cursor()
     c.execute('SELECT password, role FROM users WHERE username=?',(username,))
     row = c.fetchone()
-    conn.close()
-    if not row: return None
+    if not row: 
+        conn.close()
+        return None
     stored, role = row
-    if stored == hash_pass(password): return {'username':username,'role':role}
+    if stored == hash_pass(password):
+        # Update last_login timestamp
+        login_time = datetime.datetime.now().isoformat()
+        c.execute('UPDATE users SET last_login=? WHERE username=?', (login_time, username))
+        conn.commit()
+        conn.close()
+        return {'username':username,'role':role}
+    conn.close()
     return None
 def create_post(title, content, author, path=DB_PATH):
     conn = sqlite3.connect(path); c = conn.cursor()
@@ -124,9 +144,10 @@ def authenticate_admin(username, password, admin_password_env):
     return None
 
 def get_all_users(path=DB_PATH):
-    """Get all registered users (for admin dashboard)"""
+    """Get all registered users with login info (for admin dashboard)"""
+    # Updated: 2025-12-28 - Returns 5 columns including created_at and last_login
     conn = sqlite3.connect(path); c = conn.cursor()
-    c.execute('SELECT id, username, role FROM users ORDER BY id DESC')
+    c.execute('SELECT id, username, role, created_at, last_login FROM users ORDER BY id DESC')
     rows = c.fetchall(); conn.close(); return rows
 
 def delete_user(username, path=DB_PATH):

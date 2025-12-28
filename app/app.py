@@ -1091,8 +1091,8 @@ elif page == 'Prediction':
                     # Update layout for dark theme and responsiveness
                     fig.update_layout(
                         showlegend=False,
-                        margin=dict(l=20, r=20, t=80, b=20),
-                        height=450,
+                        margin=dict(l=50, r=50, t=80, b=50),  # Increased margins to prevent label cutoff
+                        height=500,  # Increased height for better visibility
                         paper_bgcolor='rgba(0,0,0,0)',
                         plot_bgcolor='rgba(0,0,0,0)',
                         font=dict(size=15, color='#e2e8f0', family='Arial, sans-serif'),
@@ -1115,11 +1115,62 @@ elif page == 'Prediction':
                                 showarrow=False,
                                 font=dict(size=16, color='#90EE90', family='Arial Black')
                             )
-                        ]
+                        ],
+                        uniformtext_minsize=10,  # Ensure labels are readable
+                        uniformtext_mode='hide'  # Hide labels that don't fit instead of overlapping
                     )
                     
                     # Display chart with responsive width (INSIDE THE CONTAINER)
                     st.plotly_chart(fig, use_container_width=True, config={'displayModeBar': False})
+                    
+                    # Add color legends below the charts
+                    col_legend1, col_legend2 = st.columns(2)
+                    
+                    with col_legend1:
+                        st.markdown("**🎨 Non-Organic Components:**")
+                        st.markdown(f'''
+                        <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: rgba(30, 41, 59, 0.3); border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #FF6B6B; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Urea (40%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #FFA07A; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">DAP (30%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #FFD700; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Potash (20%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #FF8C00; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Ammonium (10%)</span>
+                            </div>
+                        </div>
+                        ''', unsafe_allow_html=True)
+                    
+                    with col_legend2:
+                        st.markdown("**🌿 Organic Components:**")
+                        st.markdown(f'''
+                        <div style="display: flex; flex-direction: column; gap: 8px; padding: 12px; background: rgba(30, 41, 59, 0.3); border-radius: 8px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #2D5016; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Compost (30%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #6B8E23; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Fish Emulsion (25%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #8FBC8F; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Neem Cake (25%)</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 20px; height: 20px; background: #90EE90; border-radius: 4px;"></div>
+                                <span style="color: #e2e8f0;">Vermicompost (20%)</span>
+                            </div>
+                        </div>
+                        ''', unsafe_allow_html=True)
                 
                 # Removed preparation steps section - already available on Preparation page
                 st.button('📋 View Full Preparation Guide', 

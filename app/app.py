@@ -450,74 +450,51 @@ st.markdown('''
 # </style>
 # ''', unsafe_allow_html=True)
 
+# TOP NAVIGATION BAR with WORKING LINKS
+st.markdown("""
+<div style="background: rgba(21, 25, 50, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid #2d3748; padding: 0.8rem 2rem; position: sticky; top: 0; z-index: 1000; margin: 0;">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; width: 100%;">
+        <div style="font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 10px;">
+            🌾 Climate-Aware Farming
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
 # Initialize session state for page navigation
 if 'page' not in st.session_state:
     st.session_state['page'] = 'Home'
 
-# TOP NAVIGATION BAR with INTEGRATED BUTTONS
-with st.container():
-    # BRUTE FORCE override of the Magic CSS
-    st.markdown("""
-    <style>
-        /* Target buttons in columns 2, 3, 4, and 5 of the header row */
-        div[data-testid="column"]:nth-child(2) button,
-        div[data-testid="column"]:nth-child(3) button,
-        div[data-testid="column"]:nth-child(4) button,
-        div[data-testid="column"]:nth-child(5) button {
-            background: #1e293b !important; /* Solid dark background */
-            background-image: none !important; /* Force kill gradients */
-            border: 1px solid rgba(255, 255, 255, 0.2) !important;
-            color: #ffffff !important;
-            width: 160px !important; /* FORCED UNIFORM LARGE WIDTH */
-            height: 48px !important;
-            border-radius: 10px !important;
-            box-shadow: none !important;
-            font-weight: 700 !important;
-            margin-top: 20px !important; /* VERTICAL ALIGNMENT */
-            padding: 0 !important;
-        }
-        
-        div[data-testid="column"]:nth-child(2) button:hover,
-        div[data-testid="column"]:nth-child(3) button:hover,
-        div[data-testid="column"]:nth-child(4) button:hover,
-        div[data-testid="column"]:nth-child(5) button:hover {
-            border-color: #00d9ff !important;
-            color: #00d9ff !important;
-            background: #2d3748 !important;
-        }
-    </style>
-    <div id="header-bar-anchor"></div>
-    """, unsafe_allow_html=True)
-    
-    # Create the columns
-    h_col1, h_col2, h_col3, h_col4, h_col5 = st.columns([3, 1, 1, 1, 1])
-    
-    with h_col1:
-        st.markdown("""
-        <div style="font-size: 24px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 12px; padding: 25px 0 0 20px;">
-            🌾 Climate-Aware Farming
-        </div>
-        """, unsafe_allow_html=True)
+# NAV WRAPPER - This will handle the buttons
+# Use a custom div to target with CSS for stickiness if needed
+st.markdown('<div class="nav-container-wrapper">', unsafe_allow_html=True)
+nav_col1, nav_col2, nav_col3, nav_col4, nav_col5 = st.columns([3, 1, 1, 1, 1])
 
-    with h_col2:
-        if st.button("Home", key="nav_home"):
-            st.session_state['page'] = 'Home'
+with nav_col1:
+    st.markdown("", unsafe_allow_html=True)  # Spacer
 
-    with h_col3:
-        if st.button("Prediction", key="nav_pred"):
-            st.session_state['page'] = 'Prediction'
+with nav_col2:
+    if st.button("🏠 Home", key="nav_home", use_container_width=True):
+        st.session_state['page'] = 'Home'
+        st.rerun()
 
-    with h_col4:
-        if st.button("Preparation", key="nav_prep"):
-            st.session_state['page'] = 'Preparation'
+with nav_col3:
+    if st.button("🎯 Prediction", key="nav_pred", use_container_width=True):
+        st.session_state['page'] = 'Prediction'
+        st.rerun()
 
-    with h_col5:
-        if st.button("Community", key="nav_comm"):
-            st.session_state['page'] = 'Community'
+with nav_col4:
+    if st.button("📋 Preparation", key="nav_prep", use_container_width=True):
+        st.session_state['page'] = 'Preparation'
+        st.rerun()
 
-# Add spacing after header
-st.markdown('<div style="margin-bottom: 30px;"></div>', unsafe_allow_html=True)
+with nav_col5:
+    if st.button("🤝 Community", key="nav_comm", use_container_width=True):
+        st.session_state['page'] = 'Community'
+        st.rerun()
+st.markdown('</div>', unsafe_allow_html=True)
 
+st.markdown('<br>', unsafe_allow_html=True)
 
 # Get current page
 page = st.session_state['page']

@@ -70,9 +70,19 @@ section.main>div {
 
 .main .block-container {
     background: transparent !important;
-    max-width: 1400px !important;
-    padding: 0 2rem 2rem 2rem !important;
+    max-width: 100% !important;
+    /* Allow content to reach edges if needed */
+    padding: 0 !important;
+    /* Remove container padding to allow full-width header */
     margin: 0 auto !important;
+}
+
+/* Add padding back to the main content area only, not the header */
+[data-testid="stVerticalBlock"]>div:not(.nav-container-wrapper):not(:first-child) {
+    padding: 0 2rem !important;
+    max-width: 1400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
 }
 
 /* ============================================
@@ -459,7 +469,26 @@ input::placeholder {
 /* ============================================
    BUTTONS - ENHANCED MAGIC CSS
    ============================================ */
-/* Global magic styles for buttons in columns are handled by the general stButton styles below */
+/* Navigation buttons - styled as header links */
+[data-testid="column"] .stButton>button {
+    background: transparent !important;
+    color: #e2e8f0 !important;
+    border: none !important;
+    border-radius: 6px !important;
+    padding: 8px 16px !important;
+    font-size: 14px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: none !important;
+    width: auto !important;
+}
+
+[data-testid="column"] .stButton>button:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--accent-cyan) !important;
+    transform: none !important;
+    box-shadow: none !important;
+}
 
 /* Primary action buttons with gradient and animation */
 .stFormSubmitButton>button,
@@ -1373,63 +1402,51 @@ div[role='alert'] p {
 }
 
 /* ============================================
-   INTEGRATED HEADER & NAVIGATION
+   STICKY HEADER INTEGRATION - FULL WIDTH
    ============================================ */
-/* Target the header bar with natural margins to avoid corruption */
-div[data-testid="stVerticalBlock"]:has(#header-bar-anchor) {
-    background: rgba(21, 25, 50, 0.98) !important;
-    backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid #2d3748 !important;
-    padding: 10px 20px !important;
+.nav-container-wrapper {
     position: sticky !important;
     top: 0 !important;
-    z-index: 99999 !important;
-    margin: -1rem 0 2rem 0 !important;
-    border-radius: 12px !important;
+    z-index: 1001 !important;
+    margin-top: -65px !important;
+    /* Pull buttons up into the markdown bar */
+    width: 100% !important;
+    max-width: 1400px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding: 0 2rem !important;
+    pointer-events: none !important;
 }
 
-/* Correctly space the horizontal columns inside the header */
-div[data-testid="stVerticalBlock"]:has(#header-bar-anchor) [data-testid="stHorizontalBlock"] {
-    align-items: center !important;
-}
-
-/* Style only the header navigation buttons as clean links with UNIFORM SIZE */
-.nav-link-container {
-    padding-top: 15px !important;
-}
-
-.nav-link-container .stButton>button {
-    background: rgba(255, 255, 255, 0.05) !important;
-    border: 1px solid rgba(255, 255, 255, 0.1) !important;
-    color: #e2e8f0 !important;
-    font-size: 15px !important;
-    font-weight: 600 !important;
-    /* UNIFORM SIZE FOR ALL BUTTONS */
-    min-width: 140px !important;
-    height: 48px !important;
+.nav-container-wrapper [data-testid="column"] {
+    pointer-events: auto !important;
+    /* Re-enable clicks for the buttons */
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    transition: all 0.3s ease !important;
-    box-shadow: none !important;
-    text-transform: none !important;
-    border-radius: 12px !important;
-    white-space: nowrap !important;
-    width: 100% !important;
 }
 
-.nav-link-container .stButton>button:hover {
-    color: #00d9ff !important;
-    background: rgba(255, 255, 255, 0.1) !important;
-    border-color: #00d9ff !important;
-    transform: translateY(-2px) !important;
+.nav-container-wrapper .stButton>button {
+    background: transparent !important;
+    border: none !important;
+    color: var(--text-secondary) !important;
+    font-weight: 600 !important;
+    padding: 10px 20px !important;
+    height: 50px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
 }
 
+.nav-container-wrapper .stButton>button:hover {
+    color: var(--accent-cyan) !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+}
 
-/* Ensure other page content isn't shifted or corrupted */
-@media (max-width: 900px) {
-    div[data-testid="stVerticalBlock"]:has(#header-bar-anchor) {
-        margin: 0 !important;
-        padding: 5px !important;
+/* Hide the spacer column on mobile to keep nav centered */
+@media (max-width: 768px) {
+    .nav-container-wrapper {
+        margin-top: 0 !important;
+        position: relative !important;
     }
 }

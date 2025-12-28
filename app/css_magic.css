@@ -70,19 +70,9 @@ section.main>div {
 
 .main .block-container {
     background: transparent !important;
-    max-width: 100% !important;
-    /* Allow content to reach edges if needed */
-    padding: 0 !important;
-    /* Remove container padding to allow full-width header */
-    margin: 0 auto !important;
-}
-
-/* Add padding back to the main content area only, not the header */
-[data-testid="stVerticalBlock"]>div:not(.nav-container-wrapper):not(:first-child) {
-    padding: 0 2rem !important;
     max-width: 1400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
+    padding: 0 2rem 2rem 2rem !important;
+    margin: 0 auto !important;
 }
 
 /* ============================================
@@ -1402,7 +1392,7 @@ div[role='alert'] p {
 }
 
 /* ============================================
-   STICKY HEADER INTEGRATION - FULL WIDTH
+   STICKY HEADER INTEGRATION
    ============================================ */
 .nav-container-wrapper {
     position: sticky !important;
@@ -1410,12 +1400,9 @@ div[role='alert'] p {
     z-index: 1001 !important;
     margin-top: -65px !important;
     /* Pull buttons up into the markdown bar */
-    width: 100% !important;
-    max-width: 1400px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
     padding: 0 2rem !important;
     pointer-events: none !important;
+    /* Allow clicking through empty space */
 }
 
 .nav-container-wrapper [data-testid="column"] {

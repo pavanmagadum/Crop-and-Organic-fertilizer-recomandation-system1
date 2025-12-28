@@ -452,8 +452,8 @@ st.markdown('''
 
 # TOP NAVIGATION BAR with WORKING LINKS
 st.markdown("""
-<div style="background: rgba(21, 25, 50, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid #2d3748; padding: 0.8rem 2rem; position: sticky; top: 0; z-index: 1000; margin: 0;">
-    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; width: 100%;">
+<div style="background: rgba(21, 25, 50, 0.95); backdrop-filter: blur(20px); border-bottom: 1px solid #2d3748; padding: 0.8rem 2rem; position: sticky; top: 0; z-index: 1000; margin: -2rem -2rem 0 -2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto;">
         <div style="font-size: 22px; font-weight: 800; background: linear-gradient(135deg, #00d9ff 0%, #7c3aed 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 10px;">
             🌾 Climate-Aware Farming
         </div>

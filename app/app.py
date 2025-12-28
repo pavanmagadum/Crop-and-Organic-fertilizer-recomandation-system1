@@ -1207,17 +1207,14 @@ elif page == 'Preparation':
         notes = conv.get('notes', 'No specific notes available.')
         prep = conv.get('preparation_steps') or []
         
-        # Hero Card for Organic Fertilizer - DARK THEME
+        # Hero Card for Organic Fertilizer - RESPONSIVE PREMIUM GLASS
         st.markdown(f'''
-        <div style="background: linear-gradient(135deg, #10B981 0%, #059669 100%); 
-        border-radius: 20px; padding: 32px; margin-bottom: 24px;
-        box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);">
-            <div style="display: flex; align-items: center; gap: 20px;">
-                <div style="font-size: 48px; background: rgba(255,255,255,0.2); width: 90px; height: 90px; 
-                display: flex; align-items: center; justify-content: center; border-radius: 50%;">🍃</div>
+        <div class="premium-hero-card">
+            <div class="hero-content-wrapper">
+                <div class="hero-icon-container">🍃</div>
                 <div>
-                    <h2 style="color: white; margin: 0; font-size: 28px; font-weight: 800;">{organic_name}</h2>
-                    <p style="color: rgba(255,255,255,0.9); margin: 8px 0 0 0; font-size: 16px;">Recommended Organic Equivalent</p>
+                    <h2 class="hero-title">{organic_name}</h2>
+                    <p class="hero-subtitle">✨ Recommended Organic Equivalent</p>
                 </div>
             </div>
         </div>
